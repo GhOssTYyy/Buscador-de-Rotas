@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linhas de Ônibus - Campina Grande/PB</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #8b0000 0%, #cc0000 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #cc0000;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header-image-main {
+            width: 200px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+        
+        .header-image {
+            width: 180px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-text {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #cc0000;
+            box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.2);
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #cc0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #a30000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .result-container {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-height: 150px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 18px;
+            border-bottom: 2px solid #cc0000;
+            padding-bottom: 5px;
+        }
+        
+        #resultado {
+            font-size: 18px;
+            color: #28a745;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(40, 167, 69, 0.3);
+            border-radius: 50%;
+            border-top-color: #28a745;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .info {
+            color: #17a2b8;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #6c757d;
+            border-top: 1px solid #eee;
+            background: #f8f9fa;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-image-main {
+                width: 180px;
+                height: 100px;
+            }
+            
+            .header-image {
+                width: 140px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <img src="https://i.imgur.com/PolKIwx.png" alt="Brasão de Natal" class="header-image-main">
+                <img src="https://i.imgur.com/ygxe7QR.png" alt="Natal - Cidade do Sol" class="header-image">
+                <div class="header-text">
+                    <h1>CAMPINA GRANDE - PB</h1>
+                    <p class="subtitle">Sistema de Consulta de Linhas de Ônibus</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="input-group">
+                <label for="bairrosInput">Digite o Bairro Desejado:(Não Precisa de Acentos)</label>
+                <input type="text" id="bairrosInput" placeholder="Ex: Centro, Catolé, Dinamérica">
+            </div>
+            
+            <button onclick="buscarLinhas()" id="consultarBtn">Consultar Linhas</button>
+            
+            <div class="result-container">
+                <div class="result-title">Linhas encontradas:</div>
+                <div id="resultado">Os resultados aparecerão aqui</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            © 2025 Sistema de Transporte de Campina Grande
+        </div>
+    </div>
+
+    <script>
+  const dados = [
+    {bairro: "Alto Branco", linhas: ["100", "22"]},
+    {bairro: "Aluízio Campos", linhas: ["044"]},
+    {bairro: "Bela Vista", linhas: ["903B", "303", "500", "555"]},
+    {bairro: "Bodocongó", linhas: ["505", "903B", "263", "303", "245", "066", "333"]},
+    {bairro: "Catolé", linhas: ["444", "404", "555", "245"]},
+    {bairro: "Centro", linhas: ["505", "903B", "909", "111", "444", "404", "955", "944", "220", "100", "101", "263", "044", "500", "092", "077", "555", "910", "902", "922", "245", "066", "22", "333", "300"]},
+    {bairro: "Castelo Branco", linhas: ["333"]},
+    {bairro: "Centenário", linhas: ["505", "220", "500", "555", "263"]},
+    {bairro: "Cruzeiro", linhas: ["111", "101", "902", "245"]},
+    {bairro: "Dinamérica", linhas: ["220", "263", "066", "22"]},
+    {bairro: "Distrito Industrial", linhas: ["111", "101", "044", "944"]},
+    {bairro: "Estação Velha", linhas: ["404", "245", "044", "944"]},
+    {bairro: "Galante", linhas: ["955"]},
+    {bairro: "Itararé", linhas: ["444", "404"]},
+    {bairro: "Jardim Continental", linhas: ["910"]},
+    {bairro: "Jardim Paulistano", linhas: ["111", "101", "245"]},
+    {bairro: "Jardim Quarenta", linhas: ["111", "444", "404", "101", "902", "245"]},
+    {bairro: "Jardim Tavares", linhas: ["22"]},
+    {bairro: "Jenipapo", linhas: ["910"]},
+    {bairro: "Jeremias", linhas: ["505", "303", "555", "333"]},
+    {bairro: "José Pinheiro", linhas: ["505", "444", "404", "555", "333"]},
+    {bairro: "Lauritzen", linhas: ["100"]},
+    {bairro: "Liberdade", linhas: ["111", "101", "902"]},
+    {bairro: "Malvinas", linhas: ["903B", "220", "263", "092", "077", "922", "245", "066", "22"]},
+    {bairro: "Mirante", linhas: ["505", "555"]},
+    {bairro: "Monte Castelo", linhas: ["303", "333"]},
+    {bairro: "Monte Santo", linhas: ["505", "903B", "303", "333"]},
+    {bairro: "Nações", linhas: ["100"]},
+    {bairro: "Nova Brasília", linhas: ["303", "333"]},
+    {bairro: "Palmeira", linhas: ["505", "910"]},
+    {bairro: "Pedregal", linhas: ["505", "555"]},
+    {bairro: "Presidente Médice", linhas: ["909"]},
+    {bairro: "Prata", linhas: ["263", "500", "910", "066", "333"]},
+    {bairro: "Queimadas BR104", linhas: ["944"]},
+    {bairro: "Sandra Cavalcante", linhas: ["903B"]},
+    {bairro: "Santa Cruz", linhas: ["909", "101", "092", "077", "902", "22", "245"]},
+    {bairro: "Santa Rosa", linhas: ["444", "404", "066"]},
+    {bairro: "Santo Antônio", linhas: ["444", "404", "500", "303", "333"]},
+    {bairro: "São José", linhas: ["909", "111", "444", "404", "101", "902", "077", "555", "092"]},
+    {bairro: "São José da Mata", linhas: ["903B"]},
+    {bairro: "Serrotão", linhas: ["092", "077", "922"]},
+    {bairro: "Tambor", linhas: ["111"]},
+    {bairro: "Três Irmãs", linhas: ["092", "077", "922"]},
+    {bairro: "Velame", linhas: ["944"]},
+    {bairro: "Cuité", linhas: ["910"]},
+    {bairro: "Queimadas", linhas: ["944"]},
+    {bairro: "Bairro Universitário", linhas: ["303", "555"]},
+    {bairro: "UEPB", linhas: ["300"]},
+    {bairro: "UFCG", linhas: ["300"]}
+  ];
+
+  // Ignorar Acentos
+  function normalizar(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  }
+
+  function buscarLinhas() {
+    const input = document.getElementById('bairrosInput').value;
+    const bairrosProcurados = input.split(',').map(b => normalizar(b.trim()));
+
+    // Mostrar loading
+    document.getElementById('resultado').innerHTML = "<span class='loading'></span>Buscando linhas...";
+    document.getElementById('resultado').className = "info";
+    
+    // Desabilitar botão durante a busca
+    document.getElementById('consultarBtn').disabled = true;
+
+    // Simular um tempo de processamento (apenas para demonstração do loading)
+    setTimeout(() => {
+      const todasLinhas = [...new Set(dados.flatMap(d => d.linhas))];
+
+      const linhasEncontradas = todasLinhas.filter(linha =>
+        bairrosProcurados.every(bairro =>
+          dados.find(d => normalizar(d.bairro) === bairro && d.linhas.includes(linha))
+        )
+      );
+
+      document.getElementById('resultado').innerText = 
+        linhasEncontradas.length > 0 ? linhasEncontradas.join(', ') : "Nenhuma linha encontrada.";
+      
+      document.getElementById('resultado').className = "";
+      
+      // Reabilitar o botão
+      document.getElementById('consultarBtn').disabled = false;
+    }, 800); // Tempo simulado de busca
+  }
+
+  // Enter Para Rodar O Código
+  document.getElementById("bairrosInput").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      buscarLinhas();
+    }
+  });
+</script>
+</body>
+</html>

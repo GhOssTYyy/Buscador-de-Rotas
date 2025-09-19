@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linhas de Ônibus - Natal/RN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #8b0000 0%, #cc0000 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #cc0000;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header-image-main {
+            width: 200px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+        
+        .header-image {
+            width: 180px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-text {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #cc0000;
+            box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.2);
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #cc0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #a30000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .result-container {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-height: 150px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 18px;
+            border-bottom: 2px solid #cc0000;
+            padding-bottom: 5px;
+        }
+        
+        #resultado {
+            font-size: 18px;
+            color: #28a745;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(40, 167, 69, 0.3);
+            border-radius: 50%;
+            border-top-color: #28a745;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .info {
+            color: #17a2b8;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #6c757d;
+            border-top: 1px solid #eee;
+            background: #f8f9fa;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-image-main {
+                width: 180px;
+                height: 100px;
+            }
+            
+            .header-image {
+                width: 140px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <img src="https://i.imgur.com/PolKIwx.png" alt="Brasão de Natal" class="header-image-main">
+                <img src="https://i.imgur.com/ikIwZ4v.png" alt="Natal - Cidade do Sol" class="header-image">
+                <div class="header-text">
+                    <h1>NATAL - RN</h1>
+                    <p class="subtitle">Sistema de Consulta de Linhas de Ônibus</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="input-group">
+                <label for="bairrosInput">Digite o Bairro Desejado:</label>
+                <input type="text" id="bairrosInput" placeholder="Ex: Alecrim, Leningrado, Natal Shopping">
+            </div>
+            
+            <button onclick="buscarLinhas()" id="consultarBtn">Consultar Linhas</button>
+            
+            <div class="result-container">
+                <div class="result-title">Linhas encontradas:</div>
+                <div id="resultado">Os resultados aparecerão aqui</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            © 2025 Sistema de Transporte de Natal
+        </div>
+    </div>
+
+    <script>
+  const dados = [
+    //Empresa Conceição
+    {bairro: "Empresa Santa Maria", linhas: ["83"]},
+    {bairro: "Área de Lazer do Panatis", linhas: ["76"]},
+    {bairro: "Alecrim", linhas: ["21", "22"]},
+    {bairro: "Baldo", linhas: ["22"]},
+    {bairro: "Pajuçara", linhas: ["76"]},
+    {bairro: "Rodoviária", linhas: ["21", "30", "41A", "63", "76", "905"]},
+    {bairro: "Rodoviária Velha", linhas: ["22", "41A"]},
+    {bairro: "Urbano", linhas: ["76"]},
+    {bairro: "Via Direta", linhas: ["30", "905"]},
+    {bairro: "Antigo Hiper Bom Preço", linhas: ["41A"]},
+    {bairro: "Arena das Dunas", linhas: ["30", "41A", "63"]},
+    {bairro: "CBTU", linhas: ["22", "41A"]},
+    {bairro: "Catedral", linhas: ["21"]},
+    {bairro: "CEASA", linhas: ["30", "41A"]},
+    {bairro: "Cemitério Bom Pastor", linhas: ["22"]},
+    {bairro: "Centro Administrativo", linhas: ["63"]},
+    {bairro: "Corpo de Bombeiro", linhas: ["41A"]},
+    {bairro: "DER", linhas: ["30"]},
+    {bairro: "DETRAN", linhas: ["21", "30", "63", "76", "905"]},
+    {bairro: "Escola Francisco Ivo", linhas: ["63", "76", "905"]},
+    {bairro: "Escola Marista", linhas: ["21"]},
+    {bairro: "Escola União do Povo", linhas: ["83"]},
+    {bairro: "Estação Pitimbu", linhas: ["83"]},
+    {bairro: "Ginásio do Ded", linhas: ["30"]},
+    {bairro: "Ginásio Nélio Dias", linhas: ["76"]},
+    {bairro: "Hapvida Zona Norte", linhas: ["76"]},
+    {bairro: "Havan", linhas: ["83"]},
+    {bairro: "Hospital da Polícia", linhas: ["41A"]},
+    {bairro: "Hospital Infantil Varela Santiago", linhas: ["21"]},
+    {bairro: "Hospital Onofre Lopes", linhas: ["21"]},
+    {bairro: "Hospital Unimed", linhas: ["63","905"]},
+    {bairro: "IFRN Campus Central", linhas: ["63"]},
+    {bairro: "IFRN Cidade Alta", linhas: ["22"]},
+    {bairro: "Igreja Candelária", linhas: ["30"]},
+    {bairro: "Igreja São Pedro", linhas: ["22"]},
+    {bairro: "Igreja São Sebastião", linhas: ["21","22"]},
+    {bairro: "Lagoa de Capitação do Jequi", linhas: ["83"]},
+    {bairro: "Laboratório Central", linhas: ["22"]},
+    {bairro: "Leroy Merlin", linhas: ["83"]},
+    {bairro: "Maternidade Januário Cicco", linhas: ["22", "41A"]},
+    {bairro: "Midway Mall", linhas: ["63", "905"]},
+    {bairro: "Natal Shopping", linhas: ["30", "63", "905"]},
+    {bairro: "Paróquia Cristo Rei", linhas: ["83"]},
+    {bairro: "Paróquia de São José", linhas: ["41A"]},
+    {bairro: "Partage Norte Shopping", linhas: ["76"]},
+    {bairro: "Prefeitura de Natal", linhas: ["41A"]},
+    {bairro: "Praça Cívica", linhas: ["22", "41A"]},
+    {bairro: "Praça do Cruzeiro de Ponta Negra", linhas: ["83", "905"]},
+    {bairro: "Praça Gentil Ferreira", linhas: ["22"]},
+    {bairro: "Praia de Areia Preta", linhas: ["21"]},
+    {bairro: "Praia Shopping", linhas: ["83", "905"]},
+    {bairro: "Santa Maria", linhas: ["83"]},
+    {bairro: "SENAC Zona Sul", linhas: ["83"]},
+    {bairro: "SEMTHAS", linhas: ["63"]},
+    {bairro: "UERN Zona Norte", linhas: ["76"]},
+    {bairro: "UNP Eng. Roberto Freire", linhas: ["83"]},
+    {bairro: "UNP Salgado Filho", linhas: ["63"]},
+    {bairro: "UPA Cidade da Esperança", linhas: ["30", "41A", "905"]},
+    {bairro: "UPA Cidade Satélite", linhas: ["83"]},
+    {bairro: "UPA Pajuçara", linhas: ["76"]},
+    
+    //Empresa Santa Maria
+    {bairro: "Lagoa Seca", linhas: ["33B"]},
+    {bairro: "Circular UFRN", linhas: ["588B"]},
+    {bairro: "Centro", linhas: ["39"]},
+    {bairro: "Eucaliptos", linhas: ["3008"]},
+    {bairro: "Alvorada IV", linhas: ["07", "27"]},
+    {bairro: "Candelária", linhas: ["35"]},
+    {bairro: "Cidade da Esperança", linhas: ["39"]},
+    {bairro: "Cidade Satélite", linhas: ["37","83"]},
+    {bairro: "Felipe Camarão", linhas: ["83"]},
+    {bairro: "Leningrado", linhas: ["41A"]},
+    {bairro: "Mirassol", linhas: ["07", "29"]},
+    {bairro: "Nova Descoberta", linhas: ["78"]},
+    {bairro: "Nova Natal", linhas: ["29", "43"]},
+    {bairro: "Planalto", linhas: ["33B", "38"]},
+    {bairro: "Ponta Negra", linhas: ["54", "56", "73", "83"]},
+    {bairro: "Praia do Meio", linhas: ["38"]},
+    {bairro: "Ribeira", linhas: ["27", "41A", "3008"]},
+    {bairro: "Rocas", linhas: ["37", "54", "56"]},
+    {bairro: "Santarém", linhas: ["73", "78"]},
+    {bairro: "Soledade I", linhas: ["35"]},
+    {bairro: "Alecrim", linhas: ["38", "43", "54", "3008"]},
+    {bairro: "Avenida Nevaldo Rocha", linhas: ["29", "73"]},
+    {bairro: "Av. Nevaldo Rocha", linhas: ["29", "73"]},
+    {bairro: "BR-101", linhas: ["33B"]},
+    {bairro: "Central", linhas: ["27"]},
+    {bairro: "Direta", linhas: ["588B"]},
+    {bairro: "Ponte Newton Navarro", linhas: ["78"]},
+    {bairro: "Praça", linhas: ["37", "3008"]},
+    {bairro: "Prudente de Morais", linhas: ["39", "41A"]},
+    {bairro: "Via Costeira", linhas: ["56"]},
+    {bairro: "Midway Mall", linhas: ["43"]},
+    {bairro: "Restaurante Universitário UFRN", linhas: ["588B"]},
+    {bairro: "UFRN", linhas: ["588B"]},
+    
+    //Empresa Barros
+    {bairro: "Rio dos Índios", linhas: ["101"]},
+    {bairro: "Coqueiros", linhas: ["101", "102"]}, 
+    {bairro: "BR 101", linhas: ["101", "102", "103", "104", "105", "121", "122", "123", "124", "126", "127", "130", "131", "132", "133", "134", "135", "136", "137"]}, 
+    {bairro: "Capim", linhas: ["102"]}, 
+    {bairro: "Ibiribeira", linhas: ["102"]}, 
+    {bairro: "RN 160", linhas: ["131", "134", "135", "137"]}, 
+    {bairro: "Sto.Gonçalo", linhas: ["103", "108"]}, 
+    {bairro: "Guararapes", linhas: ["103", "104", "105", "121", "122", "123", "124", "126", "127", "130", "131", "132", "133", "134", "135", "136", "137"]},
+    {bairro: "PQ Industrial", linhas: ["104"]},
+    {bairro: "Parque Industrial", linhas: ["104"]}, 
+    {bairro: "Av. Nevaldo Rocha", linhas: ["104", "105"]}, 
+    {bairro: "Avenida Nevaldo Rocha", linhas: ["104", "105"]}, 
+    {bairro: "Av. Felizardo Moura", linhas: ["104", "121", "122"]}, 
+    {bairro: "Avenida Felizardo Moura", linhas: ["104", "121", "122"]}, 
+    {bairro: "Igapó", linhas: ["104", "105", "123"]}, 
+    {bairro: "BR 304", linhas: ["105"]}, 
+    {bairro: "Av.Sem.Salgado Filho", linhas: ["105"]}, 
+    {bairro: "Avenida Sem Salgado Filho", linhas: ["105"]}, 
+    {bairro: "Neopolis", linhas: ["106"]}, 
+    {bairro: "Candelaria", linhas: ["106"]}, 
+    {bairro: "Av. Tomaz Landim", linhas: ["106", "121", "122", "123", "134", "136", "137"]},
+    {bairro: "Avenida Tomaz Landim", linhas: ["106", "121", "122", "123", "134", "136", "137"]}, 
+    {bairro: "Ponta Negra", linhas: ["107"]}, 
+    {bairro: "N.Descoberta", linhas: ["107"]}, 
+    {bairro: "Lagoa Seca", linhas: ["107"]},
+    {bairro: "BR 226", linhas: ["111"]},
+    {bairro: "KM 06", linhas: ["111", "112", "121", "122"]},
+    {bairro: "Quintas", linhas: ["111", "112", "113", "114", "121", "122"]}, 
+    {bairro: "Leningrado", linhas: ["112"]},
+    {bairro: "Planalto", linhas: ["112", "122"]},
+    {bairro: "Felipe Camarão", linhas: ["112", "121", "122"]}, 
+    {bairro: "Conj. Jardim América", linhas: ["112"]}, 
+    {bairro: "Conjunto Jardim América", linhas: ["112"]}, 
+    {bairro: "BR 10", linhas: ["112"]},
+    {bairro: "Satelite", linhas: ["113"]}, 
+    {bairro: "Pitimbu", linhas: ["113"]}, 
+    {bairro: "Alecrim", linhas: ["114"]}, 
+    {bairro: "Anigas", linhas: ["115"]}, 
+    {bairro: "Muriu", linhas: ["115"]}, 
+    {bairro: "Caiana", linhas: ["115"]}, 
+    {bairro: "Jacumâ", linhas: ["115"]}, 
+    {bairro: "Pitangui", linhas: ["115"]},
+    {bairro: "Contenda", linhas: ["115"]}, 
+    {bairro: "Estremoz RN 160", linhas: ["116"]}, 
+    {bairro: "Estremoz RN 107", linhas: ["116"]}, 
+    {bairro: "BR 406", linhas: ["117", "130", "131", "132", "133"]}, 
+    {bairro: "Rego Molereiro", linhas: ["118", "120", "134", "135", "136", "137"]}, 
+    {bairro: "Av. João Francisco da Mota", linhas: ["119"]}, 
+    {bairro: "Avenida João Francisco da Mota", linhas: ["119"]}, 
+    {bairro: "Bairro Nordeste", linhas: ["119"]}, 
+    {bairro: "Av. Mário Negócio", linhas: ["119"]}, 
+    {bairro: "Avenida Mário Negócio", linhas: ["119"]}, 
+    {bairro: "Sto Antonio", linhas: ["120", "136", "137"]}, 
+    {bairro: "Avenida Moemia Tinoco", linhas: ["124"]}, 
+    {bairro: "Brasil Novo", linhas: ["124"]}, 
+    {bairro: "Estrada da Redinha", linhas: ["126"]}, 
+    {bairro: "Sta Catarina", linhas: ["126"]},
+    {bairro: "Natal", linhas: ["127"]}, 
+    {bairro: "N.Natal", linhas: ["127"]}, 
+    {bairro: "Cidade Praia", linhas: ["127"]}, 
+    {bairro: "Viaduto das Fronteiras", linhas: ["127"]}, 
+    {bairro: "Av. das Fronteiras", linhas: ["127"]}, 
+    {bairro: "Avenida das Fronteiras", linhas: ["127"]}, 
+    {bairro: "BR 304", linhas: ["131"]}, 
+    {bairro: "CEARÁ MIRIM", linhas: ["139", "140", "141", "142", "143", "144", "145", "146", "202", "211", "213", "214", "217", "218", "221", "07 TURNO A", "10 TURNO A", "07 TURNO B", "10 TURNO B", "18 TURNO A", "23 TURNO B"]},
+    {bairro: "SERRINHA", linhas: ["141", "201", "221", "09 TURNO A", "09 TURNO B", "20 TURNO A"]},
+    {bairro: "JARDIM PETRÓPOLIS", linhas: ["144", "217", "18 TURNO A"]},
+    {bairro: "JARDIM BOTÂNICO", linhas: ["145", "214", "23 TURNO A", "18 TURNO A"]},
+    {bairro: "MASSARANDUBA", linhas: ["146", "202", "213", "221", "23 TURNO B"]},
+    {bairro: "GUAJIRÍ", linhas: ["146"]},
+    {bairro: "BRASIL NOVO", linhas: ["147", "222", "08 TURNO A", "08 TURNO B"]},
+    {bairro: "LOT. N. REPUBLICA", linhas: ["147", "229", "11 TURNO B"]},
+    {bairro: "SANTARÉM", linhas: ["147", "148", "225", "226", "229", "241", "02 TURNO A", "11 TURNO A", "11 TURNO B"]},
+    {bairro: "PAJUÇARA", linhas: ["147", "148", "227", "235", "238", "02 TURNO A", "11 TURNO A", "11 TURNO B"]},
+    {bairro: "GRAMORÉ", linhas: ["147", "225", "238", "11 TURNO A", "11 TURNO B"]},
+    {bairro: "GRAMOREZINHO", linhas: ["147", "148", "222", "225", "227", "08 TURNO A"]},
+    {bairro: "PANATIS", linhas: ["148", "226", "229", "08 TURNO A", "08 TURNO B"]},
+    {bairro: "PARQUE DAS DUNAS", linhas: ["149", "222", "227", "08 TURNO B"]},
+    {bairro: "N. NATAL", linhas: ["150", "152", "237", "238", "241", "02 TURNO A", "05 TURNO A", "05 TURNO B"]},
+    {bairro: "SOLEDADE II", linhas: ["150", "152", "225", "236", "237", "02 TURNO A", "02 TURNO B"]},
+    {bairro: "VALE DOURADO", linhas: ["150", "151", "152", "153", "154", "219", "226", "229", "236", "237", "239", "240", "241", "242", "03 TURNO A", "05 TURNO A", "05 TURNO B", "08 TURNO A", "08 TURNO B"]},
+    {bairro: "PQ. DOS COQUEIROS", linhas: ["150", "152", "154", "219", "226", "229", "236", "237", "238", "239", "240", "241", "03 TURNO A", "05 TURNO A", "05 TURNO B", "08 TURNO A", "08 TURNO B", "11 TURNO B", "19 TURNO A"]},
+    {bairro: "ESTIVAS", linhas: ["155", "156", "201", "233", "243", "244", "09 TURNO A", "20 TURNO A"]},
+    {bairro: "EXTREMOZ", linhas: ["155", "156", "157", "158", "159", "160", "201", "243", "244", "245", "246", "247", "16 TURNO A", "16 TURNO B", "20 TURNO A", "25 TURNO A", "25 TURNO B"]},
+    {bairro: "GOLANDIM", linhas: ["161", "162", "228", "230", "13 TURNO B", "14 TURNO B", "22 TURNO A"]},
+    {bairro: "CONJ. AMARANTE", linhas: ["162", "22 TURNO A"]},
+    {bairro: "RIO DOS INDIOS", linhas: ["200", "09 TURNO A", "09 TURNO B"]},
+    {bairro: "IBIRIBEIRA", linhas: ["200", "201", "09 TURNO A", "09 TURNO B", "20 TURNO A"]},
+    {bairro: "MURIÚ", linhas: ["201"]},
+    {bairro: "PORTO MIRI", linhas: ["201"]},
+    {bairro: "JACUMÃ PITANGUI", linhas: ["201"]},
+    {bairro: "CONTENDA", linhas: ["201", "20 TURNO A"]},
+    {bairro: "MACAÍBA", linhas: ["203", "204", "207", "220", "13 TURNO A", "13 TURNO B", "21 TURNO A", "21 TURNO B"]},
+    {bairro: "STO GONÇALO", linhas: ["203", "204", "220", "13 TURNO A", "13 TURNO B", "14 TURNO A", "14 TURNO B", "21 TURNO A", "21 TURNO B"]},
+    {bairro: "SÃO GONÇALO", linhas: ["205", "210", "220", "224", "13 TURNO A", "14 TURNO A", "14 TURNO B", "21 TURNO A", "21 TURNO B"]},
+    {bairro: "STO ANTONIO", linhas: ["205", "210", "223", "224", "230", "13 TURNO A", "14 TURNO A", "14 TURNO B", "21 TURNO A", "21 TURNO B"]},
+    {bairro: "N. S. ANTONIO", linhas: ["205", "231", "13 TURNO A", "14 TURNO A"]},
+    {bairro: "REGO MOLEIRO", linhas: ["205", "210", "223", "224", "230", "231", "13 TURNO A", "13 TURNO B", "14 TURNO A", "14 TURNO B", "21 TURNO A", "21 TURNO B"]},
+    {bairro: "PARNAMIRIM", linhas: ["206", "209", "212", "01 TURNO A", "01 TURNO B", "05 TURNO B"]},
+    {bairro: "MIRASSOL", linhas: ["206"]},
+    {bairro: "POTILÂNDIA", linhas: ["206"]},
+    {bairro: "LAGOA NOVA", linhas: ["206", "209", "06 TURNO A", "06 TURNO B"]},
+    {bairro: "IGAPÓ", linhas: ["206", "212", "239"]},
+    {bairro: "BAIRRO NORDESTE", linhas: ["206", "12 TURNO A", "06 TURNO B"]},
+    {bairro: "FELIPE CAMARÃO", linhas: ["208", "04 TURNO A", "04 TURNO B"]},
+    {bairro: "QUINTAS", linhas: ["207", "208", "209", "212", "232", "234", "04 TURNO A", "04 TURNO B", "06 TURNO A", "06 TURNO B", "12 TURNO A", "12 TURNO B", "17 TURNO A"]},
+    {bairro: "ALECRIM", linhas: ["209", "234", "06 TURNO A", "06 TURNO B", "17 TURNO A"]},
+    {bairro: "N. PARNAMIRIM", linhas: ["212", "01 TURNO A", "01 TURNO B"]},
+    {bairro: "JIQUI", linhas: ["212", "01 TURNO A"]},
+    {bairro: "N. DESCOBERTA", linhas: ["212", "01 TURNO A", "01 TURNO B"]},
+    {bairro: "PLANALTO", linhas: ["216", "12 TURNO A", "12 TURNO B"]},
+    {bairro: "VILLAGE DE PRADA", linhas: ["216"]},
+    {bairro: "STA RITA", linhas: ["219"]},
+    {bairro: "REDINHA NOVA", linhas: ["219"]},
+    {bairro: "REDINHA", linhas: ["219", "19 TURNO A"]},
+    {bairro: "STA CATARINA", linhas: ["219", "226", "229", "02 TURNO A", "02 TURNO B", "11 TURNO B"]},
+    {bairro: "CONJ. MASSARANBUBA", linhas: ["221"]},
+    {bairro: "LOTEAMENTO DOM PEDRO", linhas: ["151", "11 TURNO A", "11 TURNO B"]},
+    {bairro: "SATELITE", linhas: ["232", "01 TURNO A", "01 TURNO B", "12 TURNO A"]},
+    {bairro: "PITIMBU", linhas: ["232", "12 TURNO A"]},
+    {bairro: "CIDADE NOVA", linhas: ["232", "12 TURNO A", "12 TURNO B"]},
+    {bairro: "CIDADE DA ESPERANÇA", linhas: ["232", "06 TURNO A", "12 TURNO A", "12 TURNO B"]},
+    {bairro: "BOM PASTOR", linhas: ["232", "12 TURNO A", "12 TURNO B"]},
+    {bairro: "VILA SÃO SEBASTIÃO", linhas: ["155", "233"]},
+    {bairro: "ARAÇÁ", linhas: ["155", "233", "16 TURNO B"]},
+    {bairro: "SANTA MARIA", linhas: ["155", "16 TURNO B"]},
+    {bairro: "VILA DE FÁTIMA", linhas: ["155", "233", "16 TURNO B"]},
+    {bairro: "BARREIRO", linhas: ["155", "233"]},
+    {bairro: "SPORT CLUB", linhas: ["233", "16 TURNO A", "16 TURNO B", "08 TURNO B"]},
+    {bairro: "MÃE LUIZA", linhas: ["234", "17 TURNO A"]},
+    {bairro: "PRAIA DO MEIO", linhas: ["234", "17 TURNO A"]},
+    {bairro: "ROCAS", linhas: ["234", "17 TURNO A"]},
+    {bairro: "CIDADE ALTA", linhas: ["234", "17 TURNO A"]},
+    {bairro: "ESTRADA DE GENIPABU", linhas: ["235"]},
+    {bairro: "PORTAL DO SOL", linhas: ["235", "08 TURNO B"]},
+    {bairro: "PAJUÇARA II", linhas: ["235"]},
+    {bairro: "CIDADE PRAIA", linhas: ["150", "151", "236", "237", "05 TURNO A", "05 TURNO B"]},
+    {bairro: "VILA PARAIZO", linhas: ["239", "02 TURNO A"]},
+    {bairro: "AMARANTE", linhas: ["231", "14 TURNO B", "22 TURNO A"]},
+    {bairro: "GUAJIRÚ", linhas: ["231"]},
+    {bairro: "PQ. DOM PEDRO", linhas: ["229"]},
+    {bairro: "CAPOEIRA GRANDE", linhas: ["200", "09 TURNO A", "09 TURNO B"]},
+    {bairro: "COQUEIROS DO MORRO", linhas: ["200", "09 TURNO A", "09 TURNO B"]},
+    {bairro: "COQUEIROS ALTO DO SITIO", linhas: ["200"]},
+    {bairro: "SITIO", linhas: ["200", "201", "09 TURNO A", "09 TURNO B", "20 TURNO A"]},
+    {bairro: "BAIRRO VERMELHO", linhas: ["200", "201", "09 TURNO A", "09 TURNO B", "20 TURNO A"]},
+    {bairro: "ALTO DO SÍTio", linhas: ["201", "09 TURNO A", "09 TURNO B", "20 TURNO A"]},
+    {bairro: "SÍTIO FLORES", linhas: ["201", "09 TURNO A", "09 TURNO B", "20 TURNO A"]},
+    {bairro: "CAPIM", linhas: ["201", "09 TURNO A", "09 TURNO B", "20 TURNO A"]},
+    {bairro: "CIDADE DAS ROSAS", linhas: ["144", "202", "217"]},
+    {bairro: "PLAZA GARDEN", linhas: ["144", "217"]},
+    {bairro: "FLORES DO CAMPO", linhas: ["145", "18 TURNO A"]},
+    {bairro: "URUACÚ", linhas: ["13 TURNO A"]},
+    {bairro: "CENTRAL PQ CLUBE", linhas: ["16 TURNO A"]},
+    {bairro: "TIROL", linhas: ["17 TURNO A"]},
+    {bairro: "PETROPÓLIS", linhas: ["17 TURNO A"]},
+    {bairro: "RIPEIRA", linhas: ["17 TURNO A"]},
+    {bairro: "CIDADE DAS FLORES", linhas: ["18 TURNO A"]},
+    {bairro: "POTENGI", linhas: ["19 TURNO A", "11 TURNO B"]},
+    {bairro: "NOVA CIDADE", linhas: ["06 TURNO A", "06 TURNO B"]},
+    {bairro: "DIX SEPT ROSADO", linhas: ["209", "06 TURNO B"]},
+    {bairro: "NEOPOLIS BR 101", linhas: ["01 TURNO B", "05 TURNO B"]},
+    {bairro: "CONJ. JIQUI", linhas: ["01 TURNO B"]},
+    {bairro: "CAPIM MACIO", linhas: ["01 TURNO A", "01 TURNO B"]},
+    {bairro: "MORRO BRANCO", linhas: ["01 TURNO A", "01 TURNO B"]},
+    {bairro: "LAGOA SECA", linhas: ["01 TURNO A"]},
+    {bairro: "CONJ. BRASIL NOVO", linhas: ["08 TURNO A", "08 TURNO B"]},
+    {bairro: "CONJ. N. NATAL", linhas: ["05 TURNO A"]},
+    {bairro: "PQ AMARANTE", linhas: ["14 TURNO B"]},
+    {bairro: "NOVO STO ANTONIO", linhas: ["14 TURNO B"]},
+    {bairro: "AV. HENRIQUE DIAS", linhas: ["19 TURNO A"]},
+    {bairro: "AV. STA LUZIA", linhas: ["19 TURNO A"]},
+    {bairro: "Alto do Sitio", linhas: ["102", "201", "20"]},
+    {bairro: "Alvorada IV", linhas: ["07", "27"]},
+    {bairro: "Amarante", linhas: ["103", "111", "162", "231", "22", "21", "108"]},
+    {bairro: "Araçá", linhas: ["155", "233", "16 TURNO A", "16 TURNO B"]},
+    {bairro: "Barro Vermelho", linhas: ["102", "201", "20", "09 TURNO A", "09 TURNO B"]},
+    {bairro: "Boa Vista", linhas: ["101", "200", "09 TURNO B"]},
+    {bairro: "Bom Pastor", linhas: ["112", "113", "114", "121", "04 TURNO A", "04 TURNO B", "12 TURNO A"]},
+    {bairro: "Capim Macio", linhas: ["102", "106", "107", "01", "01 TURNO B", "13 TURNO B"]},
+    {bairro: "Capoeira Grande", linhas: ["101", "102", "200", "09 TURNO B"]},
+    {bairro: "Ceará Mirim", linhas: ["117","138","139","140","141","142","143","144","145","146","202","211","213","214","217","218","221","07 TURNO A","10 TURNO A","23 TURNO B","07 TURNO B","10 TURNO B","18 TURNO A","18 TURNO B"]},
+    {bairro: "Cidade da Esperança", linhas: ["39","113","114","12 TURNO A","12 TURNO B","06 TURNO A"]},
+    {bairro: "Cidade das Flores", linhas: ["117","144","18 TURNO A","18 TURNO B"]},
+    {bairro: "Cidade das Rosas", linhas: ["117","138","144","202","217"]},
+    {bairro: "Cidade Jardim", linhas: ["120"]},
+    {bairro: "Cidade Nova", linhas: ["113","114","12 TURNO A","12 TURNO B"]},
+    {bairro: "Cramoré", linhas: ["124","151","11 TURNO A","11 TURNO B"]},
+    {bairro: "Dix Sept Rosado", linhas: ["114","206","06 TURNO B"]},
+    {bairro: "Estivas", linhas: ["102","115","155","156","157","159","160","16 TURNO A","233","20","09 TURNO B"]},
+    {bairro: "Emaús", linhas: ["105","110"]},
+    {bairro: "Extremoz", linhas: ["116","156","157","158","159","160","16 TURNO A","16 TURNO B","243","244","245/246/247","25 TURNO A","25 TURNO B","20"]},
+    {bairro: "Gramorezinho", linhas: ["124","147","148","151","222","226","227","238","08 TURNO A","08 TURNO B"]},
+    {bairro: "Guarapes", linhas: ["101–160","200–245/247","01–07 TURNO A/B"]},
+    {bairro: "Jiqui", linhas: ["212","01","13 TURNO A"]},
+    {bairro: "Lagoa Nova", linhas: ["104","109","206","06 TURNO B","114"]},
+    {bairro: "Lot. Nova República", linhas: ["147","226","229","11 TURNO A","11 TURNO B"]},
+    {bairro: "Mãe Luiza", linhas: ["234","17 TURNO A","17 TURNO B"]},
+    {bairro: "Macaíbas", linhas: ["103","108","111","130","131","132","133","204","207","21 TURNO A","13 TURNO A/B","01","01 TURNO B"]},
+    {bairro: "Mirassol", linhas: ["107","29","07","01","01 TURNO B","212"]},
+    {bairro: "Murro Branco", linhas: ["107","01","01 TURNO B"]},
+    {bairro: "Nazaré", linhas: ["114"]},
+    {bairro: "Panatis", linhas: ["148","239","08 TURNO A","08 TURNO B"]},
+    {bairro: "Pajuçara", linhas: ["124","126","148","235","02 TURNO A","02 TURNO B","08 TURNO B"]},
+    {bairro: "Parnamirim", linhas: ["104","105","106","109","110","206","01","01 TURNO B","05 TURNO B"]},
+    {bairro: "Parque das Dunas", linhas: ["124","149","227"]},
+    {bairro: "PQ Dos Coqueiros", linhas: ["123","115","125","126","127","128","129","150","151","152","154","03 TURNO A/B","02 TURNO A/B","239","240"]},
+    {bairro: "Potilandia", linhas: ["206","19 TURNO A","19 TURNO B"]},
+    {bairro: "Potenci", linhas: ["206","19 TURNO A","19 TURNO B"]},
+    {bairro: "Redinha", linhas: ["123","126","129","219","19 TURNO A","19 TURNO B"]},
+    {bairro: "Redinha Nova", linhas: ["126","129","219","19 TURNO A","19 TURNO B"]},
+    {bairro: "Santa Maria / Vila de Fátima", linhas: ["155","16 TURNO B","233"]},
+    {bairro: "Vila de Fátima", linhas: ["155","16 TURNO B","233"]},
+    {bairro: "Satarém", linhas: ["123", "73","78","125","126","147","226","229","02 TURNO A","02 TURNO B"]},
+    {bairro: "São Gonçalo", linhas: ["118","130","133","134","135","136","137","204","205","21 TURNO A","13 TURNO A/B","14 TURNO A/B","210","224"]},
+    {bairro: "Sto. Conçalo", linhas: ["118","130","133","134","135","136","137","204","205","21 TURNO A","13 TURNO A/B","14 TURNO A/B","210","224"]},
+    {bairro: "São Gonçalo", linhas: ["118","120","130","131","132","134","135","136","137","220","21 TURNO A","14 TURNO A"]},
+    {bairro: "Santo Antônio / Sto. Antônio", linhas: ["118","134","135","136","137","205","210","223","224","14 TURNO A/B","13 TURNO A/B","21 TURNO A"]},
+    {bairro: "Serrinha", linhas: ["101","141","201","20","09 TURNO B"]},
+    {bairro: "Soledade / Soledade II / Soledade I", linhas: ["35","125","128","150","02 TURNO A/B","237"]},
+    {bairro: "Soledade", linhas: ["35","125","128","150","02 TURNO A/B","237"]},
+    {bairro: "Soledade II", linhas: ["35","125","128","150","02 TURNO A/B","237"]},
+    {bairro: "Soledade I", linhas: ["35","125","128","150","02 TURNO A/B","237"]},
+    {bairro: "Tirol", linhas: ["17 TURNO A"]},
+    {bairro: "Vale Dourado", linhas: ["126","127","128","150","151","152","153","154","03 TURNO A/B","239","242","236","05 TURNO B","02 TURNO A/B"]},
+    {bairro: "Vila Paraíso", linhas: ["123","125","02 TURNO A/B","239"]},
+    {bairro: "Vila São Sebastião", linhas: ["155","233"]},
+    {bairro: "Cidade da Esperança", linhas: ["39", "113", "114", "12 TURNO A", "12 TURNO B", "06 TURNO A"]},
+    {bairro: "UFRN", linhas: ["588B"]},
+    {bairro: "Portal do Sol", linhas: ["124", "148", "08 TURNO A/B", "16 TURNO A/B", "233", "235"]},
+    {bairro: "Sport Club", linhas: ["124", "148", "08 TURNO A/B", "16 TURNO A/B", "233", "235"]}
+  ];
+
+  // Ignorar Acentos
+  function normalizar(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  }
+
+  function buscarLinhas() {
+    const input = document.getElementById('bairrosInput').value;
+    const bairrosProcurados = input.split(',').map(b => normalizar(b.trim()));
+
+    // Mostrar loading
+    document.getElementById('resultado').innerHTML = "<span class='loading'></span>Buscando linhas...";
+    document.getElementById('resultado').className = "info";
+    
+    // Desabilitar botão durante a busca
+    document.getElementById('consultarBtn').disabled = true;
+
+    // Simular um tempo de processamento (apenas para demonstração do loading)
+    setTimeout(() => {
+      const todasLinhas = [...new Set(dados.flatMap(d => d.linhas))];
+
+      const linhasEncontradas = todasLinhas.filter(linha =>
+        bairrosProcurados.every(bairro =>
+          dados.find(d => normalizar(d.bairro) === bairro && d.linhas.includes(linha))
+        )
+      );
+
+      document.getElementById('resultado').innerText = 
+        linhasEncontradas.length > 0 ? linhasEncontradas.join(', ') : "Nenhuma linha encontrada.";
+      
+      document.getElementById('resultado').className = "";
+      
+      // Reabilitar o botão
+      document.getElementById('consultarBtn').disabled = false;
+    }, 800); // Tempo simulado de busca
+  }
+
+  // Enter Para Rodar O Código
+  document.getElementById("bairrosInput").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      buscarLinhas();
+    }
+  });
+</script>
+</body>
+</html>

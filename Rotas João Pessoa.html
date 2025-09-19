@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linhas de Ônibus - João Pessoa/PB</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #8b0000 0%, #cc0000 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #cc0000;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header-image-main {
+            width: 200px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+        
+        .header-image {
+            width: 180px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-text {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #cc0000;
+            box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.2);
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #cc0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #a30000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .result-container {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-height: 150px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 18px;
+            border-bottom: 2px solid #cc0000;
+            padding-bottom: 5px;
+        }
+        
+        #resultado {
+            font-size: 18px;
+            color: #28a745;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(40, 167, 69, 0.3);
+            border-radius: 50%;
+            border-top-color: #28a745;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .info {
+            color: #17a2b8;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #6c757d;
+            border-top: 1px solid #eee;
+            background: #f8f9fa;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-image-main {
+                width: 180px;
+                height: 100px;
+            }
+            
+            .header-image {
+                width: 140px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <img src="https://i.imgur.com/PolKIwx.png" alt="Brasão de Natal" class="header-image-main">
+                <img src="https://i.imgur.com/ygxe7QR.png" alt="Natal - Cidade do Sol" class="header-image">
+                <div class="header-text">
+                    <h1>JOÃO PESSOA - PB</h1>
+                    <p class="subtitle">Sistema de Consulta de Linhas de Ônibus</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="input-group">
+                <label for="bairrosInput">Digite o Bairro Desejado:</label>
+                <input type="text" id="bairrosInput" placeholder="Ex: Alecrim, Leningrado, Natal Shopping">
+            </div>
+            
+            <button onclick="buscarLinhas()" id="consultarBtn">Consultar Linhas</button>
+            
+            <div class="result-container">
+                <div class="result-title">Linhas encontradas:</div>
+                <div id="resultado">Os resultados aparecerão aqui</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            © 2025 Sistema de Transporte de João Pessoa
+        </div>
+    </div>
+
+    <script>
+  const dados = [
+    {bairro: "Altiplano", linhas: ["401","520"]},
+    {bairro: "Alto do Mateus", linhas: ["701","702"]},
+    {bairro: "Bancários", linhas: ["2300"]},
+    {bairro: "Bairro dos Estados", linhas: ["1001","504","506","507","509","512","5120","520"]},
+    {bairro: "Bairro dos Ipês", linhas: ["506","604"]},
+    {bairro: "Beira Rio", linhas: ["401"]},
+    {bairro: "Brisamar", linhas: ["509","512"]},
+    {bairro: "Cabo Branco", linhas: ["507","520"]},
+    {bairro: "Castelo Branco", linhas: ["1519","502","5120"]},
+    {bairro: "Centro", linhas: ["1001","104","110","115","118","1519","2300","401","5015","504","506","507","509","512","5120","520","5607","5608","5610","5612","5613","602","604","701","702"]},
+    {bairro: "Cidade Universitária", linhas: ["1519","2300","502"]},
+    {bairro: "Cidade Verde", linhas: ["1001","104","115"]},
+    {bairro: "Cristo Redentor", linhas: ["502"]},
+    {bairro: "Cruz das Armas", linhas: ["1001","104","110","115","118","120","1519","5120"]},
+    {bairro: "Cuiá", linhas: ["118","1519","2300","5120"]},
+    {bairro: "Esplanada", linhas: ["115","120","1519"]},
+    {bairro: "Expedicionários", linhas: ["401","502","504","506","507","509","512","520"]},
+    {bairro: "Geisel", linhas: ["118","120","1519","2300","502","5120"]},
+    {bairro: "Gramame", linhas: ["120","1519"]},
+    {bairro: "Ilha do Bispo", linhas: ["5609","5610","5612","602","701","702"]},
+    {bairro: "Imaculada", linhas: ["5609","5613"]},
+    {bairro: "Jaguaribe", linhas: ["1001","104","110","115","118","120","1519","2300","5120"]},
+    {bairro: "Jardim Aeroporto", linhas: ["5609"]},
+    {bairro: "Jardim Oceania", linhas: ["1001","602","604"]},
+    {bairro: "Jardim Planalto", linhas: ["110"]},
+    {bairro: "Jardim São Paulo", linhas: ["1519"]},
+    {bairro: "Jardim Veneza", linhas: ["1001","104","5613"]},
+    {bairro: "José Américo", linhas: ["401","5015","520","5608","5612"]},
+    {bairro: "João Agripino", linhas: ["509","512"]},
+    {bairro: "João Paulo II", linhas: ["120","5120"]},
+    {bairro: "Manaíra", linhas: ["1001","602","604"]},
+    {bairro: "Mangabeira", linhas: ["1519","2300","520"]},
+    {bairro: "Marés", linhas: ["1001","104"]},
+    {bairro: "Miramar", linhas: ["1519","401","502","507","512","5120","520"]},
+    {bairro: "Muçumagro", linhas: ["120","1519"]},
+    {bairro: "Nova Mangabeira", linhas: ["1519"]},
+    {bairro: "Oitizeiro", linhas: ["1001","104","110"]},
+    {bairro: "Paratibe", linhas: ["118","1519"]},
+    {bairro: "Parque do Sol", linhas: ["1519"]},
+    {bairro: "Parque Verde", linhas: ["602","604"]},
+    {bairro: "Pedro Gondim", linhas: ["502","507","5120"]},
+    {bairro: "Popular", linhas: ["5607","5608","5609","5610","5612","5613"]},
+    {bairro: "Roger", linhas: ["604"]},
+    {bairro: "São José", linhas: ["5015","509","512"]},
+    {bairro: "Tambauzinho", linhas: ["1519"]},
+    {bairro: "Tambaú", linhas: ["507","512"]},
+    {bairro: "Tambay", linhas: ["5609"]},
+    {bairro: "Torre", linhas: ["1001","1519","2300","401","502","504","507","509","512","520"]},
+    {bairro: "Trincheiras", linhas: ["1001","104","110","115","118","120","5120","602"]},
+    {bairro: "Treze de Maio", linhas: ["602"]},
+    {bairro: "Valentina", linhas: ["118","120","1519","2300","5120"]},
+    {bairro: "Varadouro", linhas: ["104","110","115","118","2300","401","5015","502","504","506","507","509","512","520","5607","5608","5609","5610","5612","602","604","701","702"]},
+    {bairro: "Varjão", linhas: ["2300"]},
+    {bairro: "Marcos Moura", linhas: ["5610","5612","5613"]},
+    {bairro: "Tibiri", linhas: ["5607","5609","5610","5612","5613"]},
+    {bairro: "Heitel Santiago", linhas: ["5609"]},
+    {bairro: "Plano de Vida", linhas: ["5607"]},
+    {bairro: "Alto de Boa Vista", linhas: ["5609"]},
+    {bairro: "Manguinho", linhas: ["5609"]},
+    {bairro: "Santo Amaro", linhas: ["5613"]},
+    {bairro: "Bayeux", linhas: ["5607","5608","5609","5610","5612","5613"]},
+    {bairro: "Santa Rita", linhas: ["120","5015","5607","5608","5609","5610","5612","5613"]},
+    {bairro: "Lucena", linhas: ["1001","118","1519","401","5015","502","504","506","507","509","512","5120","520","5607","5608","5609","5610","5612","5613"]},
+{bairro: "Aero Clube", linhas: ["1001","602","604"]},
+{bairro: "Alagoa Grande", linhas: ["021","023","030"]},
+{bairro: "Areia", linhas: ["021"]},
+{bairro: "Arara", linhas: ["021","022","029"]},
+{bairro: "Cajá", linhas: ["021","023","024","028","029"]},
+{bairro: "Costa e Silva", linhas: ["5613"]},
+{bairro: "Distrito Industrial", linhas: ["115","5613","5612"]},
+{bairro: "Gurinhem", linhas: ["023"]},
+{bairro: "Ingá", linhas: ["024","030"]},
+{bairro: "Itabaiana", linhas: ["024"]},
+{bairro: "Itatuba", linhas: ["024"]},
+{bairro: "Jacaraú", linhas: ["027"]},
+{bairro: "João Pessoa", linhas: ["5015","5607","5608","5609","5610","5612","5613"]},
+{bairro: "Juarez Távora", linhas: ["021","030"]},
+{bairro: "Lerolândia", linhas: ["5015"]},
+{bairro: "Mogeiro", linhas: ["024","030"]},
+{bairro: "Mulungu", linhas: ["023"]},
+{bairro: "Nova Cruz", linhas: ["027","028"]},
+{bairro: "PB-025", linhas: ["5015"]},
+{bairro: "Pilar", linhas: ["024"]},
+{bairro: "Planta de Lucena", linhas: ["5015"]},
+{bairro: "Riachão Bacamarte", linhas: ["030"]},
+{bairro: "Rio Tinto", linhas: ["025","030"]},
+{bairro: "Sesí", linhas: ["5015","5607","5609"]},
+{bairro: "Timbó", linhas: ["027"]},
+{bairro: "Telpa", linhas: ["5015"]},
+{bairro: "Belém", linhas: ["028","029"]},
+{bairro: "Caiçara", linhas: ["028"]},
+{bairro: "Logradouro", linhas: ["028"]},
+{bairro: "Bananeiras", linhas: ["029"]},
+{bairro: "Solânea", linhas: ["029"]},
+{bairro: "Cacimba de Dentro", linhas: ["029"]},
+{bairro: "Araruna", linhas: ["029"]},
+{bairro: "Dona Inês", linhas: ["029"]},
+{bairro: "Marcação", linhas: ["030"]},
+{bairro: "Baía da Traição", linhas: ["025","030"]},
+{bairro: "Itapororoca", linhas: ["026","030"]},
+{bairro: "Mutirão", linhas: ["5607"]},
+{bairro: "Vila Tibiri", linhas: ["5610","5613"]},
+{bairro: "Mandacaru", linhas: ["504","1001", "602", "604"]},
+{bairro: "Municipios", linhas: ["5613","5610", "5015", "5608", "5607", "5609", "5612", ]},
+{bairro: "São Bento", linhas: ["5609","5607", "5608", "5015",]},
+{bairro: "Varzea Nova", linhas: ["5610","5608", "5607", "5609", "5612", "5613", "5015", ]},
+{bairro: "Bairro das Indústrias", linhas: ["1001","104", "115"]},
+{bairro: "Aeroclube", linhas: ["1001","602", "604",]},
+{bairro: "Planalto", linhas: ["120",]},
+{bairro: "Cristo", linhas: ["120","502", "118", "2300", "1519", ]},
+{bairro: "Ernani Satyro", linhas: ["1519","115", "120",]},
+{bairro: "Água Fria", linhas: ["502","5120", ]},
+{bairro: "Lagoa", linhas: ["120","502", "702"]},
+  ];
+
+  // Ignorar Acentos
+  function normalizar(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  }
+
+  function buscarLinhas() {
+    const input = document.getElementById('bairrosInput').value;
+    const bairrosProcurados = input.split(',').map(b => normalizar(b.trim()));
+
+    // Mostrar loading
+    document.getElementById('resultado').innerHTML = "<span class='loading'></span>Buscando linhas...";
+    document.getElementById('resultado').className = "info";
+    
+    // Desabilitar botão durante a busca
+    document.getElementById('consultarBtn').disabled = true;
+
+    // Simular um tempo de processamento (apenas para demonstração do loading)
+    setTimeout(() => {
+      const todasLinhas = [...new Set(dados.flatMap(d => d.linhas))];
+
+      const linhasEncontradas = todasLinhas.filter(linha =>
+        bairrosProcurados.every(bairro =>
+          dados.find(d => normalizar(d.bairro) === bairro && d.linhas.includes(linha))
+        )
+      );
+
+      document.getElementById('resultado').innerText = 
+        linhasEncontradas.length > 0 ? linhasEncontradas.join(', ') : "Nenhuma linha encontrada.";
+      
+      document.getElementById('resultado').className = "";
+      
+      // Reabilitar o botão
+      document.getElementById('consultarBtn').disabled = false;
+    }, 800); // Tempo simulado de busca
+  }
+
+  // Enter Para Rodar O Código
+  document.getElementById("bairrosInput").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      buscarLinhas();
+    }
+  });
+</script>
+</body>
+</html>
