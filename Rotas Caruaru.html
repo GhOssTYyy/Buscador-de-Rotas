@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linhas de Ônibus - Caruaru/PE</title>
+    <title>Linhas de Ônibus - Campina Grande/PB</title>
     <style>
         * {
             margin: 0;
@@ -148,7 +148,7 @@
         
         #resultado {
             font-size: 18px;
-            color: #28a745;
+            color: #008000;
             font-weight: 500;
             line-height: 1.5;
         }
@@ -180,6 +180,51 @@
             color: #6c757d;
             border-top: 1px solid #eee;
             background: #f8f9fa;
+        }
+        
+        /* Novos estilos para os resultados separados */
+        .bairro-result {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #cc0000;
+        }
+        
+        .bairro-title {
+            font-weight: 600;
+            color: #cc0000;
+            margin-bottom: 5px;
+        }
+        
+        .linhas-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 5px;
+        }
+        
+        .linha-item {
+            background: #e9f7ef;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #008000;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .no-linhas {
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .clear-btn {
+            background: #6c757d;
+            margin-top: 10px;
+        }
+        
+        .clear-btn:hover {
+            background: #5a6268;
         }
         
         @media (max-width: 768px) {
@@ -220,7 +265,8 @@
             </div>
             
             <button onclick="buscarLinhas()" id="consultarBtn">Consultar Linhas</button>
-            
+            <button onclick="limparResultados()" class="clear-btn">Limpar Resultados</button>
+
             <div class="result-container">
                 <div class="result-title">Linhas encontradas:</div>
                 <div id="resultado">Os resultados aparecerão aqui</div>
@@ -249,48 +295,71 @@
       {bairro: "Hospital Regional do Agreste", linhas: ["410","420","440"]},
   ];
 
-  // Ignorar Acentos
-  function normalizar(str) {
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  }
+         // Ignorar Acentos
+        function normalizar(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
 
-  function buscarLinhas() {
-    const input = document.getElementById('bairrosInput').value;
-    const bairrosProcurados = input.split(',').map(b => normalizar(b.trim()));
+        function buscarLinhas() {
+            const input = document.getElementById('bairrosInput').value;
+            const bairrosProcurados = input.split(',').map(b => normalizar(b.trim()));
 
-    // Mostrar loading
-    document.getElementById('resultado').innerHTML = "<span class='loading'></span>Buscando linhas...";
-    document.getElementById('resultado').className = "info";
-    
-    // Desabilitar botão durante a busca
-    document.getElementById('consultarBtn').disabled = true;
+            // Mostrar loading
+            document.getElementById('resultado').innerHTML = "<span class='loading'></span>Buscando linhas...";
+            document.getElementById('resultado').className = "info";
+            
+            // Desabilitar botão durante a busca
+            document.getElementById('consultarBtn').disabled = true;
 
-    // Simular um tempo de processamento (apenas para demonstração do loading)
-    setTimeout(() => {
-      const todasLinhas = [...new Set(dados.flatMap(d => d.linhas))];
+            // Simular um tempo de processamento (apenas para demonstração do loading)
+            setTimeout(() => {
+                let resultadosHTML = "";
+                
+                // Para cada bairro procurado
+                bairrosProcurados.forEach(bairroProcurado => {
+                    // Encontrar o bairro correspondente na base de dados
+                    const bairroEncontrado = dados.find(d => normalizar(d.bairro) === bairroProcurado);
+                    
+                    if (bairroEncontrado) {
+                        resultadosHTML += `
+                            <div class="bairro-result">
+                                <div class="bairro-title">${bairroEncontrado.bairro}</div>
+                                <div class="linhas-list">
+                                    ${bairroEncontrado.linhas.map(linha => `<span class="linha-item">${linha}</span>`).join('')}
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        resultadosHTML += `
+                            <div class="bairro-result">
+                                <div class="bairro-title">${bairroProcurado}</div>
+                                <div class="no-linhas">Nenhuma linha encontrada para este bairro</div>
+                            </div>
+                        `;
+                    }
+                });
+                
+                document.getElementById('resultado').innerHTML = resultadosHTML;
+                document.getElementById('resultado').className = "";
+                
+                // Reabilitar o botão
+                document.getElementById('consultarBtn').disabled = false;
+            }, 800); // Tempo simulado de busca
+        }
 
-      const linhasEncontradas = todasLinhas.filter(linha =>
-        bairrosProcurados.every(bairro =>
-          dados.find(d => normalizar(d.bairro) === bairro && d.linhas.includes(linha))
-        )
-      );
+        // Função para limpar os resultados
+        function limparResultados() {
+            document.getElementById('resultado').innerHTML = "Os resultados aparecerão aqui";
+            document.getElementById('bairrosInput').value = "";
+            document.getElementById('resultado').className = "";
+        }
 
-      document.getElementById('resultado').innerText = 
-        linhasEncontradas.length > 0 ? linhasEncontradas.join(', ') : "Nenhuma linha encontrada.";
-      
-      document.getElementById('resultado').className = "";
-      
-      // Reabilitar o botão
-      document.getElementById('consultarBtn').disabled = false;
-    }, 800); // Tempo simulado de busca
-  }
-
-  // Enter Para Rodar O Código
-  document.getElementById("bairrosInput").addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-      buscarLinhas();
-    }
-  });
-</script>
+        // Enter Para Rodar O Código
+        document.getElementById("bairrosInput").addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                buscarLinhas();
+            }
+        });
+    </script>
 </body>
 </html>
