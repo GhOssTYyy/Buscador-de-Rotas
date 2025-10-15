@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linhas de Ônibus - Caruaru/PE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #8b0000 0%, #cc0000 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #cc0000;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header-image-main {
+            width: 200px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+        
+        .header-image {
+            width: 180px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-text {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #cc0000;
+            box-shadow: 0 0 0 2px rgba(204, 0, 0, 0.2);
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #cc0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #a30000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .result-container {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-height: 150px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 18px;
+            border-bottom: 2px solid #cc0000;
+            padding-bottom: 5px;
+        }
+        
+        #resultado {
+            font-size: 18px;
+            color: #008000;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(40, 167, 69, 0.3);
+            border-radius: 50%;
+            border-top-color: #28a745;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .info {
+            color: #17a2b8;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #6c757d;
+            border-top: 1px solid #eee;
+            background: #f8f9fa;
+        }
+        
+        /* Novos estilos para os resultados separados */
+        .bairro-result {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #cc0000;
+        }
+        
+        .bairro-title {
+            font-weight: 600;
+            color: #cc0000;
+            margin-bottom: 5px;
+        }
+        
+        .linhas-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 5px;
+        }
+        
+        .linha-item {
+            background: #e9f7ef;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #008000;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .no-linhas {
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .clear-btn {
+            background: #6c757d;
+            margin-top: 10px;
+        }
+        
+        .clear-btn:hover {
+            background: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-image-main {
+                width: 180px;
+                height: 100px;
+            }
+            
+            .header-image {
+                width: 140px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <img src="https://i.imgur.com/PolKIwx.png" alt="Brasão de Natal" class="header-image-main">
+                <img src="https://i.imgur.com/C36KSnU.png" alt="Natal - Cidade do Sol" class="header-image">
+                <div class="header-text">
+                    <h1>CARUARU - PE</h1>
+                    <p class="subtitle">Sistema de Consulta de Linhas de Ônibus</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="input-group">
+                <label for="bairrosInput">Digite o Bairro Desejado:</label>
+                <input type="text" id="bairrosInput" placeholder="Ex: Santa Rosa, Petrópolis, Caruauru Shopping">
+            </div>
+            
+            <button onclick="buscarLinhas()" id="consultarBtn">Consultar Linhas</button>
+            <button onclick="limparResultados()" class="clear-btn">Limpar Resultados</button>
+
+            <div class="result-container">
+                <div class="result-title">Linhas encontradas:</div>
+                <div id="resultado">Os resultados aparecerão aqui</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            © 2025 Sistema de Transporte de Caruaru
+        </div>
+    </div>
+
+    <script>
+  const dados = [
+      //Empresa Conceição
+      {bairro: "Agamenon", linhas: ["431", "432"]},
+      {bairro: "Antônio Liberato", linhas: ["129"]},
+      {bairro: "Jardim Liberdade", linhas: ["104"]},
+      {bairro: "Jardim Pinheiros 3", linhas: ["120"]},
+      {bairro: "Indianópolis", linhas: ["120"]},
+      {bairro: "Petrópolis", linhas: ["104"]},
+      {bairro: "Rosanópolis", linhas: ["440"]},
+      {bairro: "Santa Rosa", linhas: ["410", "420"]},
+      {bairro: "Caruaru Shopping", linhas: ["140"]},
+      {bairro: "Hospital Regional do Agreste", linhas: ["410","420","440"]},
+      {bairro: "Centro", linhas: ["440", "432", "431", "420", "410", "140", "129", "120", "104"]},
+      {bairro: "Estação Ferroviária", linhas: ["440", "432", "431", "420", "410", "129", "120", "104"]},
+      {bairro: "Praça do Rosário", linhas: ["440", "432", "431", "420", "410", "140", "129", "120", "104"]},
+      {bairro: "Rua Capitão Zezé", linhas: ["104"]},
+      {bairro: "Rua São Carlos", linhas: ["104"]},
+      {bairro: "Rua São Geraldo", linhas: ["104", "431", "432"]},
+      {bairro: "Rua Camilo Castelo Branco", linhas: ["104", "432", "431"]},
+      {bairro: "Colégio Interativo", linhas: ["104"]},
+      {bairro: "Avenida João de Barros", linhas: ["104", "440", "432", "410"]},
+      {bairro: "Pitombeira", linhas: ["104", "440", "432", "431", "410"]},
+      {bairro: "Rua Rui Limeira Rosal", linhas: ["104", "431", "410"]},
+      {bairro: "Antonio Martins", linhas: ["104", "431", "420", "410"]},
+      {bairro: "Nossa Senhora das Dores", linhas: ["104", "431", "420", "410"]},
+      {bairro: "Praça José Martins", linhas: ["104", "431", "420", "410"]},
+      {bairro: "Feira da Sulanca", linhas: ["120", "104"]},
+      {bairro: "FAFICA", linhas: ["120", "104"]},
+      {bairro: "Jardim Pinheiro", linhas: ["120"]},
+      {bairro: "Rua Alferes Jorge", linhas: ["129", "120"]},
+      {bairro: "Avenida Maria de Souza Monteiro", linhas: ["129", "120"]},
+      {bairro: "Rua Zumbi dos Palmares", linhas: ["129", "120"]},
+      {bairro: "Santo Antônio", linhas: ["440"]},
+      {bairro: "HRAC", linhas: ["440", "432", "420", "410"]},
+      {bairro: "UPA", linhas: ["440", "432", "420", "410"]},
+      {bairro: "Vassoural", linhas: ["440", "432", "431", "420", "410"]},
+      {bairro: "Caruaru Park", linhas: ["432"]},
+      {bairro: "BR-212", linhas: ["432"]},
+      {bairro: "Adalgisa Nunes", linhas: ["432", "431"]},
+      {bairro: "Salustiano Torres", linhas: ["432", "431"]},
+      {bairro: "João Carral", linhas: ["432"]},
+      {bairro: "Antonio Sezerra", linhas: ["432"]},
+      {bairro: "Gustavo Bezerra", linhas: ["432", "431"]},
+      {bairro: "Camelódromo", linhas: ["432", "431", "420", "410"]},
+      {bairro: "General Osório", linhas: ["432", "431", "420"]},
+      {bairro: "Professora Adélia Ferreira", linhas: ["432", "431"]},
+      {bairro: "Presidente Castelo Branco", linhas: ["432", "431"]},
+      {bairro: "Santa Terezinha", linhas: ["431"]},
+      {bairro: "Dominguinhos", linhas: ["431"]},
+      {bairro: "João Cabral de Melo Neto", linhas: ["431"]},
+      {bairro: "Antonio Rezerra de Liba", linhas: ["431"]},
+      {bairro: "Cordoba", linhas: ["431"]},
+      {bairro: "BR-232", linhas: ["431", "104"]},
+      {bairro: "Nunes Machado", linhas: ["431", "420", "410"]},
+      {bairro: "Nazaré da Mata", linhas: ["420"]},
+      {bairro: "Dois Irmãos", linhas: ["420", "410"]},
+      {bairro: "Arrojado de Lisboa", linhas: ["420", "410"]},
+      {bairro: "Vernustriano Correia", linhas: ["420"]},
+      {bairro: "Bernardo de Queiroz", linhas: ["420"]},
+      {bairro: "Alcides Arquedas", linhas: ["420"]},
+      {bairro: "Alto de Santa Rosa", linhas: ["410"]},
+      {bairro: "José Marques Fontes", linhas: ["410"]},
+      {bairro: "Motorac", linhas: ["140"]},
+      {bairro: "Adjar da Silva Casé", linhas: ["140"]},
+      {bairro: "Senac/Centro de Convenções", linhas: ["140"]},
+      {bairro: "Unimed Caruaru", linhas: ["140"]},
+      {bairro: "Parque Caminho das Aroeiras", linhas: ["140"]},
+      {bairro: "Deputado José Antônio Liberato", linhas: ["129"]},
+      {bairro: "Rua José de Souza Leite", linhas: ["129"]},
+      {bairro: "Rua Alcides de Farias Leite", linhas: ["129"]},
+      {bairro: "Rua Josimar Maximiano da Silva", linhas: ["120"]},
+      {bairro: "Rua Irma Maria Jeronimo", linhas: ["120"]},
+      {bairro: "Avenida Oslo", linhas: ["120"]},
+      {bairro: "Avenida Virgulino Ferreira", linhas: ["120"]},
+      {bairro: "Rua Jose de Arimatea", linhas: ["120"]},
+      {bairro: "Avenida Julia Lopes", linhas: ["120"]},
+      {bairro: "Rua Charles Cavalcante", linhas: ["120"]},
+
+    {431: [
+        "Agamenon", "Centro", "Estação Ferroviária", "Praça do Rosário", 
+        "Rua São Geraldo", "Rua Camilo Castelo Branco", "Pitombeira", 
+        "Rua Rui Limeira Rosal", "Antonio Martins", "Nossa Senhora das Dores", 
+        "Praça José Martins", "Vassoural", "Adalgisa Nunes", "Salustiano Torres", 
+        "Gustavo Bezerra", "Camelódromo", "General Osório", 
+        "Professora Adélia Ferreira", "Presidente Castelo Branco", 
+        "Santa Terezinha", "Dominguinhos", "João Cabral de Melo Neto", 
+        "Antonio Rezerra de Liba", "Cordoba", "BR-232", "Nunes Machado"
+    ]},
+    {432: [
+        "Agamenon", "Centro", "Estação Ferroviária", "Praça do Rosário", 
+        "Rua São Geraldo", "Rua Camilo Castelo Branco", "Avenida João de Barros", 
+        "Pitombeira", "Vassoural", "Caruaru Park", "BR-212", "Adalgisa Nunes", 
+        "Salustiano Torres", "João Carral", "Antonio Sezerra", "Gustavo Bezerra", 
+        "Camelódromo", "General Osório", "Professora Adélia Ferreira", 
+        "Presidente Castelo Branco", "HRAC", "UPA"
+    ]},
+    {129: [
+        "Antônio Liberato", "Centro", "Estação Ferroviária", "Praça do Rosário", 
+        "Rua Alferes Jorge", "Avenida Maria de Souza Monteiro", 
+        "Rua Zumbi dos Palmares", "Deputado José Antônio Liberato", 
+        "Rua José de Souza Leite", "Rua Alcides de Farias Leite"
+    ]},
+    {104: [
+        "Jardim Liberdade", "Petrópolis", "Centro", "Estação Ferroviária", 
+        "Praça do Rosário", "Rua Capitão Zezé", "Rua São Carlos", 
+        "Rua São Geraldo", "Rua Camilo Castelo Branco", "Colégio Interativo", 
+        "Avenida João de Barros", "Pitombeira", "Rua Rui Limeira Rosal", 
+        "Antonio Martins", "Nossa Senhora das Dores", "Praça José Martins", 
+        "Feira da Sulanca", "FAFICA", "BR-232"
+    ]},
+    {120: [
+        "Jardim Pinheiros 3", "Indianópolis", "Centro", "Estação Ferroviária", 
+        "Praça do Rosário", "Feira da Sulanca", "FAFICA", "Jardim Pinheiro", 
+        "Rua Alferes Jorge", "Avenida Maria de Souza Monteiro", 
+        "Rua Zumbi dos Palmares", "Rua Josimar Maximiano da Silva", 
+        "Rua Irma Maria Jeronimo", "Avenida Oslo", "Avenida Virgulino Ferreira", 
+        "Rua Jose de Arimatea", "Avenida Julia Lopes", "Rua Charles Cavalcante"
+    ]},
+    {440: [
+        "Rosanópolis", "Hospital Regional do Agreste", "Centro", 
+        "Estação Ferroviária", "Praça do Rosário", "Santo Antônio", 
+        "HRAC", "UPA", "Vassoural", "Avenida João de Barros", "Pitombeira"
+    ]},
+    {410: [
+        "Santa Rosa", "Hospital Regional do Agreste", "Centro", 
+        "Estação Ferroviária", "Praça do Rosário", "HRAC", "UPA", "Vassoural", 
+        "Avenida João de Barros", "Pitombeira", "Rua Rui Limeira Rosal", 
+        "Antonio Martins", "Nossa Senhora das Dores", "Praça José Martins", 
+        "Camelódromo", "Nunes Machado", "Dois Irmãos", "Arrojado de Lisboa", 
+        "Alto de Santa Rosa", "José Marques Fontes"
+    ]},
+    {420: [
+        "Santa Rosa", "Hospital Regional do Agreste", "Centro", 
+        "Estação Ferroviária", "Praça do Rosário", "HRAC", "UPA", "Vassoural", 
+        "Pitombeira", "Antonio Martins", "Nossa Senhora das Dores", 
+        "Praça José Martins", "Camelódromo", "General Osório", "Nunes Machado", 
+        "Nazaré da Mata", "Dois Irmãos", "Arrojado de Lisboa", 
+        "Vernustriano Correia", "Bernardo de Queiroz", "Alcides Arquedas"
+    ]},
+    {140: [
+        "Caruaru Shopping", "Centro", "Praça do Rosário", "Motorac", 
+        "Adjar da Silva Casé", "Senac/Centro de Convenções", "Unimed Caruaru", 
+        "Parque Caminho das Aroeiras"
+    ]},
+  ];
+
+         // Ignorar Acentos
+        function normalizar(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
+
+        function buscarLinhas() {
+            const input = document.getElementById('bairrosInput').value;
+            const bairrosProcurados = input.split(',').map(b => normalizar(b.trim()));
+
+            // Mostrar loading
+            document.getElementById('resultado').innerHTML = "<span class='loading'></span>Buscando linhas...";
+            document.getElementById('resultado').className = "info";
+            
+            // Desabilitar botão durante a busca
+            document.getElementById('consultarBtn').disabled = true;
+
+            // Simular um tempo de processamento (apenas para demonstração do loading)
+            setTimeout(() => {
+                let resultadosHTML = "";
+                
+                // Para cada bairro procurado
+                bairrosProcurados.forEach(bairroProcurado => {
+                    // Encontrar o bairro correspondente na base de dados
+                    const bairroEncontrado = dados.find(d => normalizar(d.bairro) === bairroProcurado);
+                    
+                    if (bairroEncontrado) {
+                        resultadosHTML += `
+                            <div class="bairro-result">
+                                <div class="bairro-title">${bairroEncontrado.bairro}</div>
+                                <div class="linhas-list">
+                                    ${bairroEncontrado.linhas.map(linha => `<span class="linha-item">${linha}</span>`).join('')}
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        resultadosHTML += `
+                            <div class="bairro-result">
+                                <div class="bairro-title">${bairroProcurado}</div>
+                                <div class="no-linhas">Nenhuma linha encontrada para este bairro</div>
+                            </div>
+                        `;
+                    }
+                });
+                
+                document.getElementById('resultado').innerHTML = resultadosHTML;
+                document.getElementById('resultado').className = "";
+                
+                // Reabilitar o botão
+                document.getElementById('consultarBtn').disabled = false;
+            }, 800); // Tempo simulado de busca
+        }
+
+        // Função para limpar os resultados
+        function limparResultados() {
+            document.getElementById('resultado').innerHTML = "Os resultados aparecerão aqui";
+            document.getElementById('bairrosInput').value = "";
+            document.getElementById('resultado').className = "";
+        }
+
+        // Enter Para Rodar O Código
+        document.getElementById("bairrosInput").addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                buscarLinhas();
+            }
+        });
+    </script>
+</body>
+</html>
