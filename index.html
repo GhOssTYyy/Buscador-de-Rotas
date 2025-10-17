@@ -651,65 +651,23 @@
             }, 800);
         }
 
-// Mapeamento de imagens para cada linha
-// Mapeamento de imagens para cada linha - ADICIONE ISSO NO SEU JavaScript
-const imagensDasLinhas = {
-    "100": "imagens/linhas/linha100.jpg",
-    "22": "imagens/linhas/linha22.png",
-    "044": "img/044.png",
-    "903B": "imagens/linhas/linha903B.png",
-    "303": "imagens/linhas/linha303.jpg",
-    "500": "imagens/linhas/linha500.png",
-    "555": "imagens/linhas/linha555.jpg",
-    "505": "imagens/linhas/linha505.png",
-    "263": "imagens/linhas/linha263.jpg",
-    "245": "imagens/linhas/linha245.png",
-    "066": "imagens/linhas/linha066.jpg",
-    "333": "imagens/linhas/linha333.png",
-    "444": "imagens/linhas/linha444.jpg",
-    "404": "imagens/linhas/linha404.png",
-    "909": "imagens/linhas/linha909.jpg",
-    "111": "imagens/linhas/linha111.png",
-    "955": "imagens/linhas/linha955.jpg",
-    "944": "imagens/linhas/linha944.png",
-    "220": "imagens/linhas/linha220.jpg",
-    "101": "imagens/linhas/linha101.png",
-    "092": "imagens/linhas/linha092.jpg",
-    "077": "imagens/linhas/linha077.png",
-    "910": "imagens/linhas/linha910.jpg",
-    "902": "imagens/linhas/linha902.png",
-    "922": "imagens/linhas/linha922.jpg",
-    "300": "imagens/linhas/linha300.png",
-    "004A": "imagens/linhas/linha004A.jpg",
-    "903A": "imagens/linhas/linha903A.png",
-    "300B": "imagens/linhas/linha300B.jpg"
+
+
+// Adicione apenas algumas linhas com imagens específicas
+const imagensEspeciais = {
+    "044": "img/044.jpg",
+    "092": "img/092.jpg",
+    "100": "img/100.jpg"
+    // ... adicione outras aos poucos
 };
 
-// Modifique a função mostrarDetalhesLinha para usar imagens locais
 function mostrarDetalhesLinha(numeroLinha) {
-    // Encontrar todos os bairros que têm esta linha
     const bairrosComEstaRota = dados.filter(item => item.linhas.includes(numeroLinha));
     
-    // Encontrar a linha nos dados (se existir como bairro)
-    const linhaComoBairro = dados.find(item => item.bairro === numeroLinha);
-    
-    // Obter a imagem da linha (ou usar uma padrão se não existir)
-    const imagemLinha = imagensDasLinhas[numeroLinha] || "img/044.jpg";
+    // Verifica se tem imagem especial, senão usa a padrão
+    const imagemLinha = imagensEspeciais[numeroLinha] || "https://i.imgur.com/ygxe7QR.png";
     
     let modalHTML = "";
-    
-    if (linhaComoBairro) {
-        modalHTML += `
-            <div class="linha-info">
-                <div class="linha-descricao">Rota da Linha ${numeroLinha}:</div>
-                <div class="bairros-list">
-                    ${linhaComoBairro.linhas.map(bairro => 
-                        `<span class="bairro-tag">${bairro}</span>`
-                    ).join('')}
-                </div>
-            </div>
-        `;
-    }
     
     if (bairrosComEstaRota.length > 0) {
         modalHTML += `
@@ -722,16 +680,16 @@ function mostrarDetalhesLinha(numeroLinha) {
                 </div>
             </div>
         `;
-    } else {
-        modalHTML += `<p>Nenhuma informação detalhada disponível para a linha ${numeroLinha}.</p>`;
     }
     
-    // ADICIONAR IMAGEM DA LINHA
     modalHTML += `
         <div class="linha-info">
             <div class="linha-descricao">Mapa da Linha ${numeroLinha}:</div>
-            <img src="${imagemLinha}" alt="Mapa da Linha ${numeroLinha}" class="linha-mapa" 
-                 onerror="this.src='img/044.jpg'">
+            <div style="text-align: center;">
+                <img src="${imagemLinha}" 
+                     alt="Mapa da Linha ${numeroLinha}" 
+                     style="max-width: 350px; width: 100%; height: auto; border-radius: 8px; border: 2px solid #cc0000;">
+            </div>
         </div>
     `;
     

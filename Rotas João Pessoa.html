@@ -182,7 +182,7 @@
             background: #f8f9fa;
         }
         
-        /* Novos estilos para os resultados separados */
+        /* Estilos para os botões de linha */
         .bairro-result {
             margin-bottom: 15px;
             padding: 10px;
@@ -194,7 +194,8 @@
         .bairro-title {
             font-weight: 600;
             color: #cc0000;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 18px;
         }
         
         .linhas-list {
@@ -204,13 +205,25 @@
             margin-top: 5px;
         }
         
-        .linha-item {
+        /* BOTÕES COM MESMO TAMANHO DOS SPANS ORIGINAIS */
+        .linha-btn {
             background: #e9f7ef;
             padding: 5px 10px;
             border-radius: 4px;
             font-weight: 600;
             color: #008000;
             border: 1px solid #c3e6cb;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+            width: auto;
+            display: inline-block;
+        }
+        
+        .linha-btn:hover {
+            background: #d4edda;
+            transform: none;
+            box-shadow: none;
         }
         
         .no-linhas {
@@ -225,6 +238,96 @@
         
         .clear-btn:hover {
             background: #5a6268;
+        }
+        
+        /* Modal para detalhes da linha */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #cc0000;
+            padding-bottom: 10px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            color: #cc0000;
+            font-weight: bold;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+            width: auto;
+            padding: 0;
+        }
+        
+        .close-btn:hover {
+            color: #cc0000;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .linha-info {
+            margin-bottom: 15px;
+        }
+        
+        .linha-descricao {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .bairros-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .bairro-tag {
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            font-size: 14px;
+        }
+        
+        .linha-mapa {
+            max-width: 350px;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid #cc0000;
+            display: block;
+            margin: 0 auto;
         }
         
         @media (max-width: 768px) {
@@ -244,14 +347,14 @@
             }
         }
 
-                .button3 {
+        .button3 {
             margin-top: 3px;
             padding: 10px;
             box-sizing: border-box;
             display: flex;        
         }
 
-                .botao4 {
+        .botao4 {
             margin-left: 5px;
             margin-right: 5px;
         }
@@ -260,7 +363,6 @@
             color: #333;
             margin-left: 230px;
         }
-
     </style>
 </head>
 <body>
@@ -276,48 +378,13 @@
             </div>
         </div>
         
-<h2>Buscadores:</h2>     
-<!--Botão1-->        
-<div class="button3">
-
-<button type="button" id="voltar" onclick="voltarpagina()">CAMPINA GRANDE</button>
-
-<script>
-
-function voltarpagina() {
-
-      window.location.href = "index.html";             
-    }
-
-</script>
-
-<!--Botão2-->
-
-<button type="button" id="voltar" onclick="voltarpagina2()" class="botao4">NATAL</button>
-
-<script>
-
-function voltarpagina2() {
-
-      window.location.href = "Rotas Natal.html";             
-    }
-
-</script>
-
-<!--Botão3-->
-
-<button type="button" id="voltar" onclick="voltarpagina3()">CARUARU</button>
-
-<script>
-
-function voltarpagina3() {
-
-      window.location.href = "Rotas Caruaru.html";             
-    }
-
-</script>
-
-</div>
+        <h2>Buscadores:</h2>     
+        <!--Botão1-->        
+        <div class="button3">
+            <button type="button" id="voltar" onclick="voltarpagina()">CAMPINA GRANDE</button>
+            <button type="button" id="voltar" onclick="voltarpagina2()" class="botao4">NATAL</button>
+            <button type="button" id="voltar" onclick="voltarpagina3()">CARUARU</button>
+        </div>
 
         <div class="content">
             <div class="input-group">
@@ -339,163 +406,218 @@ function voltarpagina3() {
         </div>
     </div>
 
+    <!-- Modal para detalhes da linha -->
+    <div class="modal" id="linhaModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalLinhaNumero">Linha 000</div>
+                <button class="close-btn" onclick="fecharModal()">&times;</button>
+            </div>
+            <div id="modalConteudo">
+                <!-- Conteúdo será preenchido via JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <script>
-  const dados = [
-    {bairro: "Altiplano", linhas: ["401","520"]},
-    {bairro: "Alto do Mateus", linhas: ["701","702"]},
-    {bairro: "Bancários", linhas: ["2300"]},
-    {bairro: "Bairro dos Estados", linhas: ["1001","504","506","507","509","512","5120","520"]},
-    {bairro: "Bairro dos Ipês", linhas: ["506","604"]},
-    {bairro: "Beira Rio", linhas: ["401"]},
-    {bairro: "Brisamar", linhas: ["509","512"]},
-    {bairro: "Cabo Branco", linhas: ["507","520"]},
-    {bairro: "Castelo Branco", linhas: ["1519","502","5120"]},
-    {bairro: "Centro", linhas: ["1001","104","110","115","118","1519","2300","401","5015","504","506","507","509","512","5120","520","5607","5608","5610","5612","5613","602","604","701","702"]},
-    {bairro: "Cidade Universitária", linhas: ["1519","2300","502"]},
-    {bairro: "Cidade Verde", linhas: ["1001","104","115"]},
-    {bairro: "Cristo Redentor", linhas: ["502"]},
-    {bairro: "Cruz das Armas", linhas: ["1001","104","110","115","118","120","1519","5120"]},
-    {bairro: "Cuiá", linhas: ["118","1519","2300","5120"]},
-    {bairro: "Esplanada", linhas: ["115","120","1519"]},
-    {bairro: "Expedicionários", linhas: ["401","502","504","506","507","509","512","520"]},
-    {bairro: "Geisel", linhas: ["118","120","1519","2300","502","5120"]},
-    {bairro: "Gramame", linhas: ["120","1519"]},
-    {bairro: "Ilha do Bispo", linhas: ["5609","5610","5612","602","701","702"]},
-    {bairro: "Imaculada", linhas: ["5609","5613"]},
-    {bairro: "Jaguaribe", linhas: ["1001","104","110","115","118","120","1519","2300","5120"]},
-    {bairro: "Jardim Aeroporto", linhas: ["5609"]},
-    {bairro: "Jardim Oceania", linhas: ["1001","602","604"]},
-    {bairro: "Jardim Planalto", linhas: ["110"]},
-    {bairro: "Jardim São Paulo", linhas: ["1519"]},
-    {bairro: "Jardim Veneza", linhas: ["1001","104","5613"]},
-    {bairro: "José Américo", linhas: ["401","5015","520","5608","5612"]},
-    {bairro: "João Agripino", linhas: ["509","512"]},
-    {bairro: "João Paulo II", linhas: ["120","5120"]},
-    {bairro: "Manaíra", linhas: ["1001","602","604"]},
-    {bairro: "Mangabeira", linhas: ["1519","2300","520"]},
-    {bairro: "Marés", linhas: ["1001","104"]},
-    {bairro: "Miramar", linhas: ["1519","401","502","507","512","5120","520"]},
-    {bairro: "Muçumagro", linhas: ["120","1519"]},
-    {bairro: "Nova Mangabeira", linhas: ["1519"]},
-    {bairro: "Oitizeiro", linhas: ["1001","104","110"]},
-    {bairro: "Paratibe", linhas: ["118","1519"]},
-    {bairro: "Parque do Sol", linhas: ["1519"]},
-    {bairro: "Parque Verde", linhas: ["602","604"]},
-    {bairro: "Pedro Gondim", linhas: ["502","507","5120"]},
-    {bairro: "Popular", linhas: ["5607","5608","5609","5610","5612","5613"]},
-    {bairro: "Roger", linhas: ["604"]},
-    {bairro: "São José", linhas: ["5015","509","512"]},
-    {bairro: "Tambauzinho", linhas: ["1519"]},
-    {bairro: "Tambaú", linhas: ["507","512"]},
-    {bairro: "Tambay", linhas: ["5609"]},
-    {bairro: "Torre", linhas: ["1001","1519","2300","401","502","504","507","509","512","520"]},
-    {bairro: "Trincheiras", linhas: ["1001","104","110","115","118","120","5120","602"]},
-    {bairro: "Treze de Maio", linhas: ["602"]},
-    {bairro: "Valentina", linhas: ["118","120","1519","2300","5120"]},
-    {bairro: "Varadouro", linhas: ["104","110","115","118","2300","401","5015","502","504","506","507","509","512","520","5607","5608","5609","5610","5612","602","604","701","702"]},
-    {bairro: "Varjão", linhas: ["2300"]},
-    {bairro: "Marcos Moura", linhas: ["5610","5612","5613"]},
-    {bairro: "Tibiri", linhas: ["5607","5609","5610","5612","5613"]},
-    {bairro: "Heitel Santiago", linhas: ["5609"]},
-    {bairro: "Plano de Vida", linhas: ["5607"]},
-    {bairro: "Alto de Boa Vista", linhas: ["5609"]},
-    {bairro: "Manguinho", linhas: ["5609"]},
-    {bairro: "Santo Amaro", linhas: ["5613"]},
-    {bairro: "Bayeux", linhas: ["5607","5608","5609","5610","5612","5613"]},
-    {bairro: "Santa Rita", linhas: ["120","5015","5607","5608","5609","5610","5612","5613"]},
-    {bairro: "Lucena", linhas: ["1001","118","1519","401","5015","502","504","506","507","509","512","5120","520","5607","5608","5609","5610","5612","5613"]},
-{bairro: "Aero Clube", linhas: ["1001","602","604"]},
-{bairro: "Alagoa Grande", linhas: ["021","023","030"]},
-{bairro: "Areia", linhas: ["021"]},
-{bairro: "Arara", linhas: ["021","022","029"]},
-{bairro: "Cajá", linhas: ["021","023","024","028","029"]},
-{bairro: "Costa e Silva", linhas: ["5613"]},
-{bairro: "Distrito Industrial", linhas: ["115","5613","5612"]},
-{bairro: "Gurinhem", linhas: ["023"]},
-{bairro: "Ingá", linhas: ["024","030"]},
-{bairro: "Itabaiana", linhas: ["024"]},
-{bairro: "Itatuba", linhas: ["024"]},
-{bairro: "Jacaraú", linhas: ["027"]},
-{bairro: "João Pessoa", linhas: ["5015","5607","5608","5609","5610","5612","5613"]},
-{bairro: "Juarez Távora", linhas: ["021","030"]},
-{bairro: "Lerolândia", linhas: ["5015"]},
-{bairro: "Mogeiro", linhas: ["024","030"]},
-{bairro: "Mulungu", linhas: ["023"]},
-{bairro: "Nova Cruz", linhas: ["027","028"]},
-{bairro: "PB-025", linhas: ["5015"]},
-{bairro: "Pilar", linhas: ["024"]},
-{bairro: "Planta de Lucena", linhas: ["5015"]},
-{bairro: "Riachão Bacamarte", linhas: ["030"]},
-{bairro: "Rio Tinto", linhas: ["025","030"]},
-{bairro: "Sesí", linhas: ["5015","5607","5609"]},
-{bairro: "Timbó", linhas: ["027"]},
-{bairro: "Telpa", linhas: ["5015"]},
-{bairro: "Belém", linhas: ["028","029"]},
-{bairro: "Caiçara", linhas: ["028"]},
-{bairro: "Logradouro", linhas: ["028"]},
-{bairro: "Bananeiras", linhas: ["029"]},
-{bairro: "Solânea", linhas: ["029"]},
-{bairro: "Cacimba de Dentro", linhas: ["029"]},
-{bairro: "Araruna", linhas: ["029"]},
-{bairro: "Dona Inês", linhas: ["029"]},
-{bairro: "Marcação", linhas: ["030"]},
-{bairro: "Baía da Traição", linhas: ["025","030"]},
-{bairro: "Itapororoca", linhas: ["026","030"]},
-{bairro: "Mutirão", linhas: ["5607"]},
-{bairro: "Vila Tibiri", linhas: ["5610","5613"]},
-{bairro: "Mandacaru", linhas: ["504","1001", "602", "604"]},
-{bairro: "Municipios", linhas: ["5613","5610", "5015", "5608", "5607", "5609", "5612", ]},
-{bairro: "São Bento", linhas: ["5609","5607", "5608", "5015",]},
-{bairro: "Varzea Nova", linhas: ["5610","5608", "5607", "5609", "5612", "5613", "5015", ]},
-{bairro: "Bairro das Indústrias", linhas: ["1001","104", "115"]},
-{bairro: "Aeroclube", linhas: ["1001","602", "604",]},
-{bairro: "Planalto", linhas: ["120",]},
-{bairro: "Cristo", linhas: ["120","502", "118", "2300", "1519", ]},
-{bairro: "Ernani Satyro", linhas: ["1519","115", "120",]},
-{bairro: "Água Fria", linhas: ["502","5120", ]},
-{bairro: "Lagoa", linhas: ["120","502", "702"]},
+        // MAPEAMENTO DE IMAGENS PARA CADA LINHA
+        const imagensDasLinhas = {
+            "401": "",
+            "520": "https://i.imgur.com/OnzDOMa.png",
+            "701": "https://i.imgur.com/OnzDOMa.png",
+            "702": "https://i.imgur.com/OnzDOMa.png",
+            "2300": "https://i.imgur.com/OnzDOMa.png",
+            "1001": "https://i.imgur.com/OnzDOMa.png",
+            "504": "https://i.imgur.com/OnzDOMa.png",
+            "506": "https://i.imgur.com/OnzDOMa.png",
+            "507": "https://i.imgur.com/OnzDOMa.png",
+            "509": "https://i.imgur.com/OnzDOMa.png",
+            "512": "https://i.imgur.com/OnzDOMa.png",
+            "5120": "https://i.imgur.com/OnzDOMa.png",
+            "604": "https://i.imgur.com/OnzDOMa.png",
+            "1519": "https://i.imgur.com/OnzDOMa.png",
+            "502": "https://i.imgur.com/OnzDOMa.png",
+            "104": "https://i.imgur.com/OnzDOMa.png",
+            "110": "https://i.imgur.com/OnzDOMa.png",
+            "115": "https://i.imgur.com/OnzDOMa.png",
+            "118": "https://i.imgur.com/OnzDOMa.png",
+            "5015": "https://i.imgur.com/OnzDOMa.png",
+            "5607": "https://i.imgur.com/OnzDOMa.png",
+            "5608": "https://i.imgur.com/OnzDOMa.png",
+            "5609": "https://i.imgur.com/OnzDOMa.png",
+            "5610": "https://i.imgur.com/OnzDOMa.png",
+            "5612": "https://i.imgur.com/OnzDOMa.png",
+            "5613": "https://i.imgur.com/OnzDOMa.png",
+            "602": "https://i.imgur.com/OnzDOMa.png",
+            "120": "https://i.imgur.com/OnzDOMa.png",
+            "021": "https://i.imgur.com/OnzDOMa.png",
+            "023": "https://i.imgur.com/OnzDOMa.png",
+            "030": "https://i.imgur.com/OnzDOMa.png",
+            "022": "https://i.imgur.com/OnzDOMa.png",
+            "029": "https://i.imgur.com/OnzDOMa.png",
+            "024": "https://i.imgur.com/OnzDOMa.png",
+            "028": "https://i.imgur.com/OnzDOMa.png",
+            "027": "https://i.imgur.com/OnzDOMa.png",
+            "025": "https://i.imgur.com/OnzDOMa.png",
+            "026": "https://i.imgur.com/OnzDOMa.png"
+        };
 
-    {bairro: "401", linhas: ["Altiplano", "Beira Rio", "Centro", "Expedicionários", "José Américo", "Miramar", "Torre", "Varadouro", "Lucena"]},
-    {bairro: "520", linhas: ["Altiplano", "Bairro dos Estados", "Cabo Branco", "Centro", "Expedicionários", "José Américo", "Mangabeira", "Miramar", "Torre", "Varadouro", "Lucena"]},
-    {bairro: "701", linhas: ["Alto do Mateus", "Centro", "Ilha do Bispo", "Varadouro"]},
-    {bairro: "702", linhas: ["Alto do Mateus", "Centro", "Ilha do Bispo", "Varadouro", "Lagoa"]},
-    {bairro: "2300", linhas: ["Bancários", "Centro", "Cidade Universitária", "Cuiá", "Geisel", "Jaguaribe", "Mangabeira", "Torre", "Valentina", "Varadouro", "Varjão", "Cristo"]},
-    {bairro: "1001", linhas: ["Bairro dos Estados", "Centro", "Cidade Verde", "Cruz das Armas", "Jaguaribe", "Jardim Oceania", "Jardim Veneza", "Manaíra", "Marés", "Oitizeiro", "Torre", "Trincheiras", "Aero Clube", "Mandacaru", "Bairro das Indústrias", "Aeroclube", "Lucena"]},
-    {bairro: "504", linhas: ["Bairro dos Estados", "Centro", "Expedicionários", "Torre", "Varadouro", "Mandacaru", "Lucena"]},
-    {bairro: "506", linhas: ["Bairro dos Estados", "Bairro dos Ipês", "Centro", "Expedicionários", "Varadouro", "Lucena"]},
-    {bairro: "507", linhas: ["Bairro dos Estados", "Cabo Branco", "Centro", "Expedicionários", "Miramar", "Tambau", "Torre", "Varadouro", "Lucena"]},
-    {bairro: "509", linhas: ["Bairro dos Estados", "Brisamar", "Centro", "Expedicionários", "João Agripino", "São José", "Torre", "Varadouro", "Lucena"]},
-    {bairro: "512", linhas: ["Bairro dos Estados", "Brisamar", "Centro", "Expedicionários", "João Agripino", "Miramar", "São José", "Tambau", "Torre", "Varadouro", "Lucena"]},
-    {bairro: "5120", linhas: ["Bairro dos Estados", "Castelo Branco", "Centro", "Cruz das Armas", "Cuiá", "Geisel", "Jaguaribe", "Miramar", "Pedro Gondim", "Trincheiras", "Valentina", "João Paulo II", "Água Fria", "Lucena"]},
-    {bairro: "604", linhas: ["Bairro dos Ipês", "Centro", "Jardim Oceania", "Manaíra", "Parque Verde", "Roger", "Varadouro", "Aero Clube", "Mandacaru", "Aeroclube"]},
-    {bairro: "1519", linhas: ["Castelo Branco", "Centro", "Cidade Universitária", "Cruz das Armas", "Cuiá", "Esplanada", "Geisel", "Gramame", "Jaguaribe", "Jardim São Paulo", "Mangabeira", "Miramar", "Muçumagro", "Nova Mangabeira", "Paratibe", "Parque do Sol", "Tambauzinho", "Torre", "Valentina", "Ernani Satyro", "Cristo", "Lucena"]},
-    {bairro: "502", linhas: ["Castelo Branco", "Cidade Universitária", "Cristo Redentor", "Expedicionários", "Geisel", "Miramar", "Pedro Gondim", "Torre", "Varadouro", "Água Fria", "Lagoa", "Cristo", "Lucena"]},
-    {bairro: "104", linhas: ["Jardim Liberdade", "Petrópolis", "Centro", "Cidade Verde", "Cruz das Armas", "Jaguaribe", "Jardim Veneza", "Marés", "Oitizeiro", "Trincheiras", "Varadouro", "Bairro das Indústrias"]},
-    {bairro: "110", linhas: ["Centro", "Cruz das Armas", "Jaguaribe", "Jardim Planalto", "Oitizeiro", "Trincheiras", "Varadouro"]},
-    {bairro: "115", linhas: ["Centro", "Cidade Verde", "Cruz das Armas", "Esplanada", "Jaguaribe", "Trincheiras", "Varadouro", "Distrito Industrial", "Bairro das Indústrias", "Ernani Satyro"]},
-    {bairro: "118", linhas: ["Centro", "Cruz das Armas", "Cuiá", "Geisel", "Jaguaribe", "Paratibe", "Trincheiras", "Valentina", "Varadouro", "Cristo", "Lucena"]},
-    {bairro: "5015", linhas: ["Centro", "José Américo", "São José", "Varadouro", "João Pessoa", "Lerolândia", "PB-025", "Planta de Lucena", "Sesí", "Telpa", "Municipios", "São Bento", "Varzea Nova", "Lucena"]},
-    {bairro: "5607", linhas: ["Centro", "Popular", "Varadouro", "João Pessoa", "Sesí", "Mutirão", "Plano de Vida", "Bayeux", "Santa Rita", "Tibiri", "Municipios", "São Bento", "Varzea Nova", "Lucena"]},
-    {bairro: "5608", linhas: ["Centro", "José Américo", "Popular", "Varadouro", "João Pessoa", "Bayeux", "Santa Rita", "Municipios", "São Bento", "Varzea Nova", "Lucena"]},
-    {bairro: "5609", linhas: ["Centro", "Ilha do Bispo", "Imaculada", "Jardim Aeroporto", "Popular", "Varadouro", "João Pessoa", "Sesí", "Tambay", "Heitel Santiago", "Alto de Boa Vista", "Manguinho", "Bayeux", "Santa Rita", "Tibiri", "Municipios", "São Bento", "Varzea Nova", "Lucena"]},
-    {bairro: "5610", linhas: ["Centro", "Ilha do Bispo", "Popular", "Varadouro", "João Pessoa", "Marcos Moura", "Tibiri", "Bayeux", "Santa Rita", "Vila Tibiri", "Municipios", "Varzea Nova", "Lucena"]},
-    {bairro: "5612", linhas: ["Centro", "Ilha do Bispo", "Popular", "Varadouro", "João Pessoa", "Marcos Moura", "Tibiri", "Distrito Industrial", "Bayeux", "Santa Rita", "Municipios", "Varzea Nova", "Lucena"]},
-    {bairro: "5613", linhas: ["Centro", "Imaculada", "Popular", "Varadouro", "João Pessoa", "Jardim Veneza", "Marcos Moura", "Tibiri", "Costa e Silva", "Distrito Industrial", "Santo Amaro", "Bayeux", "Santa Rita", "Vila Tibiri", "Municipios", "Varzea Nova", "Lucena"]},
-    {bairro: "602", linhas: ["Centro", "Ilha do Bispo", "Jardim Oceania", "Manaíra", "Parque Verde", "Treze de Maio", "Trincheiras", "Varadouro", "Aero Clube", "Mandacaru", "Aeroclube"]},
-    {bairro: "120", linhas: ["Cruz das Armas", "Esplanada", "Geisel", "Gramame", "Jaguaribe", "Muçumagro", "Trincheiras", "Valentina", "João Paulo II", "Santa Rita", "Planalto", "Cristo", "Ernani Satyro", "Lagoa"]},
-    {bairro: "021", linhas: ["Alagoa Grande", "Areia", "Arara", "Cajá", "Juarez Távora"]},
-    {bairro: "023", linhas: ["Alagoa Grande", "Arara", "Cajá", "Gurinhem", "Mulungu"]},
-    {bairro: "030", linhas: ["Alagoa Grande", "Ingá", "Juarez Távora", "Mogeiro", "Riachão Bacamarte", "Rio Tinto", "Marcação", "Baía da Traição", "Itapororoca"]},
-    {bairro: "022", linhas: ["Arara"]},
-    {bairro: "029", linhas: ["Arara", "Cajá", "Belém", "Bananeiras", "Solânea", "Cacimba de Dentro", "Araruna", "Dona Inês"]},
-    {bairro: "024", linhas: ["Cajá", "Ingá", "Itabaiana", "Itatuba", "Mogeiro", "Pilar"]},
-    {bairro: "028", linhas: ["Cajá", "Nova Cruz", "Belém", "Caiçara", "Logradouro"]},
-    {bairro: "027", linhas: ["Jacaraú", "Nova Cruz", "Timbó"]},
-    {bairro: "025", linhas: ["Rio Tinto", "Baía da Traição"]},
-    {bairro: "026", linhas: ["Itapororoca"]}
-  ];
+        const dados = [
+            {bairro: "Altiplano", linhas: ["401","520"]},
+            {bairro: "Alto do Mateus", linhas: ["701","702"]},
+            {bairro: "Bancários", linhas: ["2300"]},
+            {bairro: "Bairro dos Estados", linhas: ["1001","504","506","507","509","512","5120","520"]},
+            {bairro: "Bairro dos Ipês", linhas: ["506","604"]},
+            {bairro: "Beira Rio", linhas: ["401"]},
+            {bairro: "Brisamar", linhas: ["509","512"]},
+            {bairro: "Cabo Branco", linhas: ["507","520"]},
+            {bairro: "Castelo Branco", linhas: ["1519","502","5120"]},
+            {bairro: "Centro", linhas: ["1001","104","110","115","118","1519","2300","401","5015","504","506","507","509","512","5120","520","5607","5608","5610","5612","5613","602","604","701","702"]},
+            {bairro: "Cidade Universitária", linhas: ["1519","2300","502"]},
+            {bairro: "Cidade Verde", linhas: ["1001","104","115"]},
+            {bairro: "Cristo Redentor", linhas: ["502"]},
+            {bairro: "Cruz das Armas", linhas: ["1001","104","110","115","118","120","1519","5120"]},
+            {bairro: "Cuiá", linhas: ["118","1519","2300","5120"]},
+            {bairro: "Esplanada", linhas: ["115","120","1519"]},
+            {bairro: "Expedicionários", linhas: ["401","502","504","506","507","509","512","520"]},
+            {bairro: "Geisel", linhas: ["118","120","1519","2300","502","5120"]},
+            {bairro: "Gramame", linhas: ["120","1519"]},
+            {bairro: "Ilha do Bispo", linhas: ["5609","5610","5612","602","701","702"]},
+            {bairro: "Imaculada", linhas: ["5609","5613"]},
+            {bairro: "Jaguaribe", linhas: ["1001","104","110","115","118","120","1519","2300","5120"]},
+            {bairro: "Jardim Aeroporto", linhas: ["5609"]},
+            {bairro: "Jardim Oceania", linhas: ["1001","602","604"]},
+            {bairro: "Jardim Planalto", linhas: ["110"]},
+            {bairro: "Jardim São Paulo", linhas: ["1519"]},
+            {bairro: "Jardim Veneza", linhas: ["1001","104","5613"]},
+            {bairro: "José Américo", linhas: ["401","5015","520","5608","5612"]},
+            {bairro: "João Agripino", linhas: ["509","512"]},
+            {bairro: "João Paulo II", linhas: ["120","5120"]},
+            {bairro: "Manaíra", linhas: ["1001","602","604"]},
+            {bairro: "Mangabeira", linhas: ["1519","2300","520"]},
+            {bairro: "Marés", linhas: ["1001","104"]},
+            {bairro: "Miramar", linhas: ["1519","401","502","507","512","5120","520"]},
+            {bairro: "Muçumagro", linhas: ["120","1519"]},
+            {bairro: "Nova Mangabeira", linhas: ["1519"]},
+            {bairro: "Oitizeiro", linhas: ["1001","104","110"]},
+            {bairro: "Paratibe", linhas: ["118","1519"]},
+            {bairro: "Parque do Sol", linhas: ["1519"]},
+            {bairro: "Parque Verde", linhas: ["602","604"]},
+            {bairro: "Pedro Gondim", linhas: ["502","507","5120"]},
+            {bairro: "Popular", linhas: ["5607","5608","5609","5610","5612","5613"]},
+            {bairro: "Roger", linhas: ["604"]},
+            {bairro: "São José", linhas: ["5015","509","512"]},
+            {bairro: "Tambauzinho", linhas: ["1519"]},
+            {bairro: "Tambaú", linhas: ["507","512"]},
+            {bairro: "Tambay", linhas: ["5609"]},
+            {bairro: "Torre", linhas: ["1001","1519","2300","401","502","504","507","509","512","520"]},
+            {bairro: "Trincheiras", linhas: ["1001","104","110","115","118","120","5120","602"]},
+            {bairro: "Treze de Maio", linhas: ["602"]},
+            {bairro: "Valentina", linhas: ["118","120","1519","2300","5120"]},
+            {bairro: "Varadouro", linhas: ["104","110","115","118","2300","401","5015","502","504","506","507","509","512","520","5607","5608","5609","5610","5612","602","604","701","702"]},
+            {bairro: "Varjão", linhas: ["2300"]},
+            {bairro: "Marcos Moura", linhas: ["5610","5612","5613"]},
+            {bairro: "Tibiri", linhas: ["5607","5609","5610","5612","5613"]},
+            {bairro: "Heitel Santiago", linhas: ["5609"]},
+            {bairro: "Plano de Vida", linhas: ["5607"]},
+            {bairro: "Alto de Boa Vista", linhas: ["5609"]},
+            {bairro: "Manguinho", linhas: ["5609"]},
+            {bairro: "Santo Amaro", linhas: ["5613"]},
+            {bairro: "Bayeux", linhas: ["5607","5608","5609","5610","5612","5613"]},
+            {bairro: "Santa Rita", linhas: ["120","5015","5607","5608","5609","5610","5612","5613"]},
+            {bairro: "Lucena", linhas: ["1001","118","1519","401","5015","502","504","506","507","509","512","5120","520","5607","5608","5609","5610","5612","5613"]},
+            {bairro: "Aero Clube", linhas: ["1001","602","604"]},
+            {bairro: "Alagoa Grande", linhas: ["021","023","030"]},
+            {bairro: "Areia", linhas: ["021"]},
+            {bairro: "Arara", linhas: ["021","022","029"]},
+            {bairro: "Cajá", linhas: ["021","023","024","028","029"]},
+            {bairro: "Costa e Silva", linhas: ["5613"]},
+            {bairro: "Distrito Industrial", linhas: ["115","5613","5612"]},
+            {bairro: "Gurinhem", linhas: ["023"]},
+            {bairro: "Ingá", linhas: ["024","030"]},
+            {bairro: "Itabaiana", linhas: ["024"]},
+            {bairro: "Itatuba", linhas: ["024"]},
+            {bairro: "Jacaraú", linhas: ["027"]},
+            {bairro: "João Pessoa", linhas: ["5015","5607","5608","5609","5610","5612","5613"]},
+            {bairro: "Juarez Távora", linhas: ["021","030"]},
+            {bairro: "Lerolândia", linhas: ["5015"]},
+            {bairro: "Mogeiro", linhas: ["024","030"]},
+            {bairro: "Mulungu", linhas: ["023"]},
+            {bairro: "Nova Cruz", linhas: ["027","028"]},
+            {bairro: "PB-025", linhas: ["5015"]},
+            {bairro: "Pilar", linhas: ["024"]},
+            {bairro: "Planta de Lucena", linhas: ["5015"]},
+            {bairro: "Riachão Bacamarte", linhas: ["030"]},
+            {bairro: "Rio Tinto", linhas: ["025","030"]},
+            {bairro: "Sesí", linhas: ["5015","5607","5609"]},
+            {bairro: "Timbó", linhas: ["027"]},
+            {bairro: "Telpa", linhas: ["5015"]},
+            {bairro: "Belém", linhas: ["028","029"]},
+            {bairro: "Caiçara", linhas: ["028"]},
+            {bairro: "Logradouro", linhas: ["028"]},
+            {bairro: "Bananeiras", linhas: ["029"]},
+            {bairro: "Solânea", linhas: ["029"]},
+            {bairro: "Cacimba de Dentro", linhas: ["029"]},
+            {bairro: "Araruna", linhas: ["029"]},
+            {bairro: "Dona Inês", linhas: ["029"]},
+            {bairro: "Marcação", linhas: ["030"]},
+            {bairro: "Baía da Traição", linhas: ["025","030"]},
+            {bairro: "Itapororoca", linhas: ["026","030"]},
+            {bairro: "Mutirão", linhas: ["5607"]},
+            {bairro: "Vila Tibiri", linhas: ["5610","5613"]},
+            {bairro: "Mandacaru", linhas: ["504","1001", "602", "604"]},
+            {bairro: "Municipios", linhas: ["5613","5610", "5015", "5608", "5607", "5609", "5612", ]},
+            {bairro: "São Bento", linhas: ["5609","5607", "5608", "5015",]},
+            {bairro: "Varzea Nova", linhas: ["5610","5608", "5607", "5609", "5612", "5613", "5015", ]},
+            {bairro: "Bairro das Indústrias", linhas: ["1001","104", "115"]},
+            {bairro: "Aeroclube", linhas: ["1001","602", "604",]},
+            {bairro: "Planalto", linhas: ["120",]},
+            {bairro: "Cristo", linhas: ["120","502", "118", "2300", "1519", ]},
+            {bairro: "Ernani Satyro", linhas: ["1519","115", "120",]},
+            {bairro: "Água Fria", linhas: ["502","5120", ]},
+            {bairro: "Lagoa", linhas: ["120","502", "702"]},
 
-         // Ignorar Acentos
+            {bairro: "401", linhas: ["Altiplano", "Beira Rio", "Centro", "Expedicionários", "José Américo", "Miramar", "Torre", "Varadouro", "Lucena"]},
+            {bairro: "520", linhas: ["Altiplano", "Bairro dos Estados", "Cabo Branco", "Centro", "Expedicionários", "José Américo", "Mangabeira", "Miramar", "Torre", "Varadouro", "Lucena"]},
+            {bairro: "701", linhas: ["Alto do Mateus", "Centro", "Ilha do Bispo", "Varadouro"]},
+            {bairro: "702", linhas: ["Alto do Mateus", "Centro", "Ilha do Bispo", "Varadouro", "Lagoa"]},
+            {bairro: "2300", linhas: ["Bancários", "Centro", "Cidade Universitária", "Cuiá", "Geisel", "Jaguaribe", "Mangabeira", "Torre", "Valentina", "Varadouro", "Varjão", "Cristo"]},
+            {bairro: "1001", linhas: ["Bairro dos Estados", "Centro", "Cidade Verde", "Cruz das Armas", "Jaguaribe", "Jardim Oceania", "Jardim Veneza", "Manaíra", "Marés", "Oitizeiro", "Torre", "Trincheiras", "Aero Clube", "Mandacaru", "Bairro das Indústrias", "Aeroclube", "Lucena"]},
+            {bairro: "504", linhas: ["Bairro dos Estados", "Centro", "Expedicionários", "Torre", "Varadouro", "Mandacaru", "Lucena"]},
+            {bairro: "506", linhas: ["Bairro dos Estados", "Bairro dos Ipês", "Centro", "Expedicionários", "Varadouro", "Lucena"]},
+            {bairro: "507", linhas: ["Bairro dos Estados", "Cabo Branco", "Centro", "Expedicionários", "Miramar", "Tambau", "Torre", "Varadouro", "Lucena"]},
+            {bairro: "509", linhas: ["Bairro dos Estados", "Brisamar", "Centro", "Expedicionários", "João Agripino", "São José", "Torre", "Varadouro", "Lucena"]},
+            {bairro: "512", linhas: ["Bairro dos Estados", "Brisamar", "Centro", "Expedicionários", "João Agripino", "Miramar", "São José", "Tambau", "Torre", "Varadouro", "Lucena"]},
+            {bairro: "5120", linhas: ["Bairro dos Estados", "Castelo Branco", "Centro", "Cruz das Armas", "Cuiá", "Geisel", "Jaguaribe", "Miramar", "Pedro Gondim", "Trincheiras", "Valentina", "João Paulo II", "Água Fria", "Lucena"]},
+            {bairro: "604", linhas: ["Bairro dos Ipês", "Centro", "Jardim Oceania", "Manaíra", "Parque Verde", "Roger", "Varadouro", "Aero Clube", "Mandacaru", "Aeroclube"]},
+            {bairro: "1519", linhas: ["Castelo Branco", "Centro", "Cidade Universitária", "Cruz das Armas", "Cuiá", "Esplanada", "Geisel", "Gramame", "Jaguaribe", "Jardim São Paulo", "Mangabeira", "Miramar", "Muçumagro", "Nova Mangabeira", "Paratibe", "Parque do Sol", "Tambauzinho", "Torre", "Valentina", "Ernani Satyro", "Cristo", "Lucena"]},
+            {bairro: "502", linhas: ["Castelo Branco", "Cidade Universitária", "Cristo Redentor", "Expedicionários", "Geisel", "Miramar", "Pedro Gondim", "Torre", "Varadouro", "Água Fria", "Lagoa", "Cristo", "Lucena"]},
+            {bairro: "104", linhas: ["Jardim Liberdade", "Petrópolis", "Centro", "Cidade Verde", "Cruz das Armas", "Jaguaribe", "Jardim Veneza", "Marés", "Oitizeiro", "Trincheiras", "Varadouro", "Bairro das Indústrias"]},
+            {bairro: "110", linhas: ["Centro", "Cruz das Armas", "Jaguaribe", "Jardim Planalto", "Oitizeiro", "Trincheiras", "Varadouro"]},
+            {bairro: "115", linhas: ["Centro", "Cidade Verde", "Cruz das Armas", "Esplanada", "Jaguaribe", "Trincheiras", "Varadouro", "Distrito Industrial", "Bairro das Indústrias", "Ernani Satyro"]},
+            {bairro: "118", linhas: ["Centro", "Cruz das Armas", "Cuiá", "Geisel", "Jaguaribe", "Paratibe", "Trincheiras", "Valentina", "Varadouro", "Cristo", "Lucena"]},
+            {bairro: "5015", linhas: ["Centro", "José Américo", "São José", "Varadouro", "João Pessoa", "Lerolândia", "PB-025", "Planta de Lucena", "Sesí", "Telpa", "Municipios", "São Bento", "Varzea Nova", "Lucena"]},
+            {bairro: "5607", linhas: ["Centro", "Popular", "Varadouro", "João Pessoa", "Sesí", "Mutirão", "Plano de Vida", "Bayeux", "Santa Rita", "Tibiri", "Municipios", "São Bento", "Varzea Nova", "Lucena"]},
+            {bairro: "5608", linhas: ["Centro", "José Américo", "Popular", "Varadouro", "João Pessoa", "Bayeux", "Santa Rita", "Municipios", "São Bento", "Varzea Nova", "Lucena"]},
+            {bairro: "5609", linhas: ["Centro", "Ilha do Bispo", "Imaculada", "Jardim Aeroporto", "Popular", "Varadouro", "João Pessoa", "Sesí", "Tambay", "Heitel Santiago", "Alto de Boa Vista", "Manguinho", "Bayeux", "Santa Rita", "Tibiri", "Municipios", "São Bento", "Varzea Nova", "Lucena"]},
+            {bairro: "5610", linhas: ["Centro", "Ilha do Bispo", "Popular", "Varadouro", "João Pessoa", "Marcos Moura", "Tibiri", "Bayeux", "Santa Rita", "Vila Tibiri", "Municipios", "Varzea Nova", "Lucena"]},
+            {bairro: "5612", linhas: ["Centro", "Ilha do Bispo", "Popular", "Varadouro", "João Pessoa", "Marcos Moura", "Tibiri", "Distrito Industrial", "Bayeux", "Santa Rita", "Municipios", "Varzea Nova", "Lucena"]},
+            {bairro: "5613", linhas: ["Centro", "Imaculada", "Popular", "Varadouro", "João Pessoa", "Jardim Veneza", "Marcos Moura", "Tibiri", "Costa e Silva", "Distrito Industrial", "Santo Amaro", "Bayeux", "Santa Rita", "Vila Tibiri", "Municipios", "Varzea Nova", "Lucena"]},
+            {bairro: "602", linhas: ["Centro", "Ilha do Bispo", "Jardim Oceania", "Manaíra", "Parque Verde", "Treze de Maio", "Trincheiras", "Varadouro", "Aero Clube", "Mandacaru", "Aeroclube"]},
+            {bairro: "120", linhas: ["Cruz das Armas", "Esplanada", "Geisel", "Gramame", "Jaguaribe", "Muçumagro", "Trincheiras", "Valentina", "João Paulo II", "Santa Rita", "Planalto", "Cristo", "Ernani Satyro", "Lagoa"]},
+            {bairro: "021", linhas: ["Alagoa Grande", "Areia", "Arara", "Cajá", "Juarez Távora"]},
+            {bairro: "023", linhas: ["Alagoa Grande", "Arara", "Cajá", "Gurinhem", "Mulungu"]},
+            {bairro: "030", linhas: ["Alagoa Grande", "Ingá", "Juarez Távora", "Mogeiro", "Riachão Bacamarte", "Rio Tinto", "Marcação", "Baía da Traição", "Itapororoca"]},
+            {bairro: "022", linhas: ["Arara"]},
+            {bairro: "029", linhas: ["Arara", "Cajá", "Belém", "Bananeiras", "Solânea", "Cacimba de Dentro", "Araruna", "Dona Inês"]},
+            {bairro: "024", linhas: ["Cajá", "Ingá", "Itabaiana", "Itatuba", "Mogeiro", "Pilar"]},
+            {bairro: "028", linhas: ["Cajá", "Nova Cruz", "Belém", "Caiçara", "Logradouro"]},
+            {bairro: "027", linhas: ["Jacaraú", "Nova Cruz", "Timbó"]},
+            {bairro: "025", linhas: ["Rio Tinto", "Baía da Traição"]},
+            {bairro: "026", linhas: ["Itapororoca"]}
+        ];
+
+        // Ignorar Acentos
         function normalizar(str) {
             return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         }
@@ -511,7 +633,7 @@ function voltarpagina3() {
             // Desabilitar botão durante a busca
             document.getElementById('consultarBtn').disabled = true;
 
-            // Simular um tempo de processamento (apenas para demonstração do loading)
+            // Simular um tempo de processamento
             setTimeout(() => {
                 let resultadosHTML = "";
                 
@@ -525,7 +647,9 @@ function voltarpagina3() {
                             <div class="bairro-result">
                                 <div class="bairro-title">${bairroEncontrado.bairro}</div>
                                 <div class="linhas-list">
-                                    ${bairroEncontrado.linhas.map(linha => `<span class="linha-item">${linha}</span>`).join('')}
+                                    ${bairroEncontrado.linhas.map(linha => 
+                                        `<button class="linha-btn" onclick="mostrarDetalhesLinha('${linha}')">${linha}</button>`
+                                    ).join('')}
                                 </div>
                             </div>
                         `;
@@ -544,8 +668,64 @@ function voltarpagina3() {
                 
                 // Reabilitar o botão
                 document.getElementById('consultarBtn').disabled = false;
-            }, 800); // Tempo simulado de busca
+            }, 800);
         }
+
+        // Função para mostrar detalhes da linha
+        function mostrarDetalhesLinha(numeroLinha) {
+            const bairrosComEstaRota = dados.filter(item => item.linhas.includes(numeroLinha));
+            
+            // USA A IMAGEM ESPECÍFICA DA LINHA OU UMA PADRÃO SE NÃO ENCONTRAR
+            const imagemLinha = imagensDasLinhas[numeroLinha] || "https://i.imgur.com/OnzDOMa.png";
+            
+            let modalHTML = "";
+            
+            // Bairros atendidos
+            if (bairrosComEstaRota.length > 0) {
+                modalHTML += `
+                    <div class="linha-info">
+                        <div class="linha-descricao">Bairros atendidos pela Linha ${numeroLinha}:</div>
+                        <div class="bairros-list">
+                            ${bairrosComEstaRota.map(item => 
+                                `<span class="bairro-tag">${item.bairro}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                modalHTML += `<p>Nenhuma informação disponível para a linha ${numeroLinha}.</p>`;
+            }
+            
+            // IMAGEM ESPECÍFICA DA LINHA
+            modalHTML += `
+                <div class="linha-info">
+                    <div class="linha-descricao">Mapa da Linha ${numeroLinha}:</div>
+                    <div style="text-align: center;">
+                        <img src="${imagemLinha}" 
+                             alt="Mapa da Linha ${numeroLinha}" 
+                             class="linha-mapa"
+                             onerror="this.src='https://i.imgur.com/OnzDOMa.png'">
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('modalLinhaNumero').textContent = `Linha ${numeroLinha}`;
+            document.getElementById('modalConteudo').innerHTML = modalHTML;
+            document.getElementById('linhaModal').style.display = 'flex';
+        }
+
+        // Função para fechar o modal
+        function fecharModal() {
+            document.getElementById('linhaModal').style.display = 'none';
+        }
+
+        // Fechar modal ao clicar fora dele
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('linhaModal');
+            if (event.target === modal) {
+                fecharModal();
+            }
+        });
 
         // Função para limpar os resultados
         function limparResultados() {
@@ -560,6 +740,19 @@ function voltarpagina3() {
                 buscarLinhas();
             }
         });
+
+        // Funções de navegação
+        function voltarpagina() {
+            window.location.href = "index.html";             
+        }
+
+        function voltarpagina2() {
+            window.location.href = "Rotas Natal.html";             
+        }
+
+        function voltarpagina3() {
+            window.location.href = "Rotas Caruaru.html";             
+        }
     </script>
 </body>
 </html>

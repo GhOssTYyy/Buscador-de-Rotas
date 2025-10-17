@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -182,7 +182,7 @@
             background: #f8f9fa;
         }
         
-        /* Novos estilos para os resultados separados */
+        /* Estilos para os botões de linha */
         .bairro-result {
             margin-bottom: 15px;
             padding: 10px;
@@ -194,7 +194,8 @@
         .bairro-title {
             font-weight: 600;
             color: #cc0000;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 18px;
         }
         
         .linhas-list {
@@ -204,13 +205,25 @@
             margin-top: 5px;
         }
         
-        .linha-item {
+        /* BOTÕES COM MESMO TAMANHO DOS SPANS ORIGINAIS */
+        .linha-btn {
             background: #e9f7ef;
             padding: 5px 10px;
             border-radius: 4px;
             font-weight: 600;
             color: #008000;
             border: 1px solid #c3e6cb;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+            width: auto;
+            display: inline-block;
+        }
+        
+        .linha-btn:hover {
+            background: #d4edda;
+            transform: none;
+            box-shadow: none;
         }
         
         .no-linhas {
@@ -225,6 +238,96 @@
         
         .clear-btn:hover {
             background: #5a6268;
+        }
+        
+        /* Modal para detalhes da linha */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #cc0000;
+            padding-bottom: 10px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            color: #cc0000;
+            font-weight: bold;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+            width: auto;
+            padding: 0;
+        }
+        
+        .close-btn:hover {
+            color: #cc0000;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .linha-info {
+            margin-bottom: 15px;
+        }
+        
+        .linha-descricao {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .bairros-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .bairro-tag {
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            font-size: 14px;
+        }
+        
+        .linha-mapa {
+            max-width: 350px;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid #cc0000;
+            display: block;
+            margin: 0 auto;
         }
         
         @media (max-width: 768px) {
@@ -244,14 +347,14 @@
             }
         }
 
-                .button4 {
+        .button4 {
             margin-top: 3px;
             padding: 10px;
             box-sizing: border-box;
             display: flex;        
         }
 
-                .botao5 {
+        .botao5 {
             margin-left: 5px;
             margin-right: 5px;
         }
@@ -260,7 +363,6 @@
             color: #333;
             margin-left: 230px;
         }
-
     </style>
 </head>
 <body>
@@ -276,48 +378,13 @@
             </div>
         </div>
         
-<h2>Buscadores:</h2>     
-<!--Botão1-->        
-<div class="button4">
-
-<button type="button" id="voltar" onclick="voltarpagina()">CAMPINA GRANDE</button>
-
-<script>
-
-function voltarpagina() {
-
-      window.location.href = "index.html";             
-    }
-
-</script>
-
-<!--Botão2-->
-
-<button type="button" id="voltar" onclick="voltarpagina2()" class="botao5">JOÃO PESSOA</button>
-
-<script>
-
-function voltarpagina2() {
-
-      window.location.href = "Rotas João Pessoa.html";             
-    }
-
-</script>
-
-<!--Botão3-->
-
-<button type="button" id="voltar" onclick="voltarpagina3()">CARUARU</button>
-
-<script>
-
-function voltarpagina3() {
-
-      window.location.href = "Rotas Caruaru.html";             
-    }
-
-</script>
-
-</div>
+        <h2>Buscadores:</h2>     
+        <!--Botão1-->        
+        <div class="button4">
+            <button type="button" id="voltar" onclick="voltarpagina()">CAMPINA GRANDE</button>
+            <button type="button" id="voltar" onclick="voltarpagina2()" class="botao5">JOÃO PESSOA</button>
+            <button type="button" id="voltar" onclick="voltarpagina3()">CARUARU</button>
+        </div>
 
         <div class="content">
             <div class="input-group">
@@ -339,8 +406,153 @@ function voltarpagina3() {
         </div>
     </div>
 
+    <!-- Modal para detalhes da linha -->
+    <div class="modal" id="linhaModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalLinhaNumero">Linha 000</div>
+                <button class="close-btn" onclick="fecharModal()">&times;</button>
+            </div>
+            <div id="modalConteudo">
+                <!-- Conteúdo será preenchido via JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <script>
-  const dados = [
+        // MAPEAMENTO DE IMAGENS PARA CADA LINHA
+        const imagensDasLinhas = {
+            "83": "https://i.imgur.com/ikIwZ4v.jpg",
+            "76": "https://i.imgur.com/ikIwZ4v.png",
+            "21": "https://i.imgur.com/ikIwZ4v.png",
+            "22": "https://i.imgur.com/ikIwZ4v.png",
+            "30": "https://i.imgur.com/ikIwZ4v.png",
+            "41A": "https://i.imgur.com/ikIwZ4v.png",
+            "63": "https://i.imgur.com/ikIwZ4v.png",
+            "905": "https://i.imgur.com/ikIwZ4v.png",
+            "3008": "https://i.imgur.com/ikIwZ4v.png",
+            "38": "https://i.imgur.com/ikIwZ4v.png",
+            "43": "https://i.imgur.com/ikIwZ4v.png",
+            "54": "https://i.imgur.com/ikIwZ4v.png",
+            "37": "https://i.imgur.com/ikIwZ4v.png",
+            "39": "https://i.imgur.com/ikIwZ4v.png",
+            "33B": "https://i.imgur.com/ikIwZ4v.png",
+            "73": "https://i.imgur.com/ikIwZ4v.png",
+            "07": "https://i.imgur.com/ikIwZ4v.png",
+            "29": "https://i.imgur.com/ikIwZ4v.png",
+            "35": "https://i.imgur.com/ikIwZ4v.png",
+            "56": "https://i.imgur.com/ikIwZ4v.png",
+            "78": "https://i.imgur.com/ikIwZ4v.png",
+            "27": "https://i.imgur.com/ikIwZ4v.png",
+            "588B": "https://i.imgur.com/ikIwZ4v.png",
+            "124": "https://i.imgur.com/ikIwZ4v.png",
+            "126": "https://i.imgur.com/ikIwZ4v.png",
+            "148": "https://i.imgur.com/ikIwZ4v.png",
+            "235": "https://i.imgur.com/ikIwZ4v.png",
+            "155": "https://i.imgur.com/ikIwZ4v.png",
+            "233": "https://i.imgur.com/ikIwZ4v.png",
+            "209": "https://i.imgur.com/ikIwZ4v.png",
+            "234": "https://i.imgur.com/ikIwZ4v.png",
+            "101": "https://i.imgur.com/ikIwZ4v.png",
+            "200": "https://i.imgur.com/ikIwZ4v.png",
+            "102": "https://i.imgur.com/ikIwZ4v.png",
+            "201": "https://i.imgur.com/ikIwZ4v.png",
+            "103": "https://i.imgur.com/ikIwZ4v.png",
+            "104": "https://i.imgur.com/ikIwZ4v.png",
+            "105": "https://i.imgur.com/ikIwZ4v.png",
+            "106": "https://i.imgur.com/ikIwZ4v.png",
+            "107": "https://i.imgur.com/ikIwZ4v.png",
+            "108": "https://i.imgur.com/ikIwZ4v.png",
+            "109": "https://i.imgur.com/ikIwZ4v.png",
+            "110": "https://i.imgur.com/ikIwZ4v.png",
+            "111": "https://i.imgur.com/ikIwZ4v.png",
+            "112": "https://i.imgur.com/ikIwZ4v.png",
+            "113": "https://i.imgur.com/ikIwZ4v.png",
+            "114": "https://i.imgur.com/ikIwZ4v.png",
+            "115": "https://i.imgur.com/ikIwZ4v.png",
+            "116": "https://i.imgur.com/ikIwZ4v.png",
+            "117": "https://i.imgur.com/ikIwZ4v.png",
+            "118": "https://i.imgur.com/ikIwZ4v.png",
+            "119": "https://i.imgur.com/ikIwZ4v.png",
+            "120": "https://i.imgur.com/ikIwZ4v.png",
+            "121": "https://i.imgur.com/ikIwZ4v.png",
+            "122": "https://i.imgur.com/ikIwZ4v.png",
+            "123": "https://i.imgur.com/ikIwZ4v.png",
+            "125": "https://i.imgur.com/ikIwZ4v.png",
+            "127": "https://i.imgur.com/ikIwZ4v.png",
+            "128": "https://i.imgur.com/ikIwZ4v.png",
+            "129": "https://i.imgur.com/ikIwZ4v.png",
+            "130": "https://i.imgur.com/ikIwZ4v.png",
+            "131": "https://i.imgur.com/ikIwZ4v.png",
+            "132": "https://i.imgur.com/ikIwZ4v.png",
+            "133": "https://i.imgur.com/ikIwZ4v.png",
+            "134": "https://i.imgur.com/ikIwZ4v.png",
+            "135": "https://i.imgur.com/ikIwZ4v.png",
+            "136": "https://i.imgur.com/ikIwZ4v.png",
+            "137": "https://i.imgur.com/ikIwZ4v.png",
+            "139": "https://i.imgur.com/ikIwZ4v.png",
+            "140": "https://i.imgur.com/ikIwZ4v.png",
+            "141": "https://i.imgur.com/ikIwZ4v.png",
+            "142": "https://i.imgur.com/ikIwZ4v.png",
+            "143": "https://i.imgur.com/ikIwZ4v.png",
+            "144": "https://i.imgur.com/ikIwZ4v.png",
+            "145": "https://i.imgur.com/ikIwZ4v.png",
+            "146": "https://i.imgur.com/ikIwZ4v.png",
+            "147": "https://i.imgur.com/ikIwZ4v.png",
+            "149": "https://i.imgur.com/ikIwZ4v.png",
+            "150": "https://i.imgur.com/ikIwZ4v.png",
+            "151": "https://i.imgur.com/ikIwZ4v.png",
+            "152": "https://i.imgur.com/ikIwZ4v.png",
+            "153": "https://i.imgur.com/ikIwZ4v.png",
+            "154": "https://i.imgur.com/ikIwZ4v.png",
+            "156": "https://i.imgur.com/ikIwZ4v.png",
+            "157": "https://i.imgur.com/ikIwZ4v.png",
+            "158": "https://i.imgur.com/ikIwZ4v.png",
+            "159": "https://i.imgur.com/ikIwZ4v.png",
+            "160": "https://i.imgur.com/ikIwZ4v.png",
+            "161": "https://i.imgur.com/ikIwZ4v.png",
+            "162": "https://i.imgur.com/ikIwZ4v.png",
+            "203": "https://i.imgur.com/ikIwZ4v.png",
+            "204": "https://i.imgur.com/ikIwZ4v.png",
+            "205": "https://i.imgur.com/ikIwZ4v.png",
+            "206": "https://i.imgur.com/ikIwZ4v.png",
+            "207": "https://i.imgur.com/ikIwZ4v.png",
+            "208": "https://i.imgur.com/ikIwZ4v.png",
+            "210": "https://i.imgur.com/ikIwZ4v.png",
+            "212": "https://i.imgur.com/ikIwZ4v.png",
+            "213": "https://i.imgur.com/ikIwZ4v.png",
+            "214": "https://i.imgur.com/ikIwZ4v.png",
+            "217": "https://i.imgur.com/ikIwZ4v.png",
+            "218": "https://i.imgur.com/ikIwZ4v.png",
+            "219": "https://i.imgur.com/ikIwZ4v.png",
+            "220": "https://i.imgur.com/ikIwZ4v.png",
+            "221": "https://i.imgur.com/ikIwZ4v.png",
+            "222": "https://i.imgur.com/ikIwZ4v.png",
+            "223": "https://i.imgur.com/ikIwZ4v.png",
+            "224": "https://i.imgur.com/ikIwZ4v.png",
+            "225": "https://i.imgur.com/ikIwZ4v.png",
+            "226": "https://i.imgur.com/ikIwZ4v.png",
+            "227": "https://i.imgur.com/ikIwZ4v.png",
+            "228": "https://i.imgur.com/ikIwZ4v.png",
+            "229": "https://i.imgur.com/ikIwZ4v.png",
+            "230": "https://i.imgur.com/ikIwZ4v.png",
+            "231": "https://i.imgur.com/ikIwZ4v.png",
+            "232": "https://i.imgur.com/ikIwZ4v.png",
+            "236": "https://i.imgur.com/ikIwZ4v.png",
+            "237": "https://i.imgur.com/ikIwZ4v.png",
+            "238": "https://i.imgur.com/ikIwZ4v.png",
+            "239": "https://i.imgur.com/ikIwZ4v.png",
+            "240": "https://i.imgur.com/ikIwZ4v.png",
+            "241": "https://i.imgur.com/ikIwZ4v.png",
+            "242": "https://i.imgur.com/ikIwZ4v.png",
+            "243": "https://i.imgur.com/ikIwZ4v.png",
+            "244": "https://i.imgur.com/ikIwZ4v.png",
+            "245": "https://i.imgur.com/ikIwZ4v.png",
+            "246": "https://i.imgur.com/ikIwZ4v.png",
+            "247": "https://i.imgur.com/ikIwZ4v.png"
+        };
+
+ const dados = [
     //Empresa Conceição
   {bairro: "Empresa Santa Maria", linhas: ["83"]},
   {bairro: "Área de Lazer do Panatis", linhas: ["76"]},
@@ -892,7 +1104,7 @@ function voltarpagina3() {
     {bairro: "247", linhas: ["EXTREMOZ", "Guarapes"]},
   ];
 
-         // Ignorar Acentos
+        // Ignorar Acentos
         function normalizar(str) {
             return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         }
@@ -908,7 +1120,7 @@ function voltarpagina3() {
             // Desabilitar botão durante a busca
             document.getElementById('consultarBtn').disabled = true;
 
-            // Simular um tempo de processamento (apenas para demonstração do loading)
+            // Simular um tempo de processamento
             setTimeout(() => {
                 let resultadosHTML = "";
                 
@@ -922,7 +1134,9 @@ function voltarpagina3() {
                             <div class="bairro-result">
                                 <div class="bairro-title">${bairroEncontrado.bairro}</div>
                                 <div class="linhas-list">
-                                    ${bairroEncontrado.linhas.map(linha => `<span class="linha-item">${linha}</span>`).join('')}
+                                    ${bairroEncontrado.linhas.map(linha => 
+                                        `<button class="linha-btn" onclick="mostrarDetalhesLinha('${linha}')">${linha}</button>`
+                                    ).join('')}
                                 </div>
                             </div>
                         `;
@@ -941,8 +1155,64 @@ function voltarpagina3() {
                 
                 // Reabilitar o botão
                 document.getElementById('consultarBtn').disabled = false;
-            }, 800); // Tempo simulado de busca
+            }, 800);
         }
+
+        // Função para mostrar detalhes da linha
+        function mostrarDetalhesLinha(numeroLinha) {
+            const bairrosComEstaRota = dados.filter(item => item.linhas.includes(numeroLinha));
+            
+            // USA A IMAGEM ESPECÍFICA DA LINHA OU UMA PADRÃO SE NÃO ENCONTRAR
+            const imagemLinha = imagensDasLinhas[numeroLinha] || "https://i.imgur.com/ikIwZ4v.png";
+            
+            let modalHTML = "";
+            
+            // Bairros atendidos
+            if (bairrosComEstaRota.length > 0) {
+                modalHTML += `
+                    <div class="linha-info">
+                        <div class="linha-descricao">Bairros atendidos pela Linha ${numeroLinha}:</div>
+                        <div class="bairros-list">
+                            ${bairrosComEstaRota.map(item => 
+                                `<span class="bairro-tag">${item.bairro}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                modalHTML += `<p>Nenhuma informação disponível para a linha ${numeroLinha}.</p>`;
+            }
+            
+            // IMAGEM ESPECÍFICA DA LINHA
+            modalHTML += `
+                <div class="linha-info">
+                    <div class="linha-descricao">Mapa da Linha ${numeroLinha}:</div>
+                    <div style="text-align: center;">
+                        <img src="${imagemLinha}" 
+                             alt="Mapa da Linha ${numeroLinha}" 
+                             class="linha-mapa"
+                             onerror="this.src='https://i.imgur.com/ikIwZ4v.png'">
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('modalLinhaNumero').textContent = `Linha ${numeroLinha}`;
+            document.getElementById('modalConteudo').innerHTML = modalHTML;
+            document.getElementById('linhaModal').style.display = 'flex';
+        }
+
+        // Função para fechar o modal
+        function fecharModal() {
+            document.getElementById('linhaModal').style.display = 'none';
+        }
+
+        // Fechar modal ao clicar fora dele
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('linhaModal');
+            if (event.target === modal) {
+                fecharModal();
+            }
+        });
 
         // Função para limpar os resultados
         function limparResultados() {
@@ -957,6 +1227,19 @@ function voltarpagina3() {
                 buscarLinhas();
             }
         });
+
+        // Funções de navegação
+        function voltarpagina() {
+            window.location.href = "index.html";             
+        }
+
+        function voltarpagina2() {
+            window.location.href = "Rotas João Pessoa.html";             
+        }
+
+        function voltarpagina3() {
+            window.location.href = "Rotas Caruaru.html";             
+        }
     </script>
 </body>
 </html>

@@ -182,7 +182,7 @@
             background: #f8f9fa;
         }
         
-        /* Novos estilos para os resultados separados */
+        /* Estilos para os botões de linha */
         .bairro-result {
             margin-bottom: 15px;
             padding: 10px;
@@ -194,7 +194,8 @@
         .bairro-title {
             font-weight: 600;
             color: #cc0000;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 18px;
         }
         
         .linhas-list {
@@ -204,13 +205,25 @@
             margin-top: 5px;
         }
         
-        .linha-item {
+        /* BOTÕES COM MESMO TAMANHO DOS SPANS ORIGINAIS */
+        .linha-btn {
             background: #e9f7ef;
             padding: 5px 10px;
             border-radius: 4px;
             font-weight: 600;
             color: #008000;
             border: 1px solid #c3e6cb;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+            width: auto;
+            display: inline-block;
+        }
+        
+        .linha-btn:hover {
+            background: #d4edda;
+            transform: none;
+            box-shadow: none;
         }
         
         .no-linhas {
@@ -225,6 +238,96 @@
         
         .clear-btn:hover {
             background: #5a6268;
+        }
+        
+        /* Modal para detalhes da linha */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #cc0000;
+            padding-bottom: 10px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            color: #cc0000;
+            font-weight: bold;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+            width: auto;
+            padding: 0;
+        }
+        
+        .close-btn:hover {
+            color: #cc0000;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .linha-info {
+            margin-bottom: 15px;
+        }
+        
+        .linha-descricao {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .bairros-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .bairro-tag {
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            font-size: 14px;
+        }
+        
+        .linha-mapa {
+            max-width: 350px;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid #cc0000;
+            display: block;
+            margin: 0 auto;
         }
         
         @media (max-width: 768px) {
@@ -244,14 +347,14 @@
             }
         }
 
-                .button2 {
+        .button2 {
             margin-top: 3px;
             padding: 10px;
             box-sizing: border-box;
             display: flex;        
         }
 
-                .botao3 {
+        .botao3 {
             margin-left: 5px;
             margin-right: 5px;
         }
@@ -260,7 +363,6 @@
             color: #333;
             margin-left: 230px;
         }
-
     </style>
 </head>
 <body>
@@ -276,48 +378,13 @@
             </div>
         </div>
         
-<h2>Buscadores:</h2>     
-<!--Botão1-->        
-<div class="button2">
-
-<button type="button" id="voltar" onclick="voltarpagina()">CAMPINA GRANDE</button>
-
-<script>
-
-function voltarpagina() {
-
-      window.location.href = "index.html";             
-    }
-
-</script>
-
-<!--Botão2-->
-
-<button type="button" id="voltar" onclick="voltarpagina2()" class="botao3">NATAL</button>
-
-<script>
-
-function voltarpagina2() {
-
-      window.location.href = "Rotas Natal.html";             
-    }
-
-</script>
-
-<!--Botão3-->
-
-<button type="button" id="voltar" onclick="voltarpagina3()">JOÃO PESSOA</button>
-
-<script>
-
-function voltarpagina3() {
-
-      window.location.href = "Rotas João Pessoa.html";             
-    }
-
-</script>
-
-</div>
+        <h2>Buscadores:</h2>     
+        <!--Botão1-->        
+        <div class="button2">
+            <button type="button" id="voltar" onclick="voltarpagina()">CAMPINA GRANDE</button>
+            <button type="button" id="voltar" onclick="voltarpagina2()" class="botao3">NATAL</button>
+            <button type="button" id="voltar" onclick="voltarpagina3()">JOÃO PESSOA</button>
+        </div>
 
         <div class="content">
             <div class="input-group">
@@ -339,100 +406,113 @@ function voltarpagina3() {
         </div>
     </div>
 
+    <!-- Modal para detalhes da linha -->
+    <div class="modal" id="linhaModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalLinhaNumero">Linha 000</div>
+                <button class="close-btn" onclick="fecharModal()">&times;</button>
+            </div>
+            <div id="modalConteudo">
+                <!-- Conteúdo será preenchido via JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <script>
-  const dados = [
-      //Empresa Conceição
-      {bairro: "Agamenon", linhas: ["431", "432"]},
-      {bairro: "Antônio Liberato", linhas: ["129"]},
-      {bairro: "Jardim Liberdade", linhas: ["104"]},
-      {bairro: "Jardim Pinheiros 3", linhas: ["120"]},
-      {bairro: "Indianópolis", linhas: ["120"]},
-      {bairro: "Petrópolis", linhas: ["104"]},
-      {bairro: "Rosanópolis", linhas: ["440"]},
-      {bairro: "Santa Rosa", linhas: ["410", "420"]},
-      {bairro: "Caruaru Shopping", linhas: ["140"]},
-      {bairro: "Hospital Regional do Agreste", linhas: ["410","420","440"]},
-      {bairro: "Centro", linhas: ["440", "432", "431", "420", "410", "140", "129", "120", "104"]},
-      {bairro: "Estação Ferroviária", linhas: ["440", "432", "431", "420", "410", "129", "120", "104"]},
-      {bairro: "Praça do Rosário", linhas: ["440", "432", "431", "420", "410", "140", "129", "120", "104"]},
-      {bairro: "Rua Capitão Zezé", linhas: ["104"]},
-      {bairro: "Rua São Carlos", linhas: ["104"]},
-      {bairro: "Rua São Geraldo", linhas: ["104", "431", "432"]},
-      {bairro: "Rua Camilo Castelo Branco", linhas: ["104", "432", "431"]},
-      {bairro: "Colégio Interativo", linhas: ["104"]},
-      {bairro: "Avenida João de Barros", linhas: ["104", "440", "432", "410"]},
-      {bairro: "Pitombeira", linhas: ["104", "440", "432", "431", "410"]},
-      {bairro: "Rua Rui Limeira Rosal", linhas: ["104", "431", "410"]},
-      {bairro: "Antonio Martins", linhas: ["104", "431", "420", "410"]},
-      {bairro: "Nossa Senhora das Dores", linhas: ["104", "431", "420", "410"]},
-      {bairro: "Praça José Martins", linhas: ["104", "431", "420", "410"]},
-      {bairro: "Feira da Sulanca", linhas: ["120", "104"]},
-      {bairro: "FAFICA", linhas: ["120", "104"]},
-      {bairro: "Jardim Pinheiro", linhas: ["120"]},
-      {bairro: "Rua Alferes Jorge", linhas: ["129", "120"]},
-      {bairro: "Avenida Maria de Souza Monteiro", linhas: ["129", "120"]},
-      {bairro: "Rua Zumbi dos Palmares", linhas: ["129", "120"]},
-      {bairro: "Santo Antônio", linhas: ["440"]},
-      {bairro: "HRAC", linhas: ["440", "432", "420", "410"]},
-      {bairro: "UPA", linhas: ["440", "432", "420", "410"]},
-      {bairro: "Vassoural", linhas: ["440", "432", "431", "420", "410"]},
-      {bairro: "Caruaru Park", linhas: ["432"]},
-      {bairro: "BR-212", linhas: ["432"]},
-      {bairro: "Adalgisa Nunes", linhas: ["432", "431"]},
-      {bairro: "Salustiano Torres", linhas: ["432", "431"]},
-      {bairro: "João Carral", linhas: ["432"]},
-      {bairro: "Antonio Sezerra", linhas: ["432"]},
-      {bairro: "Gustavo Bezerra", linhas: ["432", "431"]},
-      {bairro: "Camelódromo", linhas: ["432", "431", "420", "410"]},
-      {bairro: "General Osório", linhas: ["432", "431", "420"]},
-      {bairro: "Professora Adélia Ferreira", linhas: ["432", "431"]},
-      {bairro: "Presidente Castelo Branco", linhas: ["432", "431"]},
-      {bairro: "Santa Terezinha", linhas: ["431"]},
-      {bairro: "Dominguinhos", linhas: ["431"]},
-      {bairro: "João Cabral de Melo Neto", linhas: ["431"]},
-      {bairro: "Antonio Rezerra de Liba", linhas: ["431"]},
-      {bairro: "Cordoba", linhas: ["431"]},
-      {bairro: "BR-232", linhas: ["431", "104"]},
-      {bairro: "Nunes Machado", linhas: ["431", "420", "410"]},
-      {bairro: "Nazaré da Mata", linhas: ["420"]},
-      {bairro: "Dois Irmãos", linhas: ["420", "410"]},
-      {bairro: "Arrojado de Lisboa", linhas: ["420", "410"]},
-      {bairro: "Vernustriano Correia", linhas: ["420"]},
-      {bairro: "Bernardo de Queiroz", linhas: ["420"]},
-      {bairro: "Alcides Arquedas", linhas: ["420"]},
-      {bairro: "Alto de Santa Rosa", linhas: ["410"]},
-      {bairro: "José Marques Fontes", linhas: ["410"]},
-      {bairro: "Motorac", linhas: ["140"]},
-      {bairro: "Adjar da Silva Casé", linhas: ["140"]},
-      {bairro: "Senac/Centro de Convenções", linhas: ["140"]},
-      {bairro: "Unimed Caruaru", linhas: ["140"]},
-      {bairro: "Parque Caminho das Aroeiras", linhas: ["140"]},
-      {bairro: "Deputado José Antônio Liberato", linhas: ["129"]},
-      {bairro: "Rua José de Souza Leite", linhas: ["129"]},
-      {bairro: "Rua Alcides de Farias Leite", linhas: ["129"]},
-      {bairro: "Rua Josimar Maximiano da Silva", linhas: ["120"]},
-      {bairro: "Rua Irma Maria Jeronimo", linhas: ["120"]},
-      {bairro: "Avenida Oslo", linhas: ["120"]},
-      {bairro: "Av. Oslo", linhas: ["120"]},      
-      {bairro: "Avenida Virgulino Ferreira", linhas: ["120"]},
-      {bairro: "Av. Virgulino Ferreira", linhas: ["120"]},
-      {bairro: "Rua Jose de Arimatea", linhas: ["120"]},
-      {bairro: "Avenida Julia Lopes", linhas: ["120"]},
-      {bairro: "Av. Julia Lopes", linhas: ["120"]},      
-      {bairro: "Rua Charles Cavalcante", linhas: ["120"]},
+        const dados = [
+            //Empresa Tabosa
+            {bairro: "Agamenon", linhas: ["431", "432"]},
+            {bairro: "Antônio Liberato", linhas: ["129"]},
+            {bairro: "Jardim Liberdade", linhas: ["104"]},
+            {bairro: "Jardim Pinheiros 3", linhas: ["120"]},
+            {bairro: "Indianópolis", linhas: ["120"]},
+            {bairro: "Petrópolis", linhas: ["104"]},
+            {bairro: "Rosanópolis", linhas: ["440"]},
+            {bairro: "Santa Rosa", linhas: ["410", "420"]},
+            {bairro: "Caruaru Shopping", linhas: ["140"]},
+            {bairro: "Hospital Regional do Agreste", linhas: ["410","420","440"]},
+            {bairro: "Centro", linhas: ["440", "432", "431", "420", "410", "140", "129", "120", "104"]},
+            {bairro: "Estação Ferroviária", linhas: ["440", "432", "431", "420", "410", "129", "120", "104"]},
+            {bairro: "Praça do Rosário", linhas: ["440", "432", "431", "420", "410", "140", "129", "120", "104"]},
+            {bairro: "Rua Capitão Zezé", linhas: ["104"]},
+            {bairro: "Rua São Carlos", linhas: ["104"]},
+            {bairro: "Rua São Geraldo", linhas: ["104", "431", "432"]},
+            {bairro: "Rua Camilo Castelo Branco", linhas: ["104", "432", "431"]},
+            {bairro: "Colégio Interativo", linhas: ["104"]},
+            {bairro: "Avenida João de Barros", linhas: ["104", "440", "432", "410"]},
+            {bairro: "Pitombeira", linhas: ["104", "440", "432", "431", "410"]},
+            {bairro: "Rua Rui Limeira Rosal", linhas: ["104", "431", "410"]},
+            {bairro: "Antonio Martins", linhas: ["104", "431", "420", "410"]},
+            {bairro: "Nossa Senhora das Dores", linhas: ["104", "431", "420", "410"]},
+            {bairro: "Praça José Martins", linhas: ["104", "431", "420", "410"]},
+            {bairro: "Feira da Sulanca", linhas: ["120", "104"]},
+            {bairro: "FAFICA", linhas: ["120", "104"]},
+            {bairro: "Jardim Pinheiro", linhas: ["120"]},
+            {bairro: "Rua Alferes Jorge", linhas: ["129", "120"]},
+            {bairro: "Avenida Maria de Souza Monteiro", linhas: ["129", "120"]},
+            {bairro: "Rua Zumbi dos Palmares", linhas: ["129", "120"]},
+            {bairro: "Santo Antônio", linhas: ["440"]},
+            {bairro: "HRAC", linhas: ["440", "432", "420", "410"]},
+            {bairro: "UPA", linhas: ["440", "432", "420", "410"]},
+            {bairro: "Vassoural", linhas: ["440", "432", "431", "420", "410"]},
+            {bairro: "Caruaru Park", linhas: ["432"]},
+            {bairro: "BR-212", linhas: ["432"]},
+            {bairro: "Adalgisa Nunes", linhas: ["432", "431"]},
+            {bairro: "Salustiano Torres", linhas: ["432", "431"]},
+            {bairro: "João Carral", linhas: ["432"]},
+            {bairro: "Antonio Sezerra", linhas: ["432"]},
+            {bairro: "Gustavo Bezerra", linhas: ["432", "431"]},
+            {bairro: "Camelódromo", linhas: ["432", "431", "420", "410"]},
+            {bairro: "General Osório", linhas: ["432", "431", "420"]},
+            {bairro: "Professora Adélia Ferreira", linhas: ["432", "431"]},
+            {bairro: "Presidente Castelo Branco", linhas: ["432", "431"]},
+            {bairro: "Santa Terezinha", linhas: ["431"]},
+            {bairro: "Dominguinhos", linhas: ["431"]},
+            {bairro: "João Cabral de Melo Neto", linhas: ["431"]},
+            {bairro: "Antonio Rezerra de Liba", linhas: ["431"]},
+            {bairro: "Cordoba", linhas: ["431"]},
+            {bairro: "BR-232", linhas: ["431", "104"]},
+            {bairro: "Nunes Machado", linhas: ["431", "420", "410"]},
+            {bairro: "Nazaré da Mata", linhas: ["420"]},
+            {bairro: "Dois Irmãos", linhas: ["420", "410"]},
+            {bairro: "Arrojado de Lisboa", linhas: ["420", "410"]},
+            {bairro: "Vernustriano Correia", linhas: ["420"]},
+            {bairro: "Bernardo de Queiroz", linhas: ["420"]},
+            {bairro: "Alcides Arquedas", linhas: ["420"]},
+            {bairro: "Alto de Santa Rosa", linhas: ["410"]},
+            {bairro: "José Marques Fontes", linhas: ["410"]},
+            {bairro: "Motorac", linhas: ["140"]},
+            {bairro: "Adjar da Silva Casé", linhas: ["140"]},
+            {bairro: "Senac/Centro de Convenções", linhas: ["140"]},
+            {bairro: "Unimed Caruaru", linhas: ["140"]},
+            {bairro: "Parque Caminho das Aroeiras", linhas: ["140"]},
+            {bairro: "Deputado José Antônio Liberato", linhas: ["129"]},
+            {bairro: "Rua José de Souza Leite", linhas: ["129"]},
+            {bairro: "Rua Alcides de Farias Leite", linhas: ["129"]},
+            {bairro: "Rua Josimar Maximiano da Silva", linhas: ["120"]},
+            {bairro: "Rua Irma Maria Jeronimo", linhas: ["120"]},
+            {bairro: "Avenida Oslo", linhas: ["120"]},
+            {bairro: "Av. Oslo", linhas: ["120"]},      
+            {bairro: "Avenida Virgulino Ferreira", linhas: ["120"]},
+            {bairro: "Av. Virgulino Ferreira", linhas: ["120"]},
+            {bairro: "Rua Jose de Arimatea", linhas: ["120"]},
+            {bairro: "Avenida Julia Lopes", linhas: ["120"]},
+            {bairro: "Av. Julia Lopes", linhas: ["120"]},      
+            {bairro: "Rua Charles Cavalcante", linhas: ["120"]},
 
-      {bairro: "431", linhas: ["Agamenon", "Centro", "Estação Ferroviária", "Praça do Rosário", "Rua São Geraldo", "Rua Camilo Castelo Branco", "Pitombeira", "Rua Rui Limeira Rosal", "Antonio Martins", "Nossa Senhora das Dores", "Praça José Martins", "Vassoural", "Adalgisa Nunes", "Salustiano Torres", "Gustavo Bezerra", "Camelódromo", "General Osório", "Professora Adélia Ferreira", "Presidente Castelo Branco", "Santa Terezinha", "Dominguinhos", "João Cabral de Melo Neto", "Antonio Rezerra de Liba", "Cordoba", "BR-232", "Nunes Machado"]},
-      {bairro: "432", linhas: ["Agamenon", "Centro", "Estação Ferroviária", "Praça do Rosário", "Rua São Geraldo", "Rua Camilo Castelo Branco", "Avenida João de Barros", "Pitombeira", "Vassoural", "Caruaru Park", "BR-212", "Adalgisa Nunes", "Salustiano Torres", "João Carral", "Antonio Sezerra", "Gustavo Bezerra", "Camelódromo", "General Osório", "Professora Adélia Ferreira", "Presidente Castelo Branco", "HRAC", "UPA"]},
-      {bairro: "129", linhas: ["Antônio Liberato", "Centro", "Estação Ferroviária", "Praça do Rosário", "Rua Alferes Jorge", "Avenida Maria de Souza Monteiro", "Rua Zumbi dos Palmares", "Deputado José Antônio Liberato", "Rua José de Souza Leite", "Rua Alcides de Farias Leite"]},
-      {bairro: "104", linhas: ["Jardim Liberdade", "Petrópolis", "Centro", "Estação Ferroviária", "Praça do Rosário", "Rua Capitão Zezé", "Rua São Carlos", "Rua São Geraldo", "Rua Camilo Castelo Branco", "Colégio Interativo", "Avenida João de Barros", "Pitombeira", "Rua Rui Limeira Rosal", "Antonio Martins", "Nossa Senhora das Dores", "Praça José Martins", "Feira da Sulanca", "FAFICA", "BR-232"]},
-      {bairro: "120", linhas: ["Jardim Pinheiros 3", "Indianópolis", "Centro", "Estação Ferroviária", "Praça do Rosário", "Feira da Sulanca", "FAFICA", "Jardim Pinheiro", "Rua Alferes Jorge", "Avenida Maria de Souza Monteiro", "Rua Zumbi dos Palmares", "Rua Josimar Maximiano da Silva", "Rua Irma Maria Jeronimo", "Avenida Oslo", "Avenida Virgulino Ferreira", "Rua Jose de Arimatea", "Avenida Julia Lopes", "Rua Charles Cavalcante"]},
-      {bairro: "440", linhas: ["Rosanópolis", "Hospital Regional do Agreste", "Centro", "Estação Ferroviária", "Praça do Rosário", "Santo Antônio", "HRAC", "UPA", "Vassoural", "Avenida João de Barros", "Pitombeira"]},
-      {bairro: "410", linhas: ["Santa Rosa", "Hospital Regional do Agreste", "Centro", "Estação Ferroviária", "Praça do Rosário", "HRAC", "UPA", "Vassoural", "Avenida João de Barros", "Pitombeira", "Rua Rui Limeira Rosal", "Antonio Martins", "Nossa Senhora das Dores", "Praça José Martins", "Camelódromo", "Nunes Machado", "Dois Irmãos", "Arrojado de Lisboa", "Alto de Santa Rosa", "José Marques Fontes"]},
-      {bairro: "420", linhas: ["Santa Rosa", "Hospital Regional do Agreste", "Centro", "Estação Ferroviária", "Praça do Rosário", "HRAC", "UPA", "Vassoural", "Pitombeira", "Antonio Martins", "Nossa Senhora das Dores", "Praça José Martins", "Camelódromo", "General Osório", "Nunes Machado", "Nazaré da Mata", "Dois Irmãos", "Arrojado de Lisboa", "Vernustriano Correia", "Bernardo de Queiroz", "Alcides Arquedas"]},
-      {bairro: "140", linhas: ["Caruaru Shopping", "Centro", "Praça do Rosário", "Motorac", "Adjar da Silva Casé", "Senac/Centro de Convenções", "Unimed Caruaru", "Parque Caminho das Aroeiras"]},
-  ];
+            {bairro: "431", linhas: ["Agamenon", "Centro", "Estação Ferroviária", "Praça do Rosário", "Rua São Geraldo", "Rua Camilo Castelo Branco", "Pitombeira", "Rua Rui Limeira Rosal", "Antonio Martins", "Nossa Senhora das Dores", "Praça José Martins", "Vassoural", "Adalgisa Nunes", "Salustiano Torres", "Gustavo Bezerra", "Camelódromo", "General Osório", "Professora Adélia Ferreira", "Presidente Castelo Branco", "Santa Terezinha", "Dominguinhos", "João Cabral de Melo Neto", "Antonio Rezerra de Liba", "Cordoba", "BR-232", "Nunes Machado"]},
+            {bairro: "432", linhas: ["Agamenon", "Centro", "Estação Ferroviária", "Praça do Rosário", "Rua São Geraldo", "Rua Camilo Castelo Branco", "Avenida João de Barros", "Pitombeira", "Vassoural", "Caruaru Park", "BR-212", "Adalgisa Nunes", "Salustiano Torres", "João Carral", "Antonio Sezerra", "Gustavo Bezerra", "Camelódromo", "General Osório", "Professora Adélia Ferreira", "Presidente Castelo Branco", "HRAC", "UPA"]},
+            {bairro: "129", linhas: ["Antônio Liberato", "Centro", "Estação Ferroviária", "Praça do Rosário", "Rua Alferes Jorge", "Avenida Maria de Souza Monteiro", "Rua Zumbi dos Palmares", "Deputado José Antônio Liberato", "Rua José de Souza Leite", "Rua Alcides de Farias Leite"]},
+            {bairro: "104", linhas: ["Jardim Liberdade", "Petrópolis", "Centro", "Estação Ferroviária", "Praça do Rosário", "Rua Capitão Zezé", "Rua São Carlos", "Rua São Geraldo", "Rua Camilo Castelo Branco", "Colégio Interativo", "Avenida João de Barros", "Pitombeira", "Rua Rui Limeira Rosal", "Antonio Martins", "Nossa Senhora das Dores", "Praça José Martins", "Feira da Sulanca", "FAFICA", "BR-232"]},
+            {bairro: "120", linhas: ["Jardim Pinheiros 3", "Indianópolis", "Centro", "Estação Ferroviária", "Praça do Rosário", "Feira da Sulanca", "FAFICA", "Jardim Pinheiro", "Rua Alferes Jorge", "Avenida Maria de Souza Monteiro", "Rua Zumbi dos Palmares", "Rua Josimar Maximiano da Silva", "Rua Irma Maria Jeronimo", "Avenida Oslo", "Avenida Virgulino Ferreira", "Rua Jose de Arimatea", "Avenida Julia Lopes", "Rua Charles Cavalcante"]},
+            {bairro: "440", linhas: ["Rosanópolis", "Hospital Regional do Agreste", "Centro", "Estação Ferroviária", "Praça do Rosário", "Santo Antônio", "HRAC", "UPA", "Vassoural", "Avenida João de Barros", "Pitombeira"]},
+            {bairro: "410", linhas: ["Santa Rosa", "Hospital Regional do Agreste", "Centro", "Estação Ferroviária", "Praça do Rosário", "HRAC", "UPA", "Vassoural", "Avenida João de Barros", "Pitombeira", "Rua Rui Limeira Rosal", "Antonio Martins", "Nossa Senhora das Dores", "Praça José Martins", "Camelódromo", "Nunes Machado", "Dois Irmãos", "Arrojado de Lisboa", "Alto de Santa Rosa", "José Marques Fontes"]},
+            {bairro: "420", linhas: ["Santa Rosa", "Hospital Regional do Agreste", "Centro", "Estação Ferroviária", "Praça do Rosário", "HRAC", "UPA", "Vassoural", "Pitombeira", "Antonio Martins", "Nossa Senhora das Dores", "Praça José Martins", "Camelódromo", "General Osório", "Nunes Machado", "Nazaré da Mata", "Dois Irmãos", "Arrojado de Lisboa", "Vernustriano Correia", "Bernardo de Queiroz", "Alcides Arquedas"]},
+            {bairro: "140", linhas: ["Caruaru Shopping", "Centro", "Praça do Rosário", "Motorac", "Adjar da Silva Casé", "Senac/Centro de Convenções", "Unimed Caruaru", "Parque Caminho das Aroeiras"]},
+        ];
 
-         // Ignorar Acentos
+        // Ignorar Acentos
         function normalizar(str) {
             return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         }
@@ -448,7 +528,7 @@ function voltarpagina3() {
             // Desabilitar botão durante a busca
             document.getElementById('consultarBtn').disabled = true;
 
-            // Simular um tempo de processamento (apenas para demonstração do loading)
+            // Simular um tempo de processamento
             setTimeout(() => {
                 let resultadosHTML = "";
                 
@@ -462,7 +542,9 @@ function voltarpagina3() {
                             <div class="bairro-result">
                                 <div class="bairro-title">${bairroEncontrado.bairro}</div>
                                 <div class="linhas-list">
-                                    ${bairroEncontrado.linhas.map(linha => `<span class="linha-item">${linha}</span>`).join('')}
+                                    ${bairroEncontrado.linhas.map(linha => 
+                                        `<button class="linha-btn" onclick="mostrarDetalhesLinha('${linha}')">${linha}</button>`
+                                    ).join('')}
                                 </div>
                             </div>
                         `;
@@ -481,8 +563,77 @@ function voltarpagina3() {
                 
                 // Reabilitar o botão
                 document.getElementById('consultarBtn').disabled = false;
-            }, 800); // Tempo simulado de busca
+            }, 800);
         }
+
+// ADICIONE ISSO NO INÍCIO DO SCRIPT (antes da função buscarLinhas)
+const imagensDasLinhas = {
+    "431": "https://i.imgur.com/exemplo431.png",
+    "432": "https://i.imgur.com/exemplo432.png", 
+    "129": "https://i.imgur.com/exemplo129.png",
+    "104": "https://i.imgur.com/exemplo104.png",
+    "120": "",
+    "440": "https://i.imgur.com/exemplo440.png",
+    "410": "https://i.imgur.com/exemplo410.png",
+    "420": "https://i.imgur.com/exemplo420.png",
+    "140": "https://i.imgur.com/exemplo140.png"
+};
+
+// MODIFIQUE A FUNÇÃO mostrarDetalhesLinha para usar o mapeamento
+function mostrarDetalhesLinha(numeroLinha) {
+    const bairrosComEstaRota = dados.filter(item => item.linhas.includes(numeroLinha));
+    
+    // USA A IMAGEM ESPECÍFICA DA LINHA OU UMA PADRÃO SE NÃO ENCONTRAR
+    const imagemLinha = imagensDasLinhas[numeroLinha] || "https://i.imgur.com/C36KSnU.png";
+    
+    let modalHTML = "";
+    
+    // Bairros atendidos
+    if (bairrosComEstaRota.length > 0) {
+        modalHTML += `
+            <div class="linha-info">
+                <div class="linha-descricao">Bairros atendidos pela Linha ${numeroLinha}:</div>
+                <div class="bairros-list">
+                    ${bairrosComEstaRota.map(item => 
+                        `<span class="bairro-tag">${item.bairro}</span>`
+                    ).join('')}
+                </div>
+            </div>
+        `;
+    } else {
+        modalHTML += `<p>Nenhuma informação disponível para a linha ${numeroLinha}.</p>`;
+    }
+    
+    // IMAGEM ESPECÍFICA DA LINHA
+    modalHTML += `
+        <div class="linha-info">
+            <div class="linha-descricao">Mapa da Linha ${numeroLinha}:</div>
+            <div style="text-align: center;">
+                <img src="${imagemLinha}" 
+                     alt="Mapa da Linha ${numeroLinha}" 
+                     class="linha-mapa"
+                     onerror="this.src='https://i.imgur.com/C36KSnU.png'">
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('modalLinhaNumero').textContent = `Linha ${numeroLinha}`;
+    document.getElementById('modalConteudo').innerHTML = modalHTML;
+    document.getElementById('linhaModal').style.display = 'flex';
+}
+
+        // Função para fechar o modal
+        function fecharModal() {
+            document.getElementById('linhaModal').style.display = 'none';
+        }
+
+        // Fechar modal ao clicar fora dele
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('linhaModal');
+            if (event.target === modal) {
+                fecharModal();
+            }
+        });
 
         // Função para limpar os resultados
         function limparResultados() {
@@ -497,6 +648,19 @@ function voltarpagina3() {
                 buscarLinhas();
             }
         });
+
+        // Funções de navegação
+        function voltarpagina() {
+            window.location.href = "index.html";             
+        }
+
+        function voltarpagina2() {
+            window.location.href = "Rotas Natal.html";             
+        }
+
+        function voltarpagina3() {
+            window.location.href = "Rotas João Pessoa.html";             
+        }
     </script>
 </body>
 </html>
