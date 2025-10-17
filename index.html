@@ -182,7 +182,7 @@
             background: #f8f9fa;
         }
         
-        /* Novos estilos para os resultados separados */
+        /* Estilos para os botões de linha - MANTIDO O TAMANHO ORIGINAL */
         .bairro-result {
             margin-bottom: 15px;
             padding: 10px;
@@ -194,7 +194,8 @@
         .bairro-title {
             font-weight: 600;
             color: #cc0000;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 18px;
         }
         
         .linhas-list {
@@ -204,13 +205,25 @@
             margin-top: 5px;
         }
         
-        .linha-item {
+        /* BOTÕES COM MESMO TAMANHO DOS SPANS ORIGINAIS */
+        .linha-btn {
             background: #e9f7ef;
             padding: 5px 10px;
             border-radius: 4px;
             font-weight: 600;
             color: #008000;
             border: 1px solid #c3e6cb;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+            width: auto;
+            display: inline-block;
+        }
+        
+        .linha-btn:hover {
+            background: #d4edda;
+            transform: none;
+            box-shadow: none;
         }
         
         .no-linhas {
@@ -226,6 +239,110 @@
         .clear-btn:hover {
             background: #5a6268;
         }
+        
+        /* Modal para detalhes da linha */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #cc0000;
+            padding-bottom: 10px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            color: #cc0000;
+            font-weight: bold;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6c757d;
+            width: auto;
+            padding: 0;
+        }
+        
+        .close-btn:hover {
+            color: #cc0000;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .linha-info {
+            margin-bottom: 15px;
+        }
+        
+        .linha-descricao {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .bairros-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .bairro-tag {
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            font-size: 14px;
+        }
+        
+.linha-mapa {
+    width: 100%;
+    max-width: 350px; /* Tamanho ainda menor para teste */
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 2px solid #ddd;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f5f5f5; /* Fundo cinza para ver se a área aparece */
+    min-height: 150px; /* Altura mínima para ver a área */
+}
+
+/* Estilo para quando a imagem não carrega */
+.linha-mapa:before {
+    content: "Imagem não carregada";
+    display: block;
+    text-align: center;
+    padding: 60px 10px;
+    color: #999;
+    font-style: italic;
+}
         
         @media (max-width: 768px) {
             .header-content {
@@ -251,7 +368,7 @@
             display: flex;        
         }
 
-                .botao2 {
+        .botao2 {
             margin-left: 5px;
             margin-right: 5px;
         }
@@ -260,7 +377,6 @@
             color: #333;
             margin-left: 230px;
         }
-
     </style>
 </head>
 <body>
@@ -276,51 +392,13 @@
             </div>
         </div>
 
-
-<h2>Buscadores:</h2>     
-<!--Botão1-->        
-<div class="button1">
-
-<button type="button" id="voltar" onclick="voltarpagina()">CARUARU</button>
-
-<script>
-
-function voltarpagina() {
-
-      window.location.href = "Rotas Caruaru.html";             
-    }
-
-</script>
-
-<!--Botão2-->
-
-<button type="button" id="voltar" onclick="voltarpagina2()" class="botao2">NATAL</button>
-
-<script>
-
-function voltarpagina2() {
-
-      window.location.href = "Rotas Natal.html";             
-    }
-
-</script>
-
-<!--Botão3-->
-
-<button type="button" id="voltar" onclick="voltarpagina3()">JOÃO PESSOA</button>
-
-<script>
-
-function voltarpagina3() {
-
-      window.location.href = "Rotas João Pessoa.html";             
-    }
-
-</script>
-
-
-
-</div>
+        <h2>Buscadores:</h2>     
+        <!--Botão1-->        
+        <div class="button1">
+            <button type="button" id="voltar" onclick="voltarpagina()">CARUARU</button>
+            <button type="button" id="voltar" onclick="voltarpagina2()" class="botao2">NATAL</button>
+            <button type="button" id="voltar" onclick="voltarpagina3()">JOÃO PESSOA</button>
+        </div>
         
         <div class="content">
             <div class="input-group">
@@ -342,171 +420,184 @@ function voltarpagina3() {
         </div>
     </div>
 
+    <!-- Modal para detalhes da linha -->
+    <div class="modal" id="linhaModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalLinhaNumero">Linha 000</div>
+                <button class="close-btn" onclick="fecharModal()">&times;</button>
+            </div>
+            <div id="modalConteudo">
+                <!-- Conteúdo será preenchido via JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <script>
-  const dados = [
-  {bairro: "Alto Branco", linhas: ["100", "22"]},
-  {bairro: "Aluízio Campos", linhas: ["044"]},
-  {bairro: "Bela Vista", linhas: ["903B", "303", "500", "555"]},
-  {bairro: "Bodocongó", linhas: ["505", "903B", "263", "303", "245", "066", "333"]},
-  {bairro: "Catolé", linhas: ["444", "404", "555", "245"]},
-  {bairro: "Centro", linhas: ["505", "903B", "909", "111", "444", "404", "955", "944", "220", "100", "101", "263", "044", "500", "092", "077", "555", "910", "902", "922", "245", "066", "22", "333", "300"]},
-  {bairro: "Castelo Branco", linhas: ["333"]},
-  {bairro: "Centenário", linhas: ["505", "220", "500", "555", "263"]},
-  {bairro: "Cruzeiro", linhas: ["111", "101", "902", "245"]},
-  {bairro: "Dinamérica", linhas: ["220", "263", "066", "22"]},
-  {bairro: "Distrito Industrial", linhas: ["111", "101", "044", "944"]},
-  {bairro: "Estação Velha", linhas: ["404", "245", "044", "944"]},
-  {bairro: "Galante", linhas: ["955"]},
-  {bairro: "Itararé", linhas: ["444", "404"]},
-  {bairro: "Jardim Continental", linhas: ["910"]},
-  {bairro: "Jardim Paulistano", linhas: ["111", "101", "245"]},
-  {bairro: "Jardim Quarenta", linhas: ["111", "444", "404", "101", "902", "245"]},
-  {bairro: "Jardim Tavares", linhas: ["22"]},
-  {bairro: "Jenipapo", linhas: ["910"]},
-  {bairro: "Jeremias", linhas: ["505", "303", "555", "333"]},
-  {bairro: "José Pinheiro", linhas: ["505", "444", "404", "555", "333"]},
-  {bairro: "Lauritzen", linhas: ["100"]},
-  {bairro: "Liberdade", linhas: ["111", "101", "902"]},
-  {bairro: "Malvinas", linhas: ["903B", "220", "263", "092", "077", "922", "245", "066", "22"]},
-  {bairro: "Mirante", linhas: ["505", "555"]},
-  {bairro: "Monte Castelo", linhas: ["303", "333"]},
-  {bairro: "Monte Santo", linhas: ["505", "903B", "303", "333"]},
-  {bairro: "Nações", linhas: ["100"]},
-  {bairro: "Nova Brasília", linhas: ["303", "333"]},
-  {bairro: "Palmeira", linhas: ["505", "910"]},
-  {bairro: "Pedregal", linhas: ["505", "555"]},
-  {bairro: "Presidente Médice", linhas: ["909"]},
-  {bairro: "Prata", linhas: ["263", "500", "910", "066", "333"]},
-  {bairro: "Queimadas BR104", linhas: ["944"]},
-  {bairro: "Sandra Cavalcante", linhas: ["903B"]},
-  {bairro: "Santa Cruz", linhas: ["909", "101", "092", "077", "902", "22", "245"]},
-  {bairro: "Santa Rosa", linhas: ["444", "404", "066"]},
-  {bairro: "Santo Antônio", linhas: ["444", "404", "500", "303", "333"]},
-  {bairro: "São José", linhas: ["909", "111", "444", "404", "101", "902", "077", "555", "092"]},
-  {bairro: "São José da Mata", linhas: ["903B"]},
-  {bairro: "Serrotão", linhas: ["092", "077", "922"]},
-  {bairro: "Tambor", linhas: ["111"]},
-  {bairro: "Três Irmãs", linhas: ["092", "077", "922"]},
-  {bairro: "Velame", linhas: ["944"]},
-  {bairro: "Cuité", linhas: ["910"]},
-  {bairro: "Queimadas", linhas: ["944"]},
-  {bairro: "Bairro Universitário", linhas: ["303", "555"]},
-  {bairro: "UEPB", linhas: ["300"]},
-  {bairro: "Av. Getúlio Vargas", linhas: ["333"]},
-  {bairro: "Avenida Getúlio Vargas", linhas: ["333"]},
-  {bairro: "Rua Olegário Maciel", linhas: ["333", "303"]},
-  {bairro: "Rua Joana D'Arc Arruda", linhas: ["333"]},
-  {bairro: "Av. Juvencio Arruda", linhas: ["333", "303", "300B"]},
-  {bairro: "Avenida Juvencio Arruda", linhas: ["333", "303", "300B"]},
-  {bairro: "Av. Dom Pedro II", linhas: ["333", "263", "903A"]},
-  {bairro: "Avenida Dom Pedro II", linhas: ["333", "263", "903A"]},
-  {bairro: "AVENIDA MARECHAL FLORIANO PEIXOTO", linhas: ["22", "220", "404", "444", "500", "955", "066", "092"]},
-  {bairro: "IFPB", linhas: ["22"]},
-  {bairro: "HOSPITAL DA CRIANÇA E DO ADOLESCENTE", linhas: ["22", "220", "066"]},
-  {bairro: "UPA 24 HORAS", linhas: ["100"]},
-  {bairro: "COLÉGIO DAS DAMAS", linhas: ["100", "066", "220", "263", "303", "044", "22", "955", "404", "444", "004A", "500"]},
-  {bairro: "ESCOLA ESTADUAL SOLON DE LUCENA", linhas: ["100"]},
-  {bairro: "MUSEU TELÉGRAFO NACIONAL", linhas: ["100", "101", "922", "909"]},
-  {bairro: "YPIRANGA CLUB", linhas: ["100"]},
-  {bairro: "SEMINÁRIO DIOCESANO", linhas: ["100"]},
-  {bairro: "2º BATALHÃO DA POLÍCIA MILITAR", linhas: ["101", "111", "909", "077", "922"]},
-  {bairro: "RECEBEDORIA DE RENDAS - FISCO", linhas: ["101", "111"]},
-  {bairro: "AVENIDA JUSCELINO KUBITSCHECK", linhas: ["101", "909"]},
-  {bairro: "AVENIDA ALMIRANTE BARROSO", linhas: ["101", "111", "909", "077", "922", "902"]},
-  {bairro: "HOSPITAL DE TRAUMA", linhas: ["220", "22"]},
-  {bairro: "INSS - POSTO DINAMÉRICA", linhas: ["220", "404", "444"]},
-  {bairro: "SECRETARIA DE ADMINISTRAÇÃO", linhas: ["220", "066", "944"]},
-  {bairro: "TERMINAL DO CHICO MENDES", linhas: ["263", "245", "066"]},
-  {bairro: "PRAÇA CLEMENTINO PROCÓPIO", linhas: ["263", "505", "500", "092", "555"]},
-  {bairro: "AVENIDA PORTUGAL", linhas: ["263", "903B", "903A", "300B"]},
-  {bairro: "AVENIDA FRANCISCO ANTÔNIO DO NASCIMENTO", linhas: ["303"]},
-  {bairro: "AVENIDA PRESIDENTE JOÃO PESSOA", linhas: ["303"]},
-  {bairro: "FACULDADE DE MEDICINA - UFCG", linhas: ["303", "300B"]},
-  {bairro: "CENTRAL DE AULAS - UEPB", linhas: ["303", "300B"]},
-  {bairro: "BR-104", linhas: ["944", "044"]},
-  {bairro: "MATERNIDADE - ISEA", linhas: ["944", "903A", "044", "903B"]},
-  {bairro: "HOSPITAL HAPIVIDA", linhas: ["944", "044"]},
-  {bairro: "VILA DO ARTESÃO", linhas: ["944"]},
-  {bairro: "JUSTIÇA ELEITORAL", linhas: ["944"]},
-  {bairro: "AÇUDE VELHO", linhas: ["044"]},
-  {bairro: "MINISTÉRIO PÚBLICO ESTADUAL", linhas: ["044", "245"]},
-  {bairro: "TRT", linhas: ["044", "245"]},
-  {bairro: "RODOVIÁRIA NOVA", linhas: ["245", "505", "092", "555"]},
-  {bairro: "SHOPPING LUIZA MOTTA", linhas: ["245", "444"]},
-  {bairro: "HEMOCENTRO DE CAMPINA GRANDE", linhas: ["245", "505", "092", "555"]},
-  {bairro: "MERCADO DAS MALVINAS", linhas: ["245", "066"]},
-  {bairro: "DELEGACIA CENTRAL", linhas: ["245"]},
-  {bairro: "SESC - AÇUDE VELHO", linhas: ["245"]},
-  {bairro: "SECRETARIA DE ADMINISTRAÇÃO", linhas: ["066"]},
-  {bairro: "RHEMA - CENTRO DE TREINAMENTO BÍBLICO", linhas: ["066"]},
-  {bairro: "AVENIDA PRESIDENTE GETÚLIO VARGAS", linhas: ["903A", "903B"]},
-  {bairro: "RODOVIA RAYMUNDO ASFORA", linhas: ["903A"]},
-  {bairro: "FIEP", linhas: ["903A", "903B", "444", "004A"]},
-  {bairro: "IGREJA DE BODOCONGÓ", linhas: ["300B"]},
-  {bairro: "ESTADUAL DA PRATA", linhas: ["300B", "500"]},
-  {bairro: "PARTAGE SHOPPING", linhas: ["955", "004A", "505", "092", "555"]},
-  {bairro: "MATERNIDADE", linhas: ["955"]},
-  {bairro: "BR-230", linhas: ["955", "903B", "505", "555"]},
-  {bairro: "PB-100", linhas: ["955"]},
-  {bairro: "MERCADO PÚBLICO DE GALANTE", linhas: ["955"]},
-  {bairro: "STTP - SEDE", linhas: ["955", "555"]},
-  {bairro: "TERMINAL DO AMIGÃO", linhas: ["404", "444"]},
-  {bairro: "PRAÇA DO TRABALHO", linhas: ["404", "922", "902", "077", "092", "111", "444", "944", "101", "909"]},
-  {bairro: "AVENIDA DOUTOR ELPÍDIO DE ALMEIDA", linhas: ["404"]},
-  {bairro: "CALL CENTER - ORBITALL", linhas: ["404", "909", "902", "922", "077"]},
-  {bairro: "FACULDADE FACISA", linhas: ["004A"]},
-  {bairro: "MAKRO ATACADISTA", linhas: ["004A"]},
-  {bairro: "CONSELHO TUTELAR NORTE", linhas: ["004A"]},
-  {bairro: "PRAÇA AFONSO AGRA FILHO", linhas: ["111"]},
-  {bairro: "CALL CENTER", linhas: ["909", "902", "922", "077"]},
-  {bairro: "UFCG", linhas: ["903B", "505", "300", "263", "903A"]},
-  {bairro: "PB-115", linhas: ["903B"]},
-  {bairro: "ASSAI ATACADISTA - CATOLÉ", linhas: ["505", "092", "555"]},
-  {bairro: "ESTADUAL DA PRATA", linhas: ["500"]},
-  {bairro: "CANTINHO UNIVERSITÁRIO", linhas: ["500"]},
-  {bairro: "IGREJA DO ROSÁRIO", linhas: ["500"]},
-  {bairro: "BASE DA ROTAM - POLÍCIA MILITAR", linhas: ["077"]},
-  {bairro: "ESCOLA MARIA ANUNCIADA BEZERRA COUTINHO", linhas: ["077"]},
-  {bairro: "DISTRITO DE JENIPAPO", linhas: ["910"]},
-  {bairro: "FACULDADE MAURÍCIO DE NASSAU", linhas: ["910"]},
-  {bairro: "INSTITUTO DE ODONTOLOGIA DA PARAÍBA", linhas: ["910"]},
-  {bairro: "AVENIDA PARIS", linhas: ["910"]},
-  {bairro: "PB-138", linhas: ["902"]},
-  {bairro: "SUPERMERCADO MIX MATEUS", linhas: ["902"]},
-  {bairro: "CIRETRAN", linhas: ["902", "922"]},
+        const dados = [
+            {bairro: "Alto Branco", linhas: ["100", "22"]},
+            {bairro: "Aluízio Campos", linhas: ["044"]},
+            {bairro: "Bela Vista", linhas: ["903B", "303", "500", "555"]},
+            {bairro: "Bodocongó", linhas: ["505", "903B", "263", "303", "245", "066", "333"]},
+            {bairro: "Catolé", linhas: ["444", "404", "555", "245"]},
+            {bairro: "Centro", linhas: ["505", "903B", "909", "111", "444", "404", "955", "944", "220", "100", "101", "263", "044", "500", "092", "077", "555", "910", "902", "922", "245", "066", "22", "333", "300"]},
+            {bairro: "Castelo Branco", linhas: ["333"]},
+            {bairro: "Centenário", linhas: ["505", "220", "500", "555", "263"]},
+            {bairro: "Cruzeiro", linhas: ["111", "101", "902", "245"]},
+            {bairro: "Dinamérica", linhas: ["220", "263", "066", "22"]},
+            {bairro: "Distrito Industrial", linhas: ["111", "101", "044", "944"]},
+            {bairro: "Estação Velha", linhas: ["404", "245", "044", "944"]},
+            {bairro: "Galante", linhas: ["955"]},
+            {bairro: "Itararé", linhas: ["444", "404"]},
+            {bairro: "Jardim Continental", linhas: ["910"]},
+            {bairro: "Jardim Paulistano", linhas: ["111", "101", "245"]},
+            {bairro: "Jardim Quarenta", linhas: ["111", "444", "404", "101", "902", "245"]},
+            {bairro: "Jardim Tavares", linhas: ["22"]},
+            {bairro: "Jenipapo", linhas: ["910"]},
+            {bairro: "Jeremias", linhas: ["505", "303", "555", "333"]},
+            {bairro: "José Pinheiro", linhas: ["505", "444", "404", "555", "333"]},
+            {bairro: "Lauritzen", linhas: ["100"]},
+            {bairro: "Liberdade", linhas: ["111", "101", "902"]},
+            {bairro: "Malvinas", linhas: ["903B", "220", "263", "092", "077", "922", "245", "066", "22"]},
+            {bairro: "Mirante", linhas: ["505", "555"]},
+            {bairro: "Monte Castelo", linhas: ["303", "333"]},
+            {bairro: "Monte Santo", linhas: ["505", "903B", "303", "333"]},
+            {bairro: "Nações", linhas: ["100"]},
+            {bairro: "Nova Brasília", linhas: ["303", "333"]},
+            {bairro: "Palmeira", linhas: ["505", "910"]},
+            {bairro: "Pedregal", linhas: ["505", "555"]},
+            {bairro: "Presidente Médice", linhas: ["909"]},
+            {bairro: "Prata", linhas: ["263", "500", "910", "066", "333"]},
+            {bairro: "Queimadas BR104", linhas: ["944"]},
+            {bairro: "Sandra Cavalcante", linhas: ["903B"]},
+            {bairro: "Santa Cruz", linhas: ["909", "101", "092", "077", "902", "22", "245"]},
+            {bairro: "Santa Rosa", linhas: ["444", "404", "066"]},
+            {bairro: "Santo Antônio", linhas: ["444", "404", "500", "303", "333"]},
+            {bairro: "São José", linhas: ["909", "111", "444", "404", "101", "902", "077", "555", "092"]},
+            {bairro: "São José da Mata", linhas: ["903B"]},
+            {bairro: "Serrotão", linhas: ["092", "077", "922"]},
+            {bairro: "Tambor", linhas: ["111"]},
+            {bairro: "Três Irmãs", linhas: ["092", "077", "922"]},
+            {bairro: "Velame", linhas: ["944"]},
+            {bairro: "Cuité", linhas: ["910"]},
+            {bairro: "Queimadas", linhas: ["944"]},
+            {bairro: "Bairro Universitário", linhas: ["303", "555"]},
+            {bairro: "UEPB", linhas: ["300"]},
+            {bairro: "Av. Getúlio Vargas", linhas: ["333"]},
+            {bairro: "Avenida Getúlio Vargas", linhas: ["333"]},
+            {bairro: "Rua Olegário Maciel", linhas: ["333", "303"]},
+            {bairro: "Rua Joana D'Arc Arruda", linhas: ["333"]},
+            {bairro: "Av. Juvencio Arruda", linhas: ["333", "303", "300B"]},
+            {bairro: "Avenida Juvencio Arruda", linhas: ["333", "303", "300B"]},
+            {bairro: "Av. Dom Pedro II", linhas: ["333", "263", "903A"]},
+            {bairro: "Avenida Dom Pedro II", linhas: ["333", "263", "903A"]},
+            {bairro: "AVENIDA MARECHAL FLORIANO PEIXOTO", linhas: ["22", "220", "404", "444", "500", "955", "066", "092"]},
+            {bairro: "IFPB", linhas: ["22"]},
+            {bairro: "HOSPITAL DA CRIANÇA E DO ADOLESCENTE", linhas: ["22", "220", "066"]},
+            {bairro: "UPA 24 HORAS", linhas: ["100"]},
+            {bairro: "COLÉGIO DAS DAMAS", linhas: ["100", "066", "220", "263", "303", "044", "22", "955", "404", "444", "004A", "500"]},
+            {bairro: "ESCOLA ESTADUAL SOLON DE LUCENA", linhas: ["100"]},
+            {bairro: "MUSEU TELÉGRAFO NACIONAL", linhas: ["100", "101", "922", "909"]},
+            {bairro: "YPIRANGA CLUB", linhas: ["100"]},
+            {bairro: "SEMINÁRIO DIOCESANO", linhas: ["100"]},
+            {bairro: "2º BATALHÃO DA POLÍCIA MILITAR", linhas: ["101", "111", "909", "077", "922"]},
+            {bairro: "RECEBEDORIA DE RENDAS - FISCO", linhas: ["101", "111"]},
+            {bairro: "AVENIDA JUSCELINO KUBITSCHECK", linhas: ["101", "909"]},
+            {bairro: "AVENIDA ALMIRANTE BARROSO", linhas: ["101", "111", "909", "077", "922", "902"]},
+            {bairro: "HOSPITAL DE TRAUMA", linhas: ["220", "22"]},
+            {bairro: "INSS - POSTO DINAMÉRICA", linhas: ["220", "404", "444"]},
+            {bairro: "SECRETARIA DE ADMINISTRAÇÃO", linhas: ["220", "066", "944"]},
+            {bairro: "TERMINAL DO CHICO MENDES", linhas: ["263", "245", "066"]},
+            {bairro: "PRAÇA CLEMENTINO PROCÓPIO", linhas: ["263", "505", "500", "092", "555"]},
+            {bairro: "AVENIDA PORTUGAL", linhas: ["263", "903B", "903A", "300B"]},
+            {bairro: "AVENIDA FRANCISCO ANTÔNIO DO NASCIMENTO", linhas: ["303"]},
+            {bairro: "AVENIDA PRESIDENTE JOÃO PESSOA", linhas: ["303"]},
+            {bairro: "FACULDADE DE MEDICINA - UFCG", linhas: ["303", "300B"]},
+            {bairro: "CENTRAL DE AULAS - UEPB", linhas: ["303", "300B"]},
+            {bairro: "BR-104", linhas: ["944", "044"]},
+            {bairro: "MATERNIDADE - ISEA", linhas: ["944", "903A", "044", "903B"]},
+            {bairro: "HOSPITAL HAPIVIDA", linhas: ["944", "044"]},
+            {bairro: "VILA DO ARTESÃO", linhas: ["944"]},
+            {bairro: "JUSTIÇA ELEITORAL", linhas: ["944"]},
+            {bairro: "AÇUDE VELHO", linhas: ["044"]},
+            {bairro: "MINISTÉRIO PÚBLICO ESTADUAL", linhas: ["044", "245"]},
+            {bairro: "TRT", linhas: ["044", "245"]},
+            {bairro: "RODOVIÁRIA NOVA", linhas: ["245", "505", "092", "555"]},
+            {bairro: "SHOPPING LUIZA MOTTA", linhas: ["245", "444"]},
+            {bairro: "HEMOCENTRO DE CAMPINA GRANDE", linhas: ["245", "505", "092", "555"]},
+            {bairro: "MERCADO DAS MALVINAS", linhas: ["245", "066"]},
+            {bairro: "DELEGACIA CENTRAL", linhas: ["245"]},
+            {bairro: "SESC - AÇUDE VELHO", linhas: ["245"]},
+            {bairro: "SECRETARIA DE ADMINISTRAÇÃO", linhas: ["066"]},
+            {bairro: "RHEMA - CENTRO DE TREINAMENTO BÍBLICO", linhas: ["066"]},
+            {bairro: "AVENIDA PRESIDENTE GETÚLIO VARGAS", linhas: ["903A", "903B"]},
+            {bairro: "RODOVIA RAYMUNDO ASFORA", linhas: ["903A"]},
+            {bairro: "FIEP", linhas: ["903A", "903B", "444", "004A"]},
+            {bairro: "IGREJA DE BODOCONGÓ", linhas: ["300B"]},
+            {bairro: "ESTADUAL DA PRATA", linhas: ["300B", "500"]},
+            {bairro: "PARTAGE SHOPPING", linhas: ["955", "004A", "505", "092", "555"]},
+            {bairro: "MATERNIDADE", linhas: ["955"]},
+            {bairro: "BR-230", linhas: ["955", "903B", "505", "555"]},
+            {bairro: "PB-100", linhas: ["955"]},
+            {bairro: "MERCADO PÚBLICO DE GALANTE", linhas: ["955"]},
+            {bairro: "STTP - SEDE", linhas: ["955", "555"]},
+            {bairro: "TERMINAL DO AMIGÃO", linhas: ["404", "444"]},
+            {bairro: "PRAÇA DO TRABALHO", linhas: ["404", "922", "902", "077", "092", "111", "444", "944", "101", "909"]},
+            {bairro: "AVENIDA DOUTOR ELPÍDIO DE ALMEIDA", linhas: ["404"]},
+            {bairro: "CALL CENTER - ORBITALL", linhas: ["404", "909", "902", "922", "077"]},
+            {bairro: "FACULDADE FACISA", linhas: ["004A"]},
+            {bairro: "MAKRO ATACADISTA", linhas: ["004A"]},
+            {bairro: "CONSELHO TUTELAR NORTE", linhas: ["004A"]},
+            {bairro: "PRAÇA AFONSO AGRA FILHO", linhas: ["111"]},
+            {bairro: "CALL CENTER", linhas: ["909", "902", "922", "077"]},
+            {bairro: "UFCG", linhas: ["903B", "505", "300", "263", "903A"]},
+            {bairro: "PB-115", linhas: ["903B"]},
+            {bairro: "ASSAI ATACADISTA - CATOLÉ", linhas: ["505", "092", "555"]},
+            {bairro: "ESTADUAL DA PRATA", linhas: ["500"]},
+            {bairro: "CANTINHO UNIVERSITÁRIO", linhas: ["500"]},
+            {bairro: "IGREJA DO ROSÁRIO", linhas: ["500"]},
+            {bairro: "BASE DA ROTAM - POLÍCIA MILITAR", linhas: ["077"]},
+            {bairro: "ESCOLA MARIA ANUNCIADA BEZERRA COUTINHO", linhas: ["077"]},
+            {bairro: "DISTRITO DE JENIPAPO", linhas: ["910"]},
+            {bairro: "FACULDADE MAURÍCIO DE NASSAU", linhas: ["910"]},
+            {bairro: "INSTITUTO DE ODONTOLOGIA DA PARAÍBA", linhas: ["910"]},
+            {bairro: "AVENIDA PARIS", linhas: ["910"]},
+            {bairro: "PB-138", linhas: ["902"]},
+            {bairro: "SUPERMERCADO MIX MATEUS", linhas: ["902"]},
+            {bairro: "CIRETRAN", linhas: ["902", "922"]},
 
-    {bairro: "100", linhas: ["Alto Branco", "Centro", "Lauritzen", "Nações", "UPA 24 HORAS", "COLÉGIO DAS DAMAS", "ESCOLA ESTADUAL SOLON DE LUCENA", "MUSEU TELÉGRAFO NACIONAL", "YPIRANGA CLUB", "SEMINÁRIO DIOCESANO"]},
-    {bairro: "22", linhas: ["Alto Branco", "Centro", "Dinamérica", "Jardim Tavares", "Malvinas", "Santa Cruz", "IFPB", "HOSPITAL DA CRIANÇA E DO ADOLESCENTE", "COLÉGIO DAS DAMAS", "HOSPITAL DE TRAUMA"]},
-    {bairro: "044", linhas: ["Aluízio Campos", "Centro", "Distrito Industrial", "Estação Velha", "COLÉGIO DAS DAMAS", "BR-104", "MATERNIDADE - ISEA", "HOSPITAL HAPIVIDA", "AÇUDE VELHO", "MINISTÉRIO PÚBLICO ESTADUAL", "TRT"]},
-    {bairro: "903B", linhas: ["Bela Vista", "Bodocongó", "Centro", "Monte Santo", "Sandra Cavalcante", "São José da Mata", "AVENIDA PORTUGAL", "MATERNIDADE - ISEA", "AVENIDA PRESIDENTE GETÚLIO VARGAS", "FIEP", "BR-230", "UFCG", "PB-115"]},
-    {bairro: "303", linhas: ["Bela Vista", "Bodocongó", "Jeremias", "Monte Castelo", "Monte Santo", "Santo Antônio", "Bairro Universitário", "COLÉGIO DAS DAMAS", "AVENIDA FRANCISCO ANTÔNIO DO NASCIMENTO", "AVENIDA PRESIDENTE JOÃO PESSOA", "FACULDADE DE MEDICINA - UFCG", "CENTRAL DE AULAS - UEPB", "Rua Olegário Maciel", "Av. Juvencio Arruda", "Avenida Juvencio Arruda"]},
-    {bairro: "500", linhas: ["Bela Vista", "Centro", "Centenário", "Santo Antônio", "Prata", "COLÉGIO DAS DAMAS", "PRAÇA CLEMENTINO PROCÓPIO", "ESTADUAL DA PRATA", "CANTINHO UNIVERSITÁRIO", "IGREJA DO ROSÁRIO"]},
-    {bairro: "555", linhas: ["Bela Vista", "Catolé", "Centro", "Centenário", "Jeremias", "Mirante", "Pedregal", "São José", "Bairro Universitário", "PRAÇA CLEMENTINO PROCÓPIO", "RODOVIÁRIA NOVA", "HEMOCENTRO DE CAMPINA GRANDE", "PARTAGE SHOPPING", "BR-230", "STTP - SEDE", "ASSAI ATACADISTA - CATOLÉ"]},
-    {bairro: "505", linhas: ["Bodocongó", "Centro", "Centenário", "Jeremias", "Mirante", "Monte Santo", "Palmeira", "Pedregal", "PRAÇA CLEMENTINO PROCÓPIO", "RODOVIÁRIA NOVA", "HEMOCENTRO DE CAMPINA GRANDE", "PARTAGE SHOPPING", "BR-230", "UFCG", "ASSAI ATACADISTA - CATOLÉ"]},
-    {bairro: "263", linhas: ["Bodocongó", "Centro", "Centenário", "Dinamérica", "Malvinas", "Prata", "COLÉGIO DAS DAMAS", "TERMINAL DO CHICO MENDES", "PRAÇA CLEMENTINO PROCÓPIO", "AVENIDA PORTUGAL", "UFCG"]},
-    {bairro: "245", linhas: ["Bodocongó", "Catolé", "Centro", "Cruzeiro", "Estação Velha", "Jardim Paulistano", "Jardim Quarenta", "Malvinas", "Santa Cruz", "TERMINAL DO CHICO MENDES", "SHOPPING LUIZA MOTTA", "HEMOCENTRO DE CAMPINA GRANDE", "MERCADO DAS MALVINAS", "DELEGACIA CENTRAL", "SESC - AÇUDE VELHO", "MINISTÉRIO PÚBLICO ESTADUAL", "TRT"]},
-    {bairro: "066", linhas: ["Bodocongó", "Centro", "Dinamérica", "Malvinas", "Prata", "Santa Rosa", "COLÉGIO DAS DAMAS", "TERMINAL DO CHICO MENDES", "MERCADO DAS MALVINAS", "SECRETARIA DE ADMINISTRAÇÃO", "RHEMA - CENTRO DE TREINAMENTO BÍBLICO"]},
-    {bairro: "333", linhas: ["Bodocongó", "Centro", "Castelo Branco", "Jeremias", "José Pinheiro", "Monte Castelo", "Monte Santo", "Nova Brasília", "Prata", "Santo Antônio", "Av. Getúlio Vargas", "Avenida Getúlio Vargas", "Rua Olegário Maciel", "Rua Joana D'Arc Arruda", "Av. Juvencio Arruda", "Avenida Juvencio Arruda", "Av. Dom Pedro II", "Avenida Dom Pedro II"]},
-    {bairro: "444", linhas: ["Catolé", "Centro", "Itararé", "Jardim Quarenta", "José Pinheiro", "Santa Rosa", "Santo Antônio", "São José", "COLÉGIO DAS DAMAS", "INSS - POSTO DINAMÉRICA", "SHOPPING LUIZA MOTTA", "FIEP", "TERMINAL DO AMIGÃO", "PRAÇA DO TRABALHO"]},
-    {bairro: "404", linhas: ["Catolé", "Centro", "Estação Velha", "Itararé", "José Pinheiro", "Santa Rosa", "Santo Antônio", "São José", "COLÉGIO DAS DAMAS", "INSS - POSTO DINAMÉRICA", "TERMINAL DO AMIGÃO", "PRAÇA DO TRABALHO", "AVENIDA DOUTOR ELPÍDIO DE ALMEIDA", "CALL CENTER - ORBITALL"]},
-    {bairro: "909", linhas: ["Centro", "Presidente Médice", "Santa Cruz", "São José", "MUSEU TELÉGRAFO NACIONAL", "2º BATALHÃO DA POLÍCIA MILITAR", "AVENIDA JUSCELINO KUBITSCHECK", "AVENIDA ALMIRANTE BARROSO", "PRAÇA DO TRABALHO", "CALL CENTER - ORBITALL"]},
-    {bairro: "111", linhas: ["Centro", "Cruzeiro", "Distrito Industrial", "Jardim Paulistano", "Jardim Quarenta", "Liberdade", "São José", "Tambor", "2º BATALHÃO DA POLÍCIA MILITAR", "RECEBEDORIA DE RENDAS - FISCO", "AVENIDA ALMIRANTE BARROSO", "PRAÇA DO TRABALHO", "PRAÇA AFONSO AGRA FILHO"]},
-    {bairro: "955", linhas: ["Centro", "Galante", "COLÉGIO DAS DAMAS", "PARTAGE SHOPPING", "MATERNIDADE", "BR-230", "PB-100", "MERCADO PÚBLICO DE GALANTE", "STTP - SEDE"]},
-    {bairro: "944", linhas: ["Centro", "Distrito Industrial", "Estação Velha", "Queimadas BR104", "Velame", "Queimadas", "SECRETARIA DE ADMINISTRAÇÃO", "BR-104", "MATERNIDADE - ISEA", "HOSPITAL HAPIVIDA", "VILA DO ARTESÃO", "JUSTIÇA ELEITORAL", "PRAÇA DO TRABALHO"]},
-    {bairro: "220", linhas: ["Centro", "Centenário", "Dinamérica", "Malvinas", "COLÉGIO DAS DAMAS", "HOSPITAL DE TRAUMA", "INSS - POSTO DINAMÉRICA", "SECRETARIA DE ADMINISTRAÇÃO"]},
-    {bairro: "101", linhas: ["Centro", "Cruzeiro", "Distrito Industrial", "Jardim Paulistano", "Jardim Quarenta", "Liberdade", "Santa Cruz", "São José", "MUSEU TELÉGRAFO NACIONAL", "2º BATALHÃO DA POLÍCIA MILITAR", "RECEBEDORIA DE RENDAS - FISCO", "AVENIDA JUSCELINO KUBITSCHECK", "AVENIDA ALMIRANTE BARROSO", "PRAÇA DO TRABALHO"]},
-    {bairro: "092", linhas: ["Centro", "Malvinas", "Santa Cruz", "São José", "Serrotão", "Três Irmãs", "COLÉGIO DAS DAMAS", "PRAÇA CLEMENTINO PROCÓPIO", "RODOVIÁRIA NOVA", "HEMOCENTRO DE CAMPINA GRANDE", "PARTAGE SHOPPING", "PRAÇA DO TRABALHO", "ASSAI ATACADISTA - CATOLÉ"]},
-    {bairro: "077", linhas: ["Centro", "Malvinas", "Santa Cruz", "São José", "Serrotão", "Três Irmãs", "2º BATALHÃO DA POLÍCIA MILITAR", "AVENIDA ALMIRANTE BARROSO", "PRAÇA DO TRABALHO", "CALL CENTER - ORBITALL", "BASE DA ROTAM - POLÍCIA MILITAR", "ESCOLA MARIA ANUNCIADA BEZERRA COUTINHO"]},
-    {bairro: "910", linhas: ["Centro", "Jardim Continental", "Jenipapo", "Palmeira", "Prata", "Cuité", "DISTRITO DE JENIPAPO", "FACULDADE MAURÍCIO DE NASSAU", "INSTITUTO DE ODONTOLOGIA DA PARAÍBA", "AVENIDA PARIS"]},
-    {bairro: "902", linhas: ["Centro", "Cruzeiro", "Jardim Quarenta", "Liberdade", "Santa Cruz", "São José", "AVENIDA ALMIRANTE BARROSO", "PRAÇA DO TRABALHO", "CALL CENTER - ORBITALL", "PB-138", "SUPERMERCADO MIX MATEUS", "CIRETRAN"]},
-    {bairro: "922", linhas: ["Centro", "Malvinas", "Serrotão", "Três Irmãs", "MUSEU TELÉGRAFO NACIONAL", "2º BATALHÃO DA POLÍCIA MILITAR", "AVENIDA ALMIRANTE BARROSO", "PRAÇA DO TRABALHO", "CALL CENTER - ORBITALL", "CIRETRAN"]},
-    {bairro: "300", linhas: ["Centro", "UEPB"]},
-    {bairro: "004A", linhas: ["COLÉGIO DAS DAMAS", "FIEP", "FACULDADE FACISA", "MAKRO ATACADISTA", "CONSELHO TUTELAR NORTE", "PARTAGE SHOPPING"]},
-    {bairro: "903A", linhas: ["Av. Dom Pedro II", "Avenida Dom Pedro II", "AVENIDA PORTUGAL", "MATERNIDADE - ISEA", "AVENIDA PRESIDENTE GETÚLIO VARGAS", "RODOVIA RAYMUNDO ASFORA", "FIEP", "UFCG"]},
-    {bairro: "300B", linhas: ["Av. Juvencio Arruda", "Avenida Juvencio Arruda", "AVENIDA PORTUGAL", "FACULDADE DE MEDICINA - UFCG", "CENTRAL DE AULAS - UEPB", "IGREJA DE BODOCONGÓ", "ESTADUAL DA PRATA"]}
-  ];
+            {bairro: "100", linhas: ["Alto Branco", "Centro", "Lauritzen", "Nações", "UPA 24 HORAS", "COLÉGIO DAS DAMAS", "ESCOLA ESTADUAL SOLON DE LUCENA", "MUSEU TELÉGRAFO NACIONAL", "YPIRANGA CLUB", "SEMINÁRIO DIOCESANO"]},
+            {bairro: "22", linhas: ["Alto Branco", "Centro", "Dinamérica", "Jardim Tavares", "Malvinas", "Santa Cruz", "IFPB", "HOSPITAL DA CRIANÇA E DO ADOLESCENTE", "COLÉGIO DAS DAMAS", "HOSPITAL DE TRAUMA"]},
+            {bairro: "044", linhas: ["Aluízio Campos", "Centro", "Distrito Industrial", "Estação Velha", "COLÉGIO DAS DAMAS", "BR-104", "MATERNIDADE - ISEA", "HOSPITAL HAPIVIDA", "AÇUDE VELHO", "MINISTÉRIO PÚBLICO ESTADUAL", "TRT"]},
+            {bairro: "903B", linhas: ["Bela Vista", "Bodocongó", "Centro", "Monte Santo", "Sandra Cavalcante", "São José da Mata", "AVENIDA PORTUGAL", "MATERNIDADE - ISEA", "AVENIDA PRESIDENTE GETÚLIO VARGAS", "FIEP", "BR-230", "UFCG", "PB-115"]},
+            {bairro: "303", linhas: ["Bela Vista", "Bodocongó", "Jeremias", "Monte Castelo", "Monte Santo", "Santo Antônio", "Bairro Universitário", "COLÉGIO DAS DAMAS", "AVENIDA FRANCISCO ANTÔNIO DO NASCIMENTO", "AVENIDA PRESIDENTE JOÃO PESSOA", "FACULDADE DE MEDICINA - UFCG", "CENTRAL DE AULAS - UEPB", "Rua Olegário Maciel", "Av. Juvencio Arruda", "Avenida Juvencio Arruda"]},
+            {bairro: "500", linhas: ["Bela Vista", "Centro", "Centenário", "Santo Antônio", "Prata", "COLÉGIO DAS DAMAS", "PRAÇA CLEMENTINO PROCÓPIO", "ESTADUAL DA PRATA", "CANTINHO UNIVERSITÁRIO", "IGREJA DO ROSÁRIO"]},
+            {bairro: "555", linhas: ["Bela Vista", "Catolé", "Centro", "Centenário", "Jeremias", "Mirante", "Pedregal", "São José", "Bairro Universitário", "PRAÇA CLEMENTINO PROCÓPIO", "RODOVIÁRIA NOVA", "HEMOCENTRO DE CAMPINA GRANDE", "PARTAGE SHOPPING", "BR-230", "STTP - SEDE", "ASSAI ATACADISTA - CATOLÉ"]},
+            {bairro: "505", linhas: ["Bodocongó", "Centro", "Centenário", "Jeremias", "Mirante", "Monte Santo", "Palmeira", "Pedregal", "PRAÇA CLEMENTINO PROCÓPIO", "RODOVIÁRIA NOVA", "HEMOCENTRO DE CAMPINA GRANDE", "PARTAGE SHOPPING", "BR-230", "UFCG", "ASSAI ATACADISTA - CATOLÉ"]},
+            {bairro: "263", linhas: ["Bodocongó", "Centro", "Centenário", "Dinamérica", "Malvinas", "Prata", "COLÉGIO DAS DAMAS", "TERMINAL DO CHICO MENDES", "PRAÇA CLEMENTINO PROCÓPIO", "AVENIDA PORTUGAL", "UFCG"]},
+            {bairro: "245", linhas: ["Bodocongó", "Catolé", "Centro", "Cruzeiro", "Estação Velha", "Jardim Paulistano", "Jardim Quarenta", "Malvinas", "Santa Cruz", "TERMINAL DO CHICO MENDES", "SHOPPING LUIZA MOTTA", "HEMOCENTRO DE CAMPINA GRANDE", "MERCADO DAS MALVINAS", "DELEGACIA CENTRAL", "SESC - AÇUDE VELHO", "MINISTÉRIO PÚBLICO ESTADUAL", "TRT"]},
+            {bairro: "066", linhas: ["Bodocongó", "Centro", "Dinamérica", "Malvinas", "Prata", "Santa Rosa", "COLÉGIO DAS DAMAS", "TERMINAL DO CHICO MENDES", "MERCADO DAS MALVINAS", "SECRETARIA DE ADMINISTRAÇÃO", "RHEMA - CENTRO DE TREINAMENTO BÍBLICO"]},
+            {bairro: "333", linhas: ["Bodocongó", "Centro", "Castelo Branco", "Jeremias", "José Pinheiro", "Monte Castelo", "Monte Santo", "Nova Brasília", "Prata", "Santo Antônio", "Av. Getúlio Vargas", "Avenida Getúlio Vargas", "Rua Olegário Maciel", "Rua Joana D'Arc Arruda", "Av. Juvencio Arruda", "Avenida Juvencio Arruda", "Av. Dom Pedro II", "Avenida Dom Pedro II"]},
+            {bairro: "444", linhas: ["Catolé", "Centro", "Itararé", "Jardim Quarenta", "José Pinheiro", "Santa Rosa", "Santo Antônio", "São José", "COLÉGIO DAS DAMAS", "INSS - POSTO DINAMÉRICA", "SHOPPING LUIZA MOTTA", "FIEP", "TERMINAL DO AMIGÃO", "PRAÇA DO TRABALHO"]},
+            {bairro: "404", linhas: ["Catolé", "Centro", "Estação Velha", "Itararé", "José Pinheiro", "Santa Rosa", "Santo Antônio", "São José", "COLÉGIO DAS DAMAS", "INSS - POSTO DINAMÉRICA", "TERMINAL DO AMIGÃO", "PRAÇA DO TRABALHO", "AVENIDA DOUTOR ELPÍDIO DE ALMEIDA", "CALL CENTER - ORBITALL"]},
+            {bairro: "909", linhas: ["Centro", "Presidente Médice", "Santa Cruz", "São José", "MUSEU TELÉGRAFO NACIONAL", "2º BATALHÃO DA POLÍCIA MILITAR", "AVENIDA JUSCELINO KUBITSCHECK", "AVENIDA ALMIRANTE BARROSO", "PRAÇA DO TRABALHO", "CALL CENTER - ORBITALL"]},
+            {bairro: "111", linhas: ["Centro", "Cruzeiro", "Distrito Industrial", "Jardim Paulistano", "Jardim Quarenta", "Liberdade", "São José", "Tambor", "2º BATALHÃO DA POLÍCIA MILITAR", "RECEBEDORIA DE RENDAS - FISCO", "AVENIDA ALMIRANTE BARROSO", "PRAÇA DO TRABALHO", "PRAÇA AFONSO AGRA FILHO"]},
+            {bairro: "955", linhas: ["Centro", "Galante", "COLÉGIO DAS DAMAS", "PARTAGE SHOPPING", "MATERNIDADE", "BR-230", "PB-100", "MERCADO PÚBLICO DE GALANTE", "STTP - SEDE"]},
+            {bairro: "944", linhas: ["Centro", "Distrito Industrial", "Estação Velha", "Queimadas BR104", "Velame", "Queimadas", "SECRETARIA DE ADMINISTRAÇÃO", "BR-104", "MATERNIDADE - ISEA", "HOSPITAL HAPIVIDA", "VILA DO ARTESÃO", "JUSTIÇA ELEITORAL", "PRAÇA DO TRABALHO"]},
+            {bairro: "220", linhas: ["Centro", "Centenário", "Dinamérica", "Malvinas", "COLÉGIO DAS DAMAS", "HOSPITAL DE TRAUMA", "INSS - POSTO DINAMÉRICA", "SECRETARIA DE ADMINISTRAÇÃO"]},
+            {bairro: "101", linhas: ["Centro", "Cruzeiro", "Distrito Industrial", "Jardim Paulistano", "Jardim Quarenta", "Liberdade", "Santa Cruz", "São José", "MUSEU TELÉGRAFO NACIONAL", "2º BATALHÃO DA POLÍCIA MILITAR", "RECEBEDORIA DE RENDAS - FISCO", "AVENIDA JUSCELINO KUBITSCHECK", "AVENIDA ALMIRANTE BARROSO", "PRAÇA DO TRABALHO"]},
+            {bairro: "092", linhas: ["Centro", "Malvinas", "Santa Cruz", "São José", "Serrotão", "Três Irmãs", "COLÉGIO DAS DAMAS", "PRAÇA CLEMENTINO PROCÓPIO", "RODOVIÁRIA NOVA", "HEMOCENTRO DE CAMPINA GRANDE", "PARTAGE SHOPPING", "PRAÇA DO TRABALHO", "ASSAI ATACADISTA - CATOLÉ"]},
+            {bairro: "077", linhas: ["Centro", "Malvinas", "Santa Cruz", "São José", "Serrotão", "Três Irmãs", "2º BATALHÃO DA POLÍCIA MILITAR", "AVENIDA ALMIRANTE BARROSO", "PRAÇA DO TRABALHO", "CALL CENTER - ORBITALL", "BASE DA ROTAM - POLÍCIA MILITAR", "ESCOLA MARIA ANUNCIADA BEZERRA COUTINHO"]},
+            {bairro: "910", linhas: ["Centro", "Jardim Continental", "Jenipapo", "Palmeira", "Prata", "Cuité", "DISTRITO DE JENIPAPO", "FACULDADE MAURÍCIO DE NASSAU", "INSTITUTO DE ODONTOLOGIA DA PARAÍBA", "AVENIDA PARIS"]},
+            {bairro: "902", linhas: ["Centro", "Cruzeiro", "Jardim Quarenta", "Liberdade", "Santa Cruz", "São José", "AVENIDA ALMIRANTE BARROSO", "PRAÇA DO TRABALHO", "CALL CENTER - ORBITALL", "PB-138", "SUPERMERCADO MIX MATEUS", "CIRETRAN"]},
+            {bairro: "922", linhas: ["Centro", "Malvinas", "Serrotão", "Três Irmãs", "MUSEU TELÉGRAFO NACIONAL", "2º BATALHÃO DA POLÍCIA MILITAR", "AVENIDA ALMIRANTE BARROSO", "PRAÇA DO TRABALHO", "CALL CENTER - ORBITALL", "CIRETRAN"]},
+            {bairro: "300", linhas: ["Centro", "UEPB"]},
+            {bairro: "004A", linhas: ["COLÉGIO DAS DAMAS", "FIEP", "FACULDADE FACISA", "MAKRO ATACADISTA", "CONSELHO TUTELAR NORTE", "PARTAGE SHOPPING"]},
+            {bairro: "903A", linhas: ["Av. Dom Pedro II", "Avenida Dom Pedro II", "AVENIDA PORTUGAL", "MATERNIDADE - ISEA", "AVENIDA PRESIDENTE GETÚLIO VARGAS", "RODOVIA RAYMUNDO ASFORA", "FIEP", "UFCG"]},
+            {bairro: "300B", linhas: ["Av. Juvencio Arruda", "Avenida Juvencio Arruda", "AVENIDA PORTUGAL", "FACULDADE DE MEDICINA - UFCG", "CENTRAL DE AULAS - UEPB", "IGREJA DE BODOCONGÓ", "ESTADUAL DA PRATA"]}
+        ];
 
-          // Ignorar Acentos
+        // Ignorar Acentos
         function normalizar(str) {
             return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         }
@@ -522,7 +613,7 @@ function voltarpagina3() {
             // Desabilitar botão durante a busca
             document.getElementById('consultarBtn').disabled = true;
 
-            // Simular um tempo de processamento (apenas para demonstração do loading)
+            // Simular um tempo de processamento
             setTimeout(() => {
                 let resultadosHTML = "";
                 
@@ -536,7 +627,9 @@ function voltarpagina3() {
                             <div class="bairro-result">
                                 <div class="bairro-title">${bairroEncontrado.bairro}</div>
                                 <div class="linhas-list">
-                                    ${bairroEncontrado.linhas.map(linha => `<span class="linha-item">${linha}</span>`).join('')}
+                                    ${bairroEncontrado.linhas.map(linha => 
+                                        `<button class="linha-btn" onclick="mostrarDetalhesLinha('${linha}')">${linha}</button>`
+                                    ).join('')}
                                 </div>
                             </div>
                         `;
@@ -555,8 +648,109 @@ function voltarpagina3() {
                 
                 // Reabilitar o botão
                 document.getElementById('consultarBtn').disabled = false;
-            }, 800); // Tempo simulado de busca
+            }, 800);
         }
+
+// Mapeamento de imagens para cada linha
+// Mapeamento de imagens para cada linha - ADICIONE ISSO NO SEU JavaScript
+const imagensDasLinhas = {
+    "100": "imagens/linhas/linha100.jpg",
+    "22": "imagens/linhas/linha22.png",
+    "044": "img/044.png",
+    "903B": "imagens/linhas/linha903B.png",
+    "303": "imagens/linhas/linha303.jpg",
+    "500": "imagens/linhas/linha500.png",
+    "555": "imagens/linhas/linha555.jpg",
+    "505": "imagens/linhas/linha505.png",
+    "263": "imagens/linhas/linha263.jpg",
+    "245": "imagens/linhas/linha245.png",
+    "066": "imagens/linhas/linha066.jpg",
+    "333": "imagens/linhas/linha333.png",
+    "444": "imagens/linhas/linha444.jpg",
+    "404": "imagens/linhas/linha404.png",
+    "909": "imagens/linhas/linha909.jpg",
+    "111": "imagens/linhas/linha111.png",
+    "955": "imagens/linhas/linha955.jpg",
+    "944": "imagens/linhas/linha944.png",
+    "220": "imagens/linhas/linha220.jpg",
+    "101": "imagens/linhas/linha101.png",
+    "092": "imagens/linhas/linha092.jpg",
+    "077": "imagens/linhas/linha077.png",
+    "910": "imagens/linhas/linha910.jpg",
+    "902": "imagens/linhas/linha902.png",
+    "922": "imagens/linhas/linha922.jpg",
+    "300": "imagens/linhas/linha300.png",
+    "004A": "imagens/linhas/linha004A.jpg",
+    "903A": "imagens/linhas/linha903A.png",
+    "300B": "imagens/linhas/linha300B.jpg"
+};
+
+// Modifique a função mostrarDetalhesLinha para usar imagens locais
+function mostrarDetalhesLinha(numeroLinha) {
+    // Encontrar todos os bairros que têm esta linha
+    const bairrosComEstaRota = dados.filter(item => item.linhas.includes(numeroLinha));
+    
+    // Encontrar a linha nos dados (se existir como bairro)
+    const linhaComoBairro = dados.find(item => item.bairro === numeroLinha);
+    
+    // Obter a imagem da linha (ou usar uma padrão se não existir)
+    const imagemLinha = imagensDasLinhas[numeroLinha] || "img/044.jpg";
+    
+    let modalHTML = "";
+    
+    if (linhaComoBairro) {
+        modalHTML += `
+            <div class="linha-info">
+                <div class="linha-descricao">Rota da Linha ${numeroLinha}:</div>
+                <div class="bairros-list">
+                    ${linhaComoBairro.linhas.map(bairro => 
+                        `<span class="bairro-tag">${bairro}</span>`
+                    ).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    if (bairrosComEstaRota.length > 0) {
+        modalHTML += `
+            <div class="linha-info">
+                <div class="linha-descricao">Bairros atendidos pela Linha ${numeroLinha}:</div>
+                <div class="bairros-list">
+                    ${bairrosComEstaRota.map(item => 
+                        `<span class="bairro-tag">${item.bairro}</span>`
+                    ).join('')}
+                </div>
+            </div>
+        `;
+    } else {
+        modalHTML += `<p>Nenhuma informação detalhada disponível para a linha ${numeroLinha}.</p>`;
+    }
+    
+    // ADICIONAR IMAGEM DA LINHA
+    modalHTML += `
+        <div class="linha-info">
+            <div class="linha-descricao">Mapa da Linha ${numeroLinha}:</div>
+            <img src="${imagemLinha}" alt="Mapa da Linha ${numeroLinha}" class="linha-mapa" 
+                 onerror="this.src='imagens/linha-padrao.jpg'">
+        </div>
+    `;
+    
+    document.getElementById('modalLinhaNumero').textContent = `Linha ${numeroLinha}`;
+    document.getElementById('modalConteudo').innerHTML = modalHTML;
+    document.getElementById('linhaModal').style.display = 'flex';
+}
+        // Função para fechar o modal
+        function fecharModal() {
+            document.getElementById('linhaModal').style.display = 'none';
+        }
+
+        // Fechar modal ao clicar fora dele
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('linhaModal');
+            if (event.target === modal) {
+                fecharModal();
+            }
+        });
 
         // Função para limpar os resultados
         function limparResultados() {
@@ -571,6 +765,19 @@ function voltarpagina3() {
                 buscarLinhas();
             }
         });
+
+        // Funções de navegação (mantidas as originais)
+        function voltarpagina() {
+            window.location.href = "Rotas Caruaru.html";             
+        }
+
+        function voltarpagina2() {
+            window.location.href = "Rotas Natal.html";             
+        }
+
+        function voltarpagina3() {
+            window.location.href = "Rotas João Pessoa.html";             
+        }
     </script>
 </body>
 </html>
