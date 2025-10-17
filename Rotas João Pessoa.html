@@ -243,14 +243,32 @@
                 height: 100px;
             }
         }
+
+                .button3 {
+            margin-top: 3px;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;        
+        }
+
+                .botao4 {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        h2 {
+            color: #333;
+            margin-left: 230px;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <div class="header-content">
-                <img src="https://i.imgur.com/PolKIwx.png" alt="Brasão de Natal" class="header-image-main">
-                <img src="https://i.imgur.com/OnzDOMa.png" alt="Natal - Cidade do Sol" class="header-image">
+                <img src="https://i.imgur.com/PolKIwx.png" alt="Brasão de João Pessoa" class="header-image-main">
+                <img src="https://i.imgur.com/OnzDOMa.png" alt="João.P - Cidade das praias" class="header-image">
                 <div class="header-text">
                     <h1>JOÃO PESSOA - PB</h1>
                     <p class="subtitle">Sistema de Consulta de Linhas de Ônibus</p>
@@ -258,9 +276,52 @@
             </div>
         </div>
         
+<h2>Buscadores:</h2>     
+<!--Botão1-->        
+<div class="button3">
+
+<button type="button" id="voltar" onclick="voltarpagina()">CAMPINA GRANDE</button>
+
+<script>
+
+function voltarpagina() {
+
+      window.location.href = "index.html";             
+    }
+
+</script>
+
+<!--Botão2-->
+
+<button type="button" id="voltar" onclick="voltarpagina2()" class="botao4">NATAL</button>
+
+<script>
+
+function voltarpagina2() {
+
+      window.location.href = "Rotas Natal.html";             
+    }
+
+</script>
+
+<!--Botão3-->
+
+<button type="button" id="voltar" onclick="voltarpagina3()">CARUARU</button>
+
+<script>
+
+function voltarpagina3() {
+
+      window.location.href = "Rotas Caruaru.html";             
+    }
+
+</script>
+
+</div>
+
         <div class="content">
             <div class="input-group">
-                <label for="bairrosInput">Digite o Bairro Desejado:</label>
+                <label for="bairrosInput">Digite o Bairro Desejado:(Não Precisa de Acentos, Nem letras maiúsculas)</label>
                 <input type="text" id="bairrosInput" placeholder="Ex: Gramame, Lucena, Bayeux">
             </div>
             

@@ -243,27 +243,88 @@
                 height: 100px;
             }
         }
-        .trocar_pagina {
-            color: #8b0000;
+
+        .button1 {
+            margin-top: 3px;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;        
         }
+
+                .botao2 {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        h2 {
+            color: #333;
+            margin-left: 230px;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <div class="header-content">
-                <img src="https://i.imgur.com/PolKIwx.png" alt="Brasão de Natal" class="header-image-main">
-                <img src="https://i.imgur.com/ygxe7QR.png" alt="Natal - Cidade do Sol" class="header-image">
+                <img src="https://i.imgur.com/PolKIwx.png" alt="Brasão de Campina Grande" class="header-image-main">
+                <img src="https://i.imgur.com/ygxe7QR.png" alt="CG - Cidade Industrial" class="header-image">
                 <div class="header-text">
                     <h1>CAMPINA GRANDE - PB</h1>
                     <p class="subtitle">Sistema de Consulta de Linhas de Ônibus</p>
                 </div>
             </div>
         </div>
+
+
+<h2>Buscadores:</h2>     
+<!--Botão1-->        
+<div class="button1">
+
+<button type="button" id="voltar" onclick="voltarpagina()">CARUARU</button>
+
+<script>
+
+function voltarpagina() {
+
+      window.location.href = "Rotas Caruaru.html";             
+    }
+
+</script>
+
+<!--Botão2-->
+
+<button type="button" id="voltar" onclick="voltarpagina2()" class="botao2">NATAL</button>
+
+<script>
+
+function voltarpagina2() {
+
+      window.location.href = "Rotas Natal.html";             
+    }
+
+</script>
+
+<!--Botão3-->
+
+<button type="button" id="voltar" onclick="voltarpagina3()">JOÃO PESSOA</button>
+
+<script>
+
+function voltarpagina3() {
+
+      window.location.href = "Rotas João Pessoa.html";             
+    }
+
+</script>
+
+
+
+</div>
         
         <div class="content">
             <div class="input-group">
-                <label for="bairrosInput">Digite o Bairro Desejado:(Não Precisa de Acentos)</label>
+                <label for="bairrosInput">Digite o Bairro Desejado:(Não Precisa de Acentos, Nem letras maiúsculas)</label>
                 <input type="text" id="bairrosInput" placeholder="Ex: Centro, Catolé, Dinamérica">
             </div>
             
@@ -280,11 +341,6 @@
             © 2025 Sistema de Transporte de Campina Grande
         </div>
     </div>
-
-            <div class="trocar_pagina">
-                <p>Don't have account? <a href="Rotas Caruaru.html">Sign-in</a></p>
-
-            </div>
 
     <script>
   const dados = [
