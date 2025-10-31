@@ -363,6 +363,19 @@
             color: #333;
             margin-left: 230px;
         }
+        .empresa-info {
+            background: #e9f7ff;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #008000;
+        }
+        
+        .empresa-nome {
+            font-weight: 600;
+            color: #008000;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -1103,6 +1116,194 @@ const imagensDasLinhas = {
     {bairro: "247", linhas: ["EXTREMOZ", "Guarapes"]},
   ];
 
+  const empresasLinhas = {
+//Conceição
+  "21": "CONCEIÇÃO",
+  "22": "CONCEIÇÃO",
+  "30": "CONCEIÇÃO",
+  "41A": "CONCEIÇÃO",
+  "63": "CONCEIÇÃO",
+  "76": "CONCEIÇÃO",
+  "83": "CONCEIÇÃO",
+  "905": "CONCEIÇÃO",
+
+  //Santa Maria
+  "3008": "SANTA MARIA",
+  "39": "SANTA MARIA",
+  "38": "SANTA MARIA",
+  "83": "SANTA MARIA",
+  "588B": "SANTA MARIA",
+  "37": "SANTA MARIA",
+  "33B": "SANTA MARIA",
+  "41A": "SANTA MARIA",
+  "43": "SANTA MARIA",
+  "56": "SANTA MARIA",
+  "54": "SANTA MARIA",
+  "73": "SANTA MARIA",
+  "07": "SANTA MARIA",
+  "35": "SANTA MARIA",
+  "29": "SANTA MARIA",
+  "27": "SANTA MARIA",
+  "78": "SANTA MARIA",
+
+  //Barros
+  "101": "BARROS",
+  "102": "BARROS",
+  "103": "BARROS",
+  "104": "BARROS",
+  "105": "BARROS",
+  "106": "BARROS",
+  "107": "BARROS",
+  "108": "BARROS",
+  "109": "BARROS",
+  "110": "BARROS",
+  "111": "BARROS",
+  "112": "BARROS",
+  "113": "BARROS",
+  "114": "BARROS",
+  "115": "BARROS",
+  "116": "BARROS",
+  "117": "BARROS",
+  "118": "BARROS",
+  "119": "BARROS",
+  "120": "BARROS",
+  "121": "BARROS",
+  "122": "BARROS",
+  "123": "BARROS",
+  "124": "BARROS",
+  "125": "BARROS",
+  "126": "BARROS",
+  "127": "BARROS",
+  "128": "BARROS",
+  "129": "BARROS",
+  "130": "BARROS",
+  "131": "BARROS",
+  "132": "BARROS",
+  "133": "BARROS",
+  "134": "BARROS",
+  "135": "BARROS",
+  "136": "BARROS",
+  "137": "BARROS",
+  "138": "BARROS",
+  "139": "BARROS",
+  "140": "BARROS",
+  "141": "BARROS",
+  "142": "BARROS",
+  "143": "BARROS",
+  "144": "BARROS",
+  "145": "BARROS",
+  "146": "BARROS",
+  "147": "BARROS",
+  "148": "BARROS",
+  "149": "BARROS",
+  "150": "BARROS",
+  "151": "BARROS",
+  "152": "BARROS",
+  "153": "BARROS",
+  "154": "BARROS",
+  "155": "BARROS",
+  "156": "BARROS",
+  "157": "BARROS",
+  "158": "BARROS",
+  "159": "BARROS",
+  "160": "BARROS",
+  "161": "BARROS",
+  "162": "BARROS",
+  "200": "BARROS",
+  "201": "BARROS",
+  "202": "BARROS",
+  "203": "BARROS",
+  "204": "BARROS",
+  "205": "BARROS",
+  "206": "BARROS",
+  "207": "BARROS",
+  "208": "BARROS",
+  "209": "BARROS",
+  "210": "BARROS",
+  "211": "BARROS",
+  "212": "BARROS",
+  "213": "BARROS",
+  "214": "BARROS",
+  "216": "BARROS",
+  "217": "BARROS",
+  "218": "BARROS",
+  "219": "BARROS",
+  "220": "BARROS",
+  "221": "BARROS",
+  "222": "BARROS",
+  "223": "BARROS",
+  "224": "BARROS",
+  "225": "BARROS",
+  "226": "BARROS",
+  "227": "BARROS",
+  "228": "BARROS",
+  "229": "BARROS",
+  "230": "BARROS",
+  "231": "BARROS",
+  "232": "BARROS",
+  "233": "BARROS",
+  "234": "BARROS",
+  "235": "BARROS",
+  "236": "BARROS",
+  "237": "BARROS",
+  "238": "BARROS",
+  "239": "BARROS",
+  "240": "BARROS",
+  "241": "BARROS",
+  "242": "BARROS",
+  "243": "BARROS",
+  "244": "BARROS",
+  "245": "BARROS",
+  "246": "BARROS",
+  "247": "BARROS",
+  "01TURNO A": "BARROS",
+  "02TURNO A": "BARROS",
+  "03 TURNO A": "BARROS",
+  "04 TURNO A": "BARROS",
+  "05 TURNO A": "BARROS",
+  "06 TURNO A": "BARROS",
+  "07 TURNO A": "BARROS",
+  "08 TURNO A": "BARROS",
+  "09 TURNO A": "BARROS",
+  "10 TURNO A": "BARROS",
+  "11 TURNO A": "BARROS",
+  "12 TURNO A": "BARROS",
+  "13 TURNO A": "BARROS",
+  "14 TURNO A": "BARROS",
+  "16 TURNO A": "BARROS",
+  "17 TURNO A": "BARROS",
+  "18 TURNO A": "BARROS",
+  "19 TURNO A": "BARROS",
+  "20 TURNO A": "BARROS",
+  "21 TURNO A": "BARROS",
+  "22 TURNO A": "BARROS",
+  "23 TURNO A": "BARROS",
+  "25 TURNO A": "BARROS",
+  "01TURNO B": "BARROS",
+  "02TURNO B": "BARROS",
+  "03 TURNO B": "BARROS",
+  "04 TURNO B": "BARROS",
+  "05 TURNO B": "BARROS",
+  "06 TURNO B": "BARROS",
+  "07 TURNO B": "BARROS",
+  "08 TURNO B": "BARROS",
+  "09 TURNO B": "BARROS",
+  "10 TURNO B": "BARROS",
+  "11 TURNO B": "BARROS",
+  "12 TURNO B": "BARROS",
+  "13 TURNO B": "BARROS",
+  "14 TURNO B": "BARROS",
+  "16 TURNO B": "BARROS",
+  "17 TURNO B": "BARROS",
+  "18 TURNO B": "BARROS",
+  "19 TURNO B": "BARROS",
+  "20 TURNO B": "BARROS",
+  "21 TURNO B": "BARROS",
+  "23 TURNO B": "BARROS",
+  "25 TURNO B": "BARROS",
+
+  }
+
         // Ignorar Acentos
         function normalizar(str) {
             return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -1164,8 +1365,15 @@ const imagensDasLinhas = {
             // USA A IMAGEM ESPECÍFICA DA LINHA OU UMA PADRÃO SE NÃO ENCONTRAR
             const imagemLinha = imagensDasLinhas[numeroLinha] || "https://i.imgur.com/ikIwZ4v.png";
             
-            let modalHTML = "";
-            
+              // Obtém o nome da empresa
+    const empresa = empresasLinhas[numeroLinha] || "Empresa não especificada";
+    
+    let modalHTML = `
+        <div class="empresa-info">
+            <div class="empresa-nome">Empresa: ${empresa}</div>
+        </div>
+    `;
+
             // Bairros atendidos
             if (bairrosComEstaRota.length > 0) {
                 modalHTML += `

@@ -363,6 +363,19 @@
             color: #333;
             margin-left: 230px;
         }
+        .empresa-info {
+            background: #e9f7ff;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #008000;
+        }
+        
+        .empresa-nome {
+            font-weight: 600;
+            color: #008000;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -771,6 +784,48 @@
 
         ];
 
+  const empresasLinhas = {
+  "506": "MARCOS DA SILVA",
+  "504": "MARCOS DA SILVA",
+  "5608": "MARCOS DA SILVA",
+  "401": "MARCOS DA SILVA",
+  "1001": "MARCOS DA SILVA",
+  "120": "SÃO JORGE",
+  "502": "SÃO JORGE",
+  "701": "SÃO JORGE",
+  "104": "SÃO JORGE",
+  "118": "SÃO JORGE",
+  "702": "SÃO JORGE",
+  "1519": "SÃO JORGE",
+  "I008": "SÃO JORGE",
+  "5120": "SÃO JORGE",
+  "2300": "SÃO JORGE",
+  "115": "SÃO JORGE",
+  "110": "SÃO JORGE",
+  "520": "MANDACARUENSE",
+  "602": "MANDACARUENSE",
+  "507": "MANDACARUENSE",
+  "604": "MANDACARUENSE",
+  "512": "MANDACARUENSE",
+  "509": "MANDACARUENSE",
+  "5015": "TR TRANSPORTE",
+  "5610": "TR TRANSPORTE",
+  "5613": "TR TRANSPORTE",
+  "5612": "TR TRANSPORTE",
+  "5609": "TR TRANSPORTE",
+  "5607": "TR TRANSPORTE",
+  "021": "RIO TINTO",
+  "022": "RIO TINTO",
+  "023": "RIO TINTO",
+  "024": "RIO TINTO",
+  "025": "RIO TINTO",
+  "026": "RIO TINTO",
+  "027": "RIO TINTO",
+  "028": "RIO TINTO",
+  "029": "RIO TINTO",
+  "030": "RIO TINTO",
+  }
+
         // Ignorar Acentos
         function normalizar(str) {
             return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -832,7 +887,14 @@
             // USA A IMAGEM ESPECÍFICA DA LINHA OU UMA PADRÃO SE NÃO ENCONTRAR
             const imagemLinha = imagensDasLinhas[numeroLinha] || "https://i.imgur.com/OnzDOMa.png";
             
-            let modalHTML = "";
+              // Obtém o nome da empresa
+    const empresa = empresasLinhas[numeroLinha] || "Empresa não especificada";
+    
+    let modalHTML = `
+        <div class="empresa-info">
+            <div class="empresa-nome">Empresa: ${empresa}</div>
+        </div>
+    `;
             
             // Bairros atendidos
             if (bairrosComEstaRota.length > 0) {

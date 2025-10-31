@@ -363,6 +363,19 @@
             color: #333;
             margin-left: 230px;
         }
+        .empresa-info {
+            background: #e9f7ff;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #008000;
+        }
+        
+        .empresa-nome {
+            font-weight: 600;
+            color: #008000;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -511,6 +524,20 @@
             {bairro: "140", linhas: ["Caruaru Shopping", "Centro", "Praça do Rosário", "Motorac", "Adjar da Silva Casé", "Senac/Centro de Convenções", "Unimed Caruaru", "Parque Caminho das Aroeiras"]},
         ];
 
+  const empresasLinhas = {
+
+  "104": "Tabosa",
+  "120": "Tabosa", 
+  "129": "Tabosa",
+  "140": "Tabosa",
+  "410": "Tabosa",
+  "420": "Tabosa",
+  "431": "Tabosa",
+  "432": "Tabosa",
+  "440": "Tabosa",
+
+  }
+
         // Ignorar Acentos
         function normalizar(str) {
             return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -585,7 +612,14 @@ function mostrarDetalhesLinha(numeroLinha) {
     // USA A IMAGEM ESPECÍFICA DA LINHA OU UMA PADRÃO SE NÃO ENCONTRAR
     const imagemLinha = imagensDasLinhas[numeroLinha] || "https://i.imgur.com/C36KSnU.png";
     
-    let modalHTML = "";
+              // Obtém o nome da empresa
+    const empresa = empresasLinhas[numeroLinha] || "Empresa não especificada";
+    
+    let modalHTML = `
+        <div class="empresa-info">
+            <div class="empresa-nome">Empresa: ${empresa}</div>
+        </div>
+    `;
     
     // Bairros atendidos
     if (bairrosComEstaRota.length > 0) {

@@ -319,6 +319,20 @@
             border: 1px solid #dee2e6;
             font-size: 14px;
         }
+
+        .empresa-info {
+            background: #e9f7ff;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #008000;
+        }
+        
+        .empresa-nome {
+            font-weight: 600;
+            color: #008000;
+            margin-bottom: 5px;
+        }
         
 .linha-mapa {
     width: 100%;
@@ -637,6 +651,50 @@
             {bairro: "0013", linhas: ["Campina Grande", "Avenida Brasília", "Centro", "Assis Chateaubriand", "Queimadas", "Boqueirão", "Campina Grande", "Areia"]}
         ];
 
+        // Mapeamento das empresas para cada linha
+        const empresasLinhas = {
+            // Linhas urbanas de Campina Grande
+  "333": "NACIONAL",
+  "22": "NACIONAL",
+  "100": "NACIONAL",
+  "101": "NACIONAL",
+  "220": "NACIONAL",
+  "263": "NACIONAL",
+  "303": "NACIONAL",
+  "944": "NACIONAL",
+  "044": "NACIONAL",
+  "245": "NACIONAL",
+  "066": "NACIONAL",
+  "903A": "NACIONAL",
+  "300B": "NACIONAL",
+  "955": "NACIONAL",
+  "404": "TRANS. NACIONAL",
+  "444": "TRANS. NACIONAL",
+  "004A": "TRANS. NACIONAL",
+  "111": "TRANS. NACIONAL",
+  "909": "TRANS. NACIONAL",
+  "902": "TRANS. NACIONAL",
+  "922": "TRANS. NACIONAL",
+  "903B": "CABRAL",
+  "505": "CABRAL",
+  "500": "CABRAL",
+  "092": "CABRAL",
+  "077": "CABRAL",
+  "555": "CABRAL",
+  "910": "CABRAL",
+            
+            // Linhas intermunicipais
+            "0804": "São José",
+            "0802": "São José",
+            "0816": "São José",
+            "0817": "São José",
+            "0813": "São José",
+            "0805": "São José",
+            "0013": "Pontual",
+            "0819": "São José",
+            "0814": "São José"
+        };
+
         // Ignorar Acentos
         function normalizar(str) {
             return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -691,8 +749,6 @@
             }, 800);
         }
 
-
-
 // linhas com imagens específicas
 const imagensEspeciais = {
     "044": "img/campina/044.jpg",
@@ -731,7 +787,14 @@ function mostrarDetalhesLinha(numeroLinha) {
     // Verifica se tem imagem especial, senão usa a padrão
     const imagemLinha = imagensEspeciais[numeroLinha] || "https://i.imgur.com/ygxe7QR.png";
     
-    let modalHTML = "";
+    // Obtém o nome da empresa
+    const empresa = empresasLinhas[numeroLinha] || "Empresa não especificada";
+    
+    let modalHTML = `
+        <div class="empresa-info">
+            <div class="empresa-nome">Empresa: ${empresa}</div>
+        </div>
+    `;
     
     if (bairrosComEstaRota.length > 0) {
         modalHTML += `
